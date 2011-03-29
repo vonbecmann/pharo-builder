@@ -1,20 +1,24 @@
 
 (define cwd (getcwd))
 
+(define (join path subpath)
+  (string-append path "/" subpath)
+)
+
 (define artifacts-repo 
-  (string-append cwd "/artifacts")
+  (join cwd "artifacts")
 )
 
 (define mc-package-cache 
-  (string-append cwd "/package-cache")
+  (join cwd "package-cache")
 )
 
 (define environments 
-  (string-append cwd "/envs")
+  (join cwd "envs")
 )
 
 (define vm-dir
-  (string-append cwd "/vm")
+  (join cwd "vm")
 )
 
 
