@@ -21,6 +21,9 @@
   (join cwd "vm")
 )
 
+(define (directory-exists? directory-name)
+  (access? directory-name (logior R_OK W_OK X_OK))
+)
 
 (define (callCommand cmd) 
   (define exit-code (system cmd))
@@ -28,7 +31,11 @@
 	(error 
 	 (format #f "command ~a failed with exit code ~a" cmd exit-code)))
 )
-
+(define (create-basic-structure)
+  (if (not (directory-exists? artifacts-repo))
+      (mkdir artifacts-repo)
+      )
+)
 
 (display cwd)
 (newline)
