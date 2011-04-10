@@ -1,3 +1,6 @@
+(define-module (pharo-builder oscommand)
+  #:export (mk-basic-structure rm-basic-structure add-artifact add-environment)
+)
 
 (define cwd (getcwd))
 
@@ -9,12 +12,19 @@
   (join cwd "artifacts")
 )
 
+(define (add-artifact artifact-name)
+  (mk-directory (join artifacts-repo artifact-name))
+)
+
 (define mc-package-cache 
   (join cwd "package-cache")
 )
 
 (define environments 
   (join cwd "envs")
+)
+(define (add-environment env-name)
+  (mk-directory (join environments env-name))
 )
 
 (define vm-dir
@@ -31,10 +41,23 @@
 	(error 
 	 (format #f "command ~a failed with exit code ~a" cmd exit-code)))
 )
-(define (create-basic-structure)
-  (if (not (directory-exists? artifacts-repo))
-      (mkdir artifacts-repo)
-      )
+
+(define (mk-directory directory-name)
+  (if (not (directory-exists? directory-name))
+      (mkdir directory-name))
+) 
+
+(define (mk-basic-structure)
+  (mk-directory artifacts-repo)
+  (mk-directory mc-package-cache)
+  (mk-directory environments)
+  (mk-directory vm-dir)
+)
+(define (rm-basic-structure)
+  (rmdir artifacts-repo)
+  (rmdir mc-package-cache)
+  (rmdir environments)
+  (rmdir vm-dir)
 )
 
 (display cwd)
