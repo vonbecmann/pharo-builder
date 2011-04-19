@@ -15,16 +15,24 @@
 (define (add-artifact artifact-name)
   (mk-directory (join artifacts-repo artifact-name))
 )
-
+(define (mc-package-cache-at directory-name) 
+  (join directory-name "package-cache")
+)
 (define mc-package-cache 
-  (join cwd "package-cache")
+  (mc-package-cache-at cwd)
+)
+(define (link-package-cache-at directory-name)
+  (symlink mc-package-cache (mc-package-cache-at directory-name))
 )
 
 (define environments 
   (join cwd "envs")
 )
+
 (define (add-environment env-name)
-  (mk-directory (join environments env-name))
+  (define env-full-path (join environments env-name))
+  (mk-directory env-full-path)
+  (link-package-cache-at env-full-path)
 )
 
 (define vm-dir
@@ -32,7 +40,8 @@
 )
 
 (define (directory-exists? directory-name)
-  (access? directory-name (logior R_OK W_OK X_OK))
+  (define read-write-execute (logior R_OK W_OK X_OK))
+  (access? directory-name read-write-execute)
 )
 
 (define (callCommand cmd) 
