@@ -14,8 +14,9 @@
 		#:init-keyword #:download-from)
 )
 (define-method (write (obj <Artifact>) port)
+  (define fmt "artifact ~S download from ~% ~S ~% to directory ~S ~%")
   (display (format #f 
-		   "artifact ~S download from ~% ~S ~% to directory ~S ~%"
+		   fmt
 		   (name obj) 
 		   (download-URL obj) 
 		   (directory-name obj)) port)
