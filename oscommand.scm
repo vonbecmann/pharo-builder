@@ -1,5 +1,6 @@
 (define-module (pharo-builder oscommand)
-  #:export (mk-basic-structure rm-basic-structure add-artifact add-environment)
+  #:export (mk-basic-structure rm-basic-structure 
+	    add-artifact add-environment download unzip-artifact)
 )
 
 (define cwd (getcwd))
@@ -44,11 +45,39 @@
   (access? directory-name read-write-execute)
 )
 
-(define (callCommand cmd) 
+;;
+;; call a os command with a string
+;;
+(define (call-command cmd) 
   (define exit-code (system cmd))
   (if (not (zero? exit-code))
 	(error 
 	 (format #f "command ~a failed with exit code ~a" cmd exit-code)))
+)
+;;
+;; call a os command with a list
+;;
+(define (call-command-list cmd-list) 
+  (define cmd (string-join cmd-list (string #\space)))
+  (call-command cmd)
+)
+;;
+;; download URL-filename to filename
+;; curl --location --output filename URL-filename
+;;
+(define (download URL-filename to-filename)
+  (define cmd 
+    (list "curl" "--location" "--output" to-filename URL-filename))
+  (call-command-list cmd)
+)
+
+;;
+;; unzip artifact filename to directory
+;;
+(define (unzip-artifact filename to-directory)
+  (define cmd
+    (list "unzip" "-j" filename "*.image" "*.changes" "-d" to-directory))
+  (call-command-list cmd)
 )
 
 (define (mk-directory directory-name)
