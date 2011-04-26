@@ -12,6 +12,7 @@
 		  #:init-keyword #:directory-name)
   (download-URL #:accessor download-URL
 		#:init-keyword #:download-from)
+  (filename #:init-value "latest.zip")
 )
 (define-method (write (obj <Artifact>) port)
   (define fmt "artifact ~S download from ~% ~S ~% to directory ~S ~%")

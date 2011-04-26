@@ -9,7 +9,7 @@
 )
 
 (define artifacts-repo 
-  (join cwd "artifacts")
+  (join cwd ".artifacts")
 )
 
 (define (add-artifact artifact-name)
