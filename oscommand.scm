@@ -1,6 +1,7 @@
 (define-module (pharo-builder oscommand)
   #:export (mk-basic-structure rm-basic-structure 
-	    add-artifact add-environment download unzip-artifact)
+	    add-environment download 
+	    unzip-artifact cwd join)
 )
 
 (define cwd (getcwd))
@@ -13,9 +14,6 @@
   (join cwd ".artifacts")
 )
 
-(define (add-artifact artifact-name)
-  (mk-directory (join artifacts-repo artifact-name))
-)
 (define (mc-package-cache-at directory-name) 
   (join directory-name "package-cache")
 )
