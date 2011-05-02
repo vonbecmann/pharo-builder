@@ -1,12 +1,30 @@
 (define-module (pharo-builder artifacts)
   #:use-module (oop goops) 
   #:use-module (ice-9 format)
-  #:export (repository PharoCore PharoDev PharoUnstableCore full-path download)
+  #:use-module ((pharo-builder oscommand)
+		:select ((join . path-join) 
+			 cwd call-command-list))
+  #:export (repository PharoCore PharoDev 
+	    PharoUnstableCore full-path download)
 )
-(use-modules ((pharo-builder oscommand)
-	      :select ((join . path-join) 
-		       (download . basic-download)
-		       artifacts-repo))
+
+;;
+;; artifacts repository directory
+;;
+(define artifacts-repo 
+  (path-join cwd ".artifacts")
+)
+(display artifacts-repo)
+(newline)
+
+;;
+;; basic download URL-filename to filename
+;; curl --location --output filename URL-filename
+;;
+(define (basic-download URL-filename to-filename)
+  (define cmd 
+    (list "curl" "--location" "--output" to-filename URL-filename))
+  (call-command-list cmd)
 )
 
 ;;
@@ -40,6 +58,9 @@
   (basic-download (download-URL obj) (full-path obj))
 )
 
+;;
+;; Artifacts
+;;
 (define PharoCore 
   (make <Artifact> 
     #:name "PharoCore"
@@ -63,11 +84,17 @@
 ;; Artifacts Repository
 ;;
 (define-class <ArtifactsRepository> ()
-  (pharo-core #:init-value PharoCore
-	    #:accessor pharo-core)
-  (pharo-dev #:init-value PharoDev
-	    #:accessor pharo-dev)
-  (pharo-unstable-core #:init-value PharoUnstableCore
-	    #:accessor pharo-unstable-core)
+  (artifacts #:init-value (list PharoCore PharoDev PharoUnstableCore)
+	    #:accessor artifacts-for)
 )
 (define repository (make <ArtifactsRepository>))
+
+(define-method (build (obj <ArtifactsRepository>))
+  (mk-directory artifacts-repo)
+  
+)
+
+
+
+
+

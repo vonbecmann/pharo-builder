@@ -1,17 +1,12 @@
 (define-module (pharo-builder oscommand)
-  #:export (mk-basic-structure rm-basic-structure 
-	    add-environment download 
-	    unzip-artifact cwd join)
+  #:export (add-environment unzip-artifact 
+	    cwd join call-command-list mk-directory)
 )
 
 (define cwd (getcwd))
 
 (define (join path subpath)
   (string-append path "/" subpath)
-)
-
-(define artifacts-repo 
-  (join cwd ".artifacts")
 )
 
 (define (mc-package-cache-at directory-name) 
@@ -59,15 +54,6 @@
   (define cmd (string-join cmd-list (string #\space)))
   (call-command cmd)
 )
-;;
-;; download URL-filename to filename
-;; curl --location --output filename URL-filename
-;;
-(define (download URL-filename to-filename)
-  (define cmd 
-    (list "curl" "--location" "--output" to-filename URL-filename))
-  (call-command-list cmd)
-)
 
 ;;
 ;; unzip artifact filename to directory
@@ -83,22 +69,20 @@
       (mkdir directory-name))
 ) 
 
-(define (mk-basic-structure)
-  (mk-directory artifacts-repo)
-  (mk-directory mc-package-cache)
-  (mk-directory environments)
-  (mk-directory vm-dir)
-)
-(define (rm-basic-structure)
-  (rmdir artifacts-repo)
-  (rmdir mc-package-cache)
-  (rmdir environments)
-  (rmdir vm-dir)
-)
+;; (define (mk-basic-structure)
+;;   (mk-directory artifacts-repo)
+;;   (mk-directory mc-package-cache)
+;;   (mk-directory environments)
+;;   (mk-directory vm-dir)
+;; )
+;; (define (rm-basic-structure)
+;;   (rmdir artifacts-repo)
+;;   (rmdir mc-package-cache)
+;;   (rmdir environments)
+;;   (rmdir vm-dir)
+;; )
 
 (display cwd)
-(newline)
-(display artifacts-repo)
 (newline)
 (display mc-package-cache)
 (newline)
