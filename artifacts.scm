@@ -3,9 +3,9 @@
   #:use-module (ice-9 format)
   #:use-module ((pharo-builder oscommand)
 		:select ((join . path-join) 
-			 cwd call-command-list))
-  #:export (repository PharoCore PharoDev 
-	    PharoUnstableCore full-path download)
+			 cwd call-command-list mk-directory))
+  #:export (repository PharoCore PharoDev build
+	    PharoUnstableCore full-path download artifacts-for show-all)
 )
 
 ;;
@@ -50,12 +50,17 @@
 		   (directory-name obj)) port)
 )
 
-(define-method (full-path (obj <Artifact>))
-  (path-join artifacts-repo (path-join (name obj) (filename obj)))
+(define-method (base-path (obj <Artifact>) to-directory)
+  (path-join to-directory (directory-name obj))
 )
 
-(define-method (download (obj <Artifact>))
-  (basic-download (download-URL obj) (full-path obj))
+(define-method (full-path (obj <Artifact>) to-directory)
+  (path-join (base-path obj to-directory) (filename obj))
+)
+
+(define-method (download (obj <Artifact>) to-directory)
+  (mk-directory (base-path obj to-directory))
+  (basic-download (download-URL obj) (full-path obj to-directory))
 )
 
 ;;
@@ -86,12 +91,21 @@
 (define-class <ArtifactsRepository> ()
   (artifacts #:init-value (list PharoCore PharoDev PharoUnstableCore)
 	    #:accessor artifacts-for)
+  (directory-name #:init-value artifacts-repo #:accessor directory-name)
 )
 (define repository (make <ArtifactsRepository>))
 
+(define-method (download-all (obj <ArtifactsRepository>) artifacts)
+  (if (not (null? artifacts))
+      (begin
+      (download (car artifacts) (directory-name obj))
+      (download-all obj (cdr artifacts)))
+   )
+)
+
 (define-method (build (obj <ArtifactsRepository>))
-  (mk-directory artifacts-repo)
-  
+  (mk-directory (directory-name obj))
+  (download-all obj (artifacts-for obj))
 )
 
 
