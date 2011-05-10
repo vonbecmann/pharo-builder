@@ -4,8 +4,8 @@
   #:use-module ((pharo-builder oscommand)
 		:select ((join . path-join) 
 			 cwd call-command-list mk-directory rm-directory))
-  #:export (<Artifact>  download)
-  #:export (<ArtifactsRepository> build remove download-all add-artifact)
+  #:export (<Artifact>)
+  #:export (<ArtifactsRepository> build remove download download-all add-artifact)
 )
 
 ;;
@@ -76,6 +76,9 @@
 
 (define-method (add-artifact (obj <ArtifactsRepository>) artifact)
   (set! (artifacts obj) (append (artifacts obj) (list artifact)))
+)
+(define-method (download (obj <ArtifactsRepository>) artifact)
+  (download artifact (directory-name obj))
 )
 
 (define-method (download-all (obj <ArtifactsRepository>) artifact-list)
