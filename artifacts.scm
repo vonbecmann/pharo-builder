@@ -3,19 +3,10 @@
   #:use-module (ice-9 format)
   #:use-module ((pharo-builder oscommand)
 		:select ((join . path-join) 
-			 cwd call-command-list mk-directory))
-  #:export (repository PharoCore PharoDev build
-	    PharoUnstableCore full-path download artifacts-for show-all)
+			 cwd call-command-list mk-directory rm-directory))
+  #:export (<Artifact>  download)
+  #:export (<ArtifactsRepository> build remove download-all add-artifact)
 )
-
-;;
-;; artifacts repository directory
-;;
-(define artifacts-repo 
-  (path-join cwd ".artifacts")
-)
-(display artifacts-repo)
-(newline)
 
 ;;
 ;; basic download URL-filename to filename
@@ -63,50 +54,47 @@
   (basic-download (download-URL obj) (full-path obj to-directory))
 )
 
-;;
-;; Artifacts
-;;
-(define PharoCore 
-  (make <Artifact> 
-    #:name "PharoCore"
-    #:directory-name "core" 
-    #:download-from "http://www.pharo-project.org/pharo-download/stable-core")
-)
-(define PharoUnstableCore 
-  (make <Artifact> 
-    #:name "PharoUnstableCore"
-    #:directory-name "unstable-core" 
-    #:download-from "http://www.pharo-project.org/pharo-download/unstable-core")
-)
-(define PharoDev 
-  (make <Artifact> 
-    #:name "PharoDev"
-    #:directory-name "dev" 
-    #:download-from "http://www.pharo-project.org/pharo-download/stable")
-)
 
 ;;
 ;; Artifacts Repository
 ;;
 (define-class <ArtifactsRepository> ()
-  (artifacts #:init-value (list PharoCore PharoDev PharoUnstableCore)
-	    #:accessor artifacts-for)
-  (directory-name #:init-value artifacts-repo #:accessor directory-name)
+  (artifacts #:accessor artifacts
+	      #:init-value '())
+  (directory-name #:init-value ""
+		  #:accessor directory-name
+		  #:init-keyword #:directory-name)
 )
-(define repository (make <ArtifactsRepository>))
 
-(define-method (download-all (obj <ArtifactsRepository>) artifacts)
-  (if (not (null? artifacts))
+(define-method (write (obj <ArtifactsRepository>) port)
+  (define fmt "Repository at directory ~S ~% with artifacts: ~S ~% ")
+  (display (format #f 
+		   fmt
+		   (directory-name obj)
+		   (artifacts obj)) port)
+)
+
+(define-method (add-artifact (obj <ArtifactsRepository>) artifact)
+  (set! (artifacts obj) (append (artifacts obj) (list artifact)))
+)
+
+(define-method (download-all (obj <ArtifactsRepository>) artifact-list)
+  (if (not (null? artifact-list))
       (begin
-      (download (car artifacts) (directory-name obj))
-      (download-all obj (cdr artifacts)))
+      (download (car artifact-list) (directory-name obj))
+      (download-all obj (cdr artifact-list)))
    )
 )
 
 (define-method (build (obj <ArtifactsRepository>))
   (mk-directory (directory-name obj))
-  (download-all obj (artifacts-for obj))
+  (download-all obj (artifacts obj))
 )
+
+(define-method (remove (obj <ArtifactsRepository>))
+  (rm-directory (directory-name obj))
+)
+
 
 
 
