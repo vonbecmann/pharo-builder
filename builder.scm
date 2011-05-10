@@ -1,9 +1,10 @@
 (use-modules (oop goops))
+(use-modules (ice-9 readline))
 (use-modules ((pharo-builder oscommand)
 		:select ((join . path-join) cwd)))
 (use-modules (pharo-builder artifacts))
 
-
+(activate-readline)
 
 ;;
 ;; Configuration
