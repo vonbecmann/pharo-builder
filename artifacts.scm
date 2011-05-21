@@ -73,11 +73,7 @@
 )
 
 (define-method (add-all (obj <ArtifactsRepository>) artifact-list)
-  (if (not (null? artifact-list))
-      (begin
-	(add-artifact obj (car artifact-list))
-	(add-all obj (cdr artifact-list)))
-  )
+  (set! (artifacts obj) (append (artifacts obj) artifact-list))
 )
 
 (define-method (download (obj <ArtifactsRepository>) artifact)

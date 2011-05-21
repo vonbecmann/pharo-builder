@@ -40,13 +40,10 @@
 (define artifacts-repo 
   (path-join cwd ".pharo-artifacts")
 )
-(display artifacts-repo)
-(newline)
-
-
 (define pharo-repository 
   (make-repository artifacts-repo
-		   (list PharoCore PharoDev PharoUnstableCore)
-		   )
+		   (list PharoCore PharoDev PharoUnstableCore))
 )
+(display pharo-repository)
+(newline)
 
