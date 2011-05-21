@@ -1,6 +1,7 @@
 (define-module (pharo-builder oscommand)
   #:export (add-environment unzip-artifact 
-	    cwd join call-command-list mk-directory)
+	    cwd join call-command-list 
+	    mk-directory basic-download)
 )
 
 (define cwd (getcwd))
@@ -33,10 +34,7 @@
   (join cwd "vm")
 )
 
-(define (directory-exists? directory-name)
-  (define read-write-execute (logior R_OK W_OK X_OK))
-  (access? directory-name read-write-execute)
-)
+
 
 ;;
 ;; call a os command with a string
@@ -45,7 +43,8 @@
   (define exit-code (system cmd))
   (if (not (zero? exit-code))
 	(error 
-	 (format #f "command ~a failed with exit code ~a" cmd exit-code)))
+	 (format #f "command ~a failed with exit code ~a" 
+		 cmd exit-code)))
 )
 ;;
 ;; call a os command with a list
@@ -60,19 +59,45 @@
 ;;
 (define (unzip-artifact filename to-directory)
   (define cmd
-    (list "unzip" "-j" filename "*.image" "*.changes" "-d" to-directory))
+    (list "unzip" "-j" filename 
+	  "*.image" "*.changes" "-d" to-directory))
   (call-command-list cmd)
 )
 
+;;
+;; answer true if a directory exists
+;;
+(define (directory-exists? directory-name)
+  (define read-write-execute (logior R_OK W_OK X_OK))
+  (access? directory-name read-write-execute)
+)
+
+;;
+;; make a directory
+;;
 (define (mk-directory directory-name)
   (if (not (directory-exists? directory-name))
       (mkdir directory-name))
 ) 
 
+;;
+;; remove a directory
+;;
 (define (rm-directory directory-name)
   (if (directory-exists? directory-name)
       (call-command-list (list "rm" "-rf" directory-name)))
 ) 
+
+;;
+;; basic download URL-filename to filename
+;; curl --location --output filename URL-filename
+;;
+(define (basic-download URL-filename to-filename)
+  (define cmd 
+    (list "curl" "--insecure" "--location" 
+	  "--output" to-filename URL-filename))
+  (call-command-list cmd)
+)
 
 (display cwd)
 (newline)

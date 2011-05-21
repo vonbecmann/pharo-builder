@@ -2,8 +2,9 @@
 (use-modules ((pharo-builder oscommand)
 		:select ((join . path-join) cwd)))
 (use-modules (pharo-builder artifacts))
+(use-modules (ice-9 readline))
 
-
+(activate-readline)
 
 ;;
 ;; Configuration
@@ -33,18 +34,18 @@
 )
 
 ;;
-;; Artifacts Repository
+;; Pharo Artifacts Repository
 ;;
 (define artifacts-repo 
-  (path-join cwd ".artifacts")
+  (path-join cwd ".pharo-artifacts")
 )
 (display artifacts-repo)
 (newline)
 
-(define repository (make <ArtifactsRepository>
-		     #:directory-name artifacts-repo)
+
+(define pharo-repository 
+  (make-repository artifacts-repo
+		   (list PharoCore PharoDev PharoUnstableCore)
+		   )
 )
-(add-artifact repository PharoCore)
-(add-artifact repository PharoUnstableCore)
-(add-artifact repository PharoDev)
 

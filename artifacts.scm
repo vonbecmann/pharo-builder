@@ -3,19 +3,12 @@
   #:use-module (ice-9 format)
   #:use-module ((pharo-builder oscommand)
 		:select ((join . path-join) 
-			 cwd call-command-list mk-directory rm-directory))
+			 mk-directory rm-directory basic-download))
   #:export (<Artifact>)
-  #:export (<ArtifactsRepository> build remove download download-all add-artifact)
-)
-
-;;
-;; basic download URL-filename to filename
-;; curl --location --output filename URL-filename
-;;
-(define (basic-download URL-filename to-filename)
-  (define cmd 
-    (list "curl" "--location" "--output" to-filename URL-filename))
-  (call-command-list cmd)
+  #:export (<ArtifactsRepository> build remove 
+				  download 
+				  download-all add-artifact
+				  make-repository)
 )
 
 ;;
@@ -67,7 +60,8 @@
 )
 
 (define-method (write (obj <ArtifactsRepository>) port)
-  (define fmt "Repository at directory ~S ~% with artifacts: ~S ~% ")
+  (define fmt 
+    "Repository at directory ~S ~% with artifacts: ~S ~% ")
   (display (format #f 
 		   fmt
 		   (directory-name obj)
@@ -77,6 +71,15 @@
 (define-method (add-artifact (obj <ArtifactsRepository>) artifact)
   (set! (artifacts obj) (append (artifacts obj) (list artifact)))
 )
+
+(define-method (add-all (obj <ArtifactsRepository>) artifact-list)
+  (if (not (null? artifact-list))
+      (begin
+	(add-artifact obj (car artifact-list))
+	(add-all obj (cdr artifact-list)))
+  )
+)
+
 (define-method (download (obj <ArtifactsRepository>) artifact)
   (download artifact (directory-name obj))
 )
@@ -98,6 +101,17 @@
   (rm-directory (directory-name obj))
 )
 
+
+;;
+;; make a repository with artifacts
+;;
+(define (make-repository repository-dir artifact-list)
+  (define new-repository 
+    (make <ArtifactsRepository>
+			   #:directory-name repository-dir))
+  (add-all new-repository artifact-list)
+  new-repository  
+)
 
 
 
