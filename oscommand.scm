@@ -8,6 +8,7 @@
 (define cwd (getcwd))
 
 (define (join path subpath)
+  "PATH / SUBPATH"
   (string-append path "/" subpath)
 )
 

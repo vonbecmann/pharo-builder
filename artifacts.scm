@@ -24,6 +24,7 @@
 		#:init-keyword #:download-from)
   (filename #:init-value "latest.zip"
 	    #:accessor filename)
+  (repository #:accessor repository)
 )
 
 (define-method (write (obj <Artifact>) port)
@@ -35,17 +36,17 @@
 		   (directory-name obj)) port)
 )
 
-(define-method (base-path (obj <Artifact>) to-directory)
-  (path-join to-directory (directory-name obj))
+(define-method (base-path (obj <Artifact>))
+  (path-join (directory-name (repository obj)) (directory-name obj))
 )
 
-(define-method (full-path (obj <Artifact>) to-directory)
-  (path-join (base-path obj to-directory) (filename obj))
+(define-method (full-path (obj <Artifact>))
+  (path-join (base-path obj) (filename obj))
 )
 
-(define-method (download (obj <Artifact>) to-directory)
-  (mk-directory (base-path obj to-directory))
-  (basic-download (download-URL obj) (full-path obj to-directory))
+(define-method (download (obj <Artifact>))
+  (mk-directory (base-path obj))
+  (basic-download (download-URL obj) (full-path obj))
 )
 
 (define (make-artifact name directory-name download-URL)
@@ -79,22 +80,23 @@
 )
 
 (define-method (add-artifact (obj <ArtifactsRepository>) artifact)
+  (set! (repository artifact) obj)
   (set! (artifacts obj) (append (artifacts obj) (list artifact)))
 )
 
 (define-method (add-all (obj <ArtifactsRepository>) artifact-list)
-  (set! (artifacts obj) (append (artifacts obj) artifact-list))
-)
-
-(define-method (download (obj <ArtifactsRepository>) artifact)
-  (download artifact (directory-name obj))
+  (if (not (null? artifact-list))
+      (begin
+	(add-artifact obj (car artifact-list))
+	(add-all obj (cdr artifact-list)))
+   )
 )
 
 (define-method (download-all (obj <ArtifactsRepository>) artifact-list)
   (if (not (null? artifact-list))
       (begin
-      (download (car artifact-list) (directory-name obj))
-      (download-all obj (cdr artifact-list)))
+	(download (car artifact-list))
+	(download-all obj (cdr artifact-list)))
    )
 )
 
