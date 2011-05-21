@@ -1,21 +1,22 @@
+;;; artifacts.scm --- A repository of artifacts
+;;; Code:
 (define-module (pharo-builder artifacts)
-  #:use-module (oop goops) 
+  #:use-module (oop goops)
   #:use-module (ice-9 format)
   #:use-module ((pharo-builder oscommand)
-		:select ((join . path-join) 
+		:select ((join . path-join)
 			 mk-directory rm-directory basic-download))
-  #:export (<Artifact>)
-  #:export (<ArtifactsRepository> build remove 
-				  download 
-				  download-all add-artifact
-				  make-repository)
+  #:export (build remove download
+		  download-all add-artifact
+		  make-artifact
+		  make-repository)
 )
 
-;;
-;; an Artifact
-;;
+;;;
+;;; an Artifact
+;;;
 (define-class <Artifact> ()
-  (name #:accessor name 
+  (name #:accessor name
 	#:init-keyword #:name)
   (directory-name #:accessor directory-name
 		  #:init-keyword #:directory-name)
@@ -27,10 +28,10 @@
 
 (define-method (write (obj <Artifact>) port)
   (define fmt "artifact ~S download from ~% ~S ~% to directory ~S ~%")
-  (display (format #f 
+  (display (format #f
 		   fmt
-		   (name obj) 
-		   (download-URL obj) 
+		   (name obj)
+		   (download-URL obj)
 		   (directory-name obj)) port)
 )
 
@@ -47,6 +48,15 @@
   (basic-download (download-URL obj) (full-path obj to-directory))
 )
 
+(define (make-artifact name directory-name download-URL)
+  "make an artifact named NAME at DIRECTORY-NAME and
+   download from DOWNLOAD-URL"
+  (define new-artifact
+          (make <Artifact>
+	    #:name name 
+	    #:directory-name directory-name
+	    #:download-from download-URL))
+  new-artifact)
 
 ;;
 ;; Artifacts Repository
@@ -60,9 +70,9 @@
 )
 
 (define-method (write (obj <ArtifactsRepository>) port)
-  (define fmt 
+  (define fmt
     "Repository at directory ~S ~% with artifacts: ~S ~% ")
-  (display (format #f 
+  (display (format #f
 		   fmt
 		   (directory-name obj)
 		   (artifacts obj)) port)
@@ -98,18 +108,12 @@
 )
 
 
-;;
-;; make a repository with artifacts
-;;
-(define (make-repository repository-dir artifact-list)
-  (define new-repository 
+(define (make-repository directory-name artifact-list)
+  "make a repository with ARTIFACTS-LIST at a DIRECTORY-NAME"
+  (define new-repository
     (make <ArtifactsRepository>
-			   #:directory-name repository-dir))
+			   #:directory-name directory-name))
   (add-all new-repository artifact-list)
-  new-repository  
+  new-repository
 )
-
-
-
-
-
+;;; artifacts.scm ends here

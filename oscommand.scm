@@ -4,6 +4,7 @@
 	    mk-directory basic-download)
 )
 
+;;; "current working directory."
 (define cwd (getcwd))
 
 (define (join path subpath)
@@ -35,64 +36,52 @@
 )
 
 
-
-;;
-;; call a os command with a string
-;;
-(define (call-command cmd) 
+(define (call-command cmd)
+  "call a operating system command.
+   CMD is a string."
   (define exit-code (system cmd))
   (if (not (zero? exit-code))
 	(error 
 	 (format #f "command ~a failed with exit code ~a" 
 		 cmd exit-code)))
 )
-;;
-;; call a os command with a list
-;;
-(define (call-command-list cmd-list) 
+
+(define (call-command-list cmd-list)
+  "call a operating system command.
+   CMD-LIST is a list of strings"
   (define cmd (string-join cmd-list (string #\space)))
   (call-command cmd)
 )
 
-;;
-;; unzip artifact filename to directory
-;;
 (define (unzip-artifact filename to-directory)
+  "unzip artifact filename to directory."
   (define cmd
     (list "unzip" "-j" filename 
 	  "*.image" "*.changes" "-d" to-directory))
   (call-command-list cmd)
 )
 
-;;
-;; answer true if a directory exists
-;;
 (define (directory-exists? directory-name)
+  "answer true if a directory exists"
   (define read-write-execute (logior R_OK W_OK X_OK))
   (access? directory-name read-write-execute)
 )
 
-;;
-;; make a directory
-;;
 (define (mk-directory directory-name)
+  "make a directory"
   (if (not (directory-exists? directory-name))
       (mkdir directory-name))
 ) 
 
-;;
-;; remove a directory
-;;
 (define (rm-directory directory-name)
+  "remove a directory"
   (if (directory-exists? directory-name)
       (call-command-list (list "rm" "-rf" directory-name)))
 ) 
 
-;;
-;; basic download URL-filename to filename
-;; curl --location --output filename URL-filename
-;;
 (define (basic-download URL-filename to-filename)
+  "basic download URL-filename to filename.
+   curl --insecure --location --output filename URL-filename."
   (define cmd 
     (list "curl" "--insecure" "--location" 
 	  "--output" to-filename URL-filename))
