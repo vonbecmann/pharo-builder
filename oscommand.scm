@@ -1,19 +1,21 @@
+;;; oscommand.scm --- Operating System Commands
+;;; Code:
 (define-module (pharo-builder oscommand)
-  #:export (add-environment unzip-artifact 
-	    cwd join call-command-list 
-	    mk-directory basic-download)
+  #:export (unzip-artifact 
+	    cwd path-join call-command-list 
+	    mk-directory basic-download mc-package-cache)
 )
 
 ;;; "current working directory."
 (define cwd (getcwd))
 
-(define (join path subpath)
+(define (path-join path subpath)
   "PATH / SUBPATH"
   (string-append path "/" subpath)
 )
 
 (define (mc-package-cache-at directory-name) 
-  (join directory-name "package-cache")
+  (path-join directory-name "package-cache")
 )
 (define mc-package-cache 
   (mc-package-cache-at cwd)
@@ -21,21 +23,6 @@
 (define (link-package-cache-at directory-name)
   (symlink mc-package-cache (mc-package-cache-at directory-name))
 )
-
-(define environments 
-  (join cwd "envs")
-)
-
-(define (add-environment env-name)
-  (define env-full-path (join environments env-name))
-  (mk-directory env-full-path)
-  (link-package-cache-at env-full-path)
-)
-
-(define vm-dir
-  (join cwd "vm")
-)
-
 
 (define (call-command cmd)
   "call a operating system command.
@@ -89,13 +76,6 @@
   (call-command-list cmd)
 )
 
-(display cwd)
-(newline)
-(display mc-package-cache)
-(newline)
-(display environments)
-(newline)
-(display vm-dir)
-(newline)
+
 
 

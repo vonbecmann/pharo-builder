@@ -4,12 +4,12 @@
   #:use-module (oop goops)
   #:use-module (ice-9 format)
   #:use-module ((pharo-builder oscommand)
-		:select ((join . path-join)
-			 mk-directory rm-directory basic-download))
+		:select (path-join mk-directory 
+			 rm-directory basic-download))
   #:export (build remove download
-		  download-all add-artifact
-		  make-artifact
-		  make-repository)
+	    download-all add-artifact
+	    make-artifact make-repository
+	    repository)
 )
 
 ;;;
@@ -72,7 +72,7 @@
 
 (define-method (write (obj <ArtifactsRepository>) port)
   (define fmt
-    "Repository at directory ~S ~% with artifacts: ~S ~% ")
+    "Repository at directory ~S ~% with artifacts: ~% ~S ~% ")
   (display (format #f
 		   fmt
 		   (directory-name obj)
@@ -92,17 +92,13 @@
    )
 )
 
-(define-method (download-all (obj <ArtifactsRepository>) artifact-list)
-  (if (not (null? artifact-list))
-      (begin
-	(download (car artifact-list))
-	(download-all obj (cdr artifact-list)))
-   )
+(define-method (download-all (obj <ArtifactsRepository>))
+  (map download (artifacts obj))
 )
 
 (define-method (build (obj <ArtifactsRepository>))
   (mk-directory (directory-name obj))
-  (download-all obj (artifacts obj))
+  (download-all obj)
 )
 
 (define-method (remove (obj <ArtifactsRepository>))

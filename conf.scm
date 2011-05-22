@@ -1,18 +1,11 @@
-(use-modules (oop goops))
-(use-modules (ice-9 readline))
-(use-modules ((pharo-builder oscommand)
-		:select ((join . path-join) cwd)))
-(use-modules (pharo-builder artifacts))
-(use-modules (pharo-builder environment))
-(use-modules (pharo-builder conf))
-(use-modules (ice-9 readline))
-
-(activate-readline)
-
-;;
-;; Configuration
-;;
-
+;; Configuration for the builder
+(define-module (pharo-builder conf)
+  #:use-module ((pharo-builder oscommand)
+		:select (path-join cwd))
+  #:use-module (pharo-builder artifacts)
+  #:export (pharo-core pharo-dev
+	    pharo-unstable-core pharo-repository)
+)
 
 ;;
 ;; Artifacts
@@ -43,6 +36,3 @@
   (make-repository (path-join cwd ".pharo-artifacts")
 		   (list pharo-core pharo-dev pharo-unstable-core))
 )
-(display pharo-repository)
-(newline)
-
