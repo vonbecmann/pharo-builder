@@ -1,7 +1,6 @@
 ;; Configuration for the builder
 (define-module (pharo-builder conf)
-  #:use-module ((pharo-builder oscommand)
-		:select (path-join cwd))
+  #:use-module (pharo-builder oscommand)
   #:use-module (pharo-builder artifacts)
   #:export (pharo-core pharo-dev
 	    pharo-unstable-core pharo-repository)
