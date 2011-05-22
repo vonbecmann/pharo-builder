@@ -3,9 +3,7 @@
 (define-module (pharo-builder artifacts)
   #:use-module (oop goops)
   #:use-module (ice-9 format)
-  #:use-module ((pharo-builder oscommand)
-		:select (path-join mk-directory 
-			 rm-directory basic-download))
+  #:use-module (pharo-builder oscommand)
   #:export (build remove download
 	    download-all add-artifact
 	    make-artifact make-repository
