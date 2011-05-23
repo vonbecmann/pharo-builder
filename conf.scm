@@ -2,8 +2,10 @@
 (define-module (pharo-builder conf)
   #:use-module (pharo-builder oscommand)
   #:use-module (pharo-builder artifacts)
+  #:use-module (pharo-builder vm)
   #:export (pharo-core pharo-dev
-	    pharo-unstable-core pharo-repository)
+	    pharo-unstable-core pharo-repository
+	    default-vm)
 )
 
 ;;
@@ -34,4 +36,11 @@
 (define pharo-repository 
   (make-repository (path-join cwd ".pharo-artifacts")
 		   (list pharo-core pharo-dev pharo-unstable-core))
+)
+
+;;;
+;;; Default Virtual Machine
+;;;
+(define default-vm
+  (make-vm "/home/bcontreras")
 )
