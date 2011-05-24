@@ -14,6 +14,13 @@
 	#:init-keyword #:path-to-executable)
 )
 
+(define-method (write (obj <VM>) port)
+  (define fmt "Virtual Machine at ~S ~%")
+  (display (format #f
+		   fmt
+		   (path obj)) port)
+)
+
 (define (make-vm path-to-executable)
   (define new-vm 
     (make <VM> #:path-to-executable path-to-executable))

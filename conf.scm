@@ -3,6 +3,7 @@
   #:use-module (pharo-builder oscommand)
   #:use-module (pharo-builder artifacts)
   #:use-module (pharo-builder vm)
+  #:use-module (pharo-builder environment)
   #:export (pharo-core pharo-dev
 	    pharo-unstable-core pharo-repository
 	    default-vm)
@@ -44,3 +45,9 @@
 (define default-vm
   (make-vm "/home/bcontreras")
 )
+
+;;;
+;;; a simple project
+;;;
+(define simpleProject 
+  (project "/home/bcontreras/simpleP" default-vm pharo-core))
