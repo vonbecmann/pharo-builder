@@ -4,7 +4,7 @@
   #:use-module (oop goops)
   #:use-module (ice-9 format)
   #:use-module (pharo-builder oscommand)
-  #:export (build remove download
+  #:export (build remove download unzip
 	    download-all add-artifact
 	    make-artifact make-repository
 	    repository)
@@ -45,6 +45,10 @@
 (define-method (download (obj <Artifact>))
   (mk-directory (base-path obj))
   (basic-download (download-URL obj) (full-path obj))
+)
+
+(define-method (unzip (obj <Artifact>) to-directory)
+  (unzip-artifact (full-path obj) to-directory)
 )
 
 (define (make-artifact name directory-name download-URL)

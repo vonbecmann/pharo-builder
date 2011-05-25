@@ -3,7 +3,8 @@
 (define-module (pharo-builder vm)
    #:use-module (oop goops)
    #:use-module (ice-9 format)
-   #:export (make-vm)
+   #:use-module (pharo-builder oscommand)
+   #:export (make-vm execute)
 )
 
 ;;;
@@ -19,6 +20,11 @@
   (display (format #f
 		   fmt
 		   (path obj)) port)
+)
+
+(define-method (execute (obj <VM>) image-filename)
+  (define cmd (list (path obj) image-filename "&"))
+  (call-command-list cmd)
 )
 
 (define (make-vm path-to-executable)

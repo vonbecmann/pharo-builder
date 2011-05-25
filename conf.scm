@@ -43,11 +43,5 @@
 ;;; Default Virtual Machine
 ;;;
 (define default-vm
-  (make-vm "/home/bcontreras")
+  (make-vm "/home/vonbecmann/Pharo/vm/4.4.7.2357-linux/bin/squeak")
 )
-
-;;;
-;;; a simple project
-;;;
-(define simpleProject 
-  (project "/home/bcontreras/simpleP" default-vm pharo-core))
