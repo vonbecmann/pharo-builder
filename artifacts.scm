@@ -4,10 +4,17 @@
   #:use-module (oop goops)
   #:use-module (ice-9 format)
   #:use-module (pharo-builder oscommand)
-  #:export (build remove download unzip
-	    download-all add-artifact
-	    make-artifact make-repository
-	    repository)
+  #:export (
+	    build
+	    remove
+	    download
+	    unzip
+	    download-all
+	    add-artifact
+	    make-artifact
+	    make-repository
+	    repository
+	    )
 )
 
 ;;;
@@ -43,12 +50,20 @@
 )
 
 (define-method (download (obj <Artifact>))
+  "download URL-filename to filename.
+   curl --insecure --location --output filename URL-filename."
   (mk-directory (base-path obj))
-  (basic-download (download-URL obj) (full-path obj))
+  (let* ((cmd (list "curl" "--insecure" "--location" 
+		    "--output" (full-path obj) (download-URL obj))))
+    (call-command-list cmd))
 )
 
 (define-method (unzip (obj <Artifact>) to-directory)
-  (unzip-artifact (full-path obj) to-directory)
+  "unzip artifact filename to directory."
+  (let* ((cmd  (list "unzip" "-j" (full-path obj) 
+		     "*.image" "*.changes" "-d" to-directory)))
+         (call-command-list cmd)  
+     )
 )
 
 (define (make-artifact name directory-name download-URL)

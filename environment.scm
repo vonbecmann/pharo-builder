@@ -2,10 +2,17 @@
   #:use-module (oop goops)
   #:use-module (ice-9 format)
   #:use-module (pharo-builder oscommand)
+  #:use-module (pharo-builder vm)
   #:use-module (pharo-builder artifacts)
-  #:export (create-project build-project 
-	    clean-project delete-project
-	    re-build-project)
+  #:export (
+	    create-project
+	    build-project 
+	    clean-project
+	    delete-project
+	    re-build-project
+	    image-filename-at
+	    execute-project
+	    )
 )
 
 ;;;
@@ -28,14 +35,36 @@
 
 (define-method (mk-src-directory (obj <Project>))
   "make source directory."
-  (mk-directory (src-directory obj))
-  (link-package-cache-at (src-directory obj))
-  (unzip (artifact obj) (src-directory obj))
+  (let* ((src (src-directory obj)))
+    (mk-directory src)
+    (link-package-cache-at src)
+    (unzip (artifact obj) src)
+    )
 )
 
 (define-method (rm-src-directory (obj <Project>))
   "remove source directory."
   (rm-directory (src-directory obj))
+)
+
+(define-method (image-filename-at (obj <Project>))
+  "image filename at source directory."
+  (let* ((cmd 
+	  (list 
+	   "basename $(find " 
+	   (src-directory obj) 
+	   "-name *.image)")))
+    (call-input-command-list cmd)
+    )
+)
+
+(define-method (execute-project (obj <Project>))
+  "execute the given project."
+  (let* ((image-filename 
+	  (path-join (src-directory obj) (image-filename-at obj))))
+    (execute (vm obj) image-filename)
+    )
+  obj
 )
 
 (define-method (build-project (obj <Project>))

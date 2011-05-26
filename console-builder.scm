@@ -26,4 +26,5 @@
 ;;;(define simpleProject 
 ;;;  (project "/home/bcontreras/simpleP" default-vm pharo-core))
 ;;;  
-(define simpleP (create-project "/home/vonbecmann/simpleP" default-vm pharo-core))
+(define simpleP 
+  (create-project "/home/vonbecmann/simpleP" default-vm pharo-core))

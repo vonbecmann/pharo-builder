@@ -1,12 +1,24 @@
 ;;; oscommand.scm --- Operating System Commands
 ;;; Code:
 (define-module (pharo-builder oscommand)
-  #:export (unzip-artifact 
-	    cwd path-join call-command-list 
-	    mk-directory rm-directory
-	    basic-download 
-	    mk-mc-package-cache rm-mc-package-cache
-	    link-package-cache-at mc-package-cache)
+  #:use-module (ice-9 popen)
+  #:use-module (ice-9 rdelim)
+  #:export ( 
+	    ;; paths
+	    cwd 
+	    path-join 
+	    ;; execute a command
+	    call-command-list 
+	    call-input-command-list
+	    ;; basic commands
+	    mk-directory
+	    rm-directory
+	    ;; Monticello package cache
+	    mk-mc-package-cache 
+	    rm-mc-package-cache
+	    link-package-cache-at 
+	    mc-package-cache
+	    )
 )
 
 ;;; "current working directory."
@@ -27,6 +39,17 @@
 		 cmd exit-code)))
 )
 
+(define (call-input-command cmd)
+  "call a operating system command and read input.
+   CMD is a string."
+  (let* (
+	 (port (open-input-pipe cmd)) 
+	 (str  (read-line port))
+	 )
+    (close-pipe port)
+    str)
+)
+
 (define (call-command-list cmd-list)
   "call a operating system command.
    CMD-LIST is a list of strings"
@@ -34,21 +57,11 @@
   (call-command cmd)
 )
 
-(define (unzip-artifact filename to-directory)
-  "unzip artifact filename to directory."
-  (define cmd
-    (list "unzip" "-j" filename 
-	  "*.image" "*.changes" "-d" to-directory))
-  (call-command-list cmd)
-)
-
-(define (basic-download URL-filename to-filename)
-  "basic download URL-filename to filename.
-   curl --insecure --location --output filename URL-filename."
-  (define cmd 
-    (list "curl" "--insecure" "--location" 
-	  "--output" to-filename URL-filename))
-  (call-command-list cmd)
+(define (call-input-command-list cmd-list)
+  "call a operating system command and read input.
+   CMD-LIST is a list of strings"
+  (define cmd (string-join cmd-list (string #\space)))
+  (call-input-command cmd)
 )
 
 (define (directory-exists? directory-name)

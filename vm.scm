@@ -4,7 +4,9 @@
    #:use-module (oop goops)
    #:use-module (ice-9 format)
    #:use-module (pharo-builder oscommand)
-   #:export (make-vm execute)
+   #:export (
+	     make-vm 
+	     execute)
 )
 
 ;;;
