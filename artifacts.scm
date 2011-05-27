@@ -20,7 +20,7 @@
 ;;;
 ;;; an Artifact
 ;;;
-(define-class <Artifact> ()
+(define-class <artifact> ()
   (name #:accessor name
 	#:init-keyword #:name)
   (directory-name #:accessor directory-name
@@ -32,7 +32,7 @@
   (repository #:accessor repository)
 )
 
-(define-method (write (obj <Artifact>) port)
+(define-method (write (obj <artifact>) port)
   (define fmt "artifact ~S download from ~% ~S ~% to directory ~S ~%")
   (display (format #f
 		   fmt
@@ -41,15 +41,15 @@
 		   (directory-name obj)) port)
 )
 
-(define-method (base-path (obj <Artifact>))
+(define-method (base-path (obj <artifact>))
   (path-join (directory-name (repository obj)) (directory-name obj))
 )
 
-(define-method (full-path (obj <Artifact>))
+(define-method (full-path (obj <artifact>))
   (path-join (base-path obj) (filename obj))
 )
 
-(define-method (download (obj <Artifact>))
+(define-method (download (obj <artifact>))
   "download URL-filename to filename.
    curl --insecure --location --output filename URL-filename."
   (mk-directory (base-path obj))
@@ -58,7 +58,7 @@
     (call-command-list cmd))
 )
 
-(define-method (unzip (obj <Artifact>) to-directory)
+(define-method (unzip (obj <artifact>) to-directory)
   "unzip artifact filename to directory."
   (let* ((cmd  (list "unzip" "-j" (full-path obj) 
 		     "*.image" "*.changes" "-d" to-directory)))
@@ -70,7 +70,7 @@
   "make an artifact named NAME at DIRECTORY-NAME and
    download from DOWNLOAD-URL"
   (define new-artifact
-          (make <Artifact>
+          (make <artifact>
 	    #:name name 
 	    #:directory-name directory-name
 	    #:download-from download-URL))
@@ -79,7 +79,7 @@
 ;;
 ;; Artifacts Repository
 ;;
-(define-class <ArtifactsRepository> ()
+(define-class <artifacts-repository> ()
   (artifacts #:accessor artifacts
 	      #:init-value '())
   (directory-name #:init-value ""
@@ -87,7 +87,7 @@
 		  #:init-keyword #:directory-name)
 )
 
-(define-method (write (obj <ArtifactsRepository>) port)
+(define-method (write (obj <artifacts-repository>) port)
   (define fmt
     "Repository at directory ~S ~% with artifacts: ~% ~S ~% ")
   (display (format #f
@@ -96,12 +96,12 @@
 		   (artifacts obj)) port)
 )
 
-(define-method (add-artifact (obj <ArtifactsRepository>) artifact)
+(define-method (add-artifact (obj <artifacts-repository>) artifact)
   (set! (repository artifact) obj)
   (set! (artifacts obj) (append (artifacts obj) (list artifact)))
 )
 
-(define-method (add-all (obj <ArtifactsRepository>) artifact-list)
+(define-method (add-all (obj <artifacts-repository>) artifact-list)
   (if (not (null? artifact-list))
       (begin
 	(add-artifact obj (car artifact-list))
@@ -109,16 +109,16 @@
    )
 )
 
-(define-method (download-all (obj <ArtifactsRepository>))
+(define-method (download-all (obj <artifacts-repository>))
   (map download (artifacts obj))
 )
 
-(define-method (build (obj <ArtifactsRepository>))
+(define-method (build (obj <artifacts-repository>))
   (mk-directory (directory-name obj))
   (download-all obj)
 )
 
-(define-method (remove (obj <ArtifactsRepository>))
+(define-method (remove (obj <artifacts-repository>))
   (rm-directory (directory-name obj))
 )
 
@@ -126,7 +126,7 @@
 (define (make-repository directory-name artifact-list)
   "make a repository with ARTIFACTS-LIST at a DIRECTORY-NAME"
   (define new-repository
-    (make <ArtifactsRepository>
+    (make <artifacts-repository>
 			   #:directory-name directory-name))
   (add-all new-repository artifact-list)
   new-repository

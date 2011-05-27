@@ -18,7 +18,7 @@
 ;;;
 ;;; a project
 ;;;
-(define-class <Project> ()
+(define-class <project> ()
   (directory-name #:accessor directory-name
 		  #:init-keyword #:directory-name)
   (vm #:accessor vm
@@ -28,12 +28,12 @@
 
 )
 
-(define-method (src-directory (obj <Project>))
+(define-method (src-directory (obj <project>))
   "source directory."
   (path-join (directory-name obj) "src")
 )
 
-(define-method (mk-src-directory (obj <Project>))
+(define-method (mk-src-directory (obj <project>))
   "make source directory."
   (let* ((src (src-directory obj)))
     (mk-directory src)
@@ -42,12 +42,12 @@
     )
 )
 
-(define-method (rm-src-directory (obj <Project>))
+(define-method (rm-src-directory (obj <project>))
   "remove source directory."
   (rm-directory (src-directory obj))
 )
 
-(define-method (image-filename-at (obj <Project>))
+(define-method (image-filename-at (obj <project>))
   "image filename at source directory."
   (let* ((cmd 
 	  (list 
@@ -58,7 +58,7 @@
     )
 )
 
-(define-method (execute-project (obj <Project>))
+(define-method (execute-project (obj <project>))
   "execute the given project."
   (let* ((image-filename 
 	  (path-join (src-directory obj) (image-filename-at obj))))
@@ -67,33 +67,34 @@
   obj
 )
 
-(define-method (build-project (obj <Project>))
+(define-method (build-project (obj <project>))
   "build the given project."
   (mk-directory (directory-name obj))
   (mk-src-directory obj)
   obj
 )
 
-(define-method (delete-project (obj <Project>))
+(define-method (delete-project (obj <project>))
   "delete the given project."
   (rm-directory (directory-name obj))
   obj
 )
 
-(define-method (clean-project (obj <Project>))
+(define-method (clean-project (obj <project>))
   "clean source directory for the given project."
   (rm-src-directory obj)
   obj
 )
 
-(define-method (re-build-project (obj <Project>))
+(define-method (re-build-project (obj <project>))
   "clean and build the given project."
   (build-project (clean-project obj))
 )
 
 (define (create-project directory-name vm artifact)
+  "create a new project with VM and ARTIFACT at DIRECTORY-NAME."
   (define new-project 
-    (make <Project> #:directory-name directory-name
+    (make <project> #:directory-name directory-name
 	            #:vm vm
 		    #:artifact artifact))
   new-project
