@@ -6,31 +6,34 @@
    #:use-module (pharo-builder oscommand)
    #:export (
 	     make-vm 
-	     execute)
+	     execute
+	     )
 )
 
 ;;;
 ;;; a Virtual Machine
 ;;;
-(define-class <VM> ()
+(define-class <vm> ()
   (path  #:accessor path
 	#:init-keyword #:path-to-executable)
 )
 
-(define-method (write (obj <VM>) port)
+(define-method (write (obj <vm>) port)
   (define fmt "Virtual Machine at ~S ~%")
   (display (format #f
 		   fmt
 		   (path obj)) port)
 )
 
-(define-method (execute (obj <VM>) image-filename)
+(define-method (execute (obj <vm>) image-filename)
+  "execute a image and don't wait for response."
   (define cmd (list (path obj) image-filename "&"))
   (call-command-list cmd)
 )
 
 (define (make-vm path-to-executable)
+  "create a new vm with PATH-TO-EXECUTABLE."
   (define new-vm 
-    (make <VM> #:path-to-executable path-to-executable))
+    (make <vm> #:path-to-executable path-to-executable))
   new-vm
 )
