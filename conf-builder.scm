@@ -10,8 +10,8 @@
 ;;; Code:
 (define-module (pharo-builder conf-builder)
   #:use-module (oop goops)
-  #:use-module (pharo-builder artifacts)
-  #:use-module (pharo-builder vm)
+  #:use-module (pharo-builder core artifacts)
+  #:use-module (pharo-builder core vm)
   #:export (
 	    make-artifact
 	    make-repository

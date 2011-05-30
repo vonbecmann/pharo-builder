@@ -8,10 +8,10 @@
 ;; 
 
 ;;; Code:
-(define-module (pharo-builder artifacts)
+(define-module (pharo-builder core artifacts)
   #:use-module (oop goops)
   #:use-module (ice-9 format)
-  #:use-module (pharo-builder oscommand)
+  #:use-module (pharo-builder core oscommand)
   #:export (
 	    build
 	    remove

@@ -1,9 +1,9 @@
 ;; Console Builder
 (use-modules (oop goops))
-(use-modules (pharo-builder oscommand))
-(use-modules (pharo-builder artifacts))
-(use-modules (pharo-builder vm))
-(use-modules (pharo-builder project))
+(use-modules (pharo-builder core oscommand))
+(use-modules (pharo-builder core artifacts))
+(use-modules (pharo-builder core vm))
+(use-modules (pharo-builder core project))
 (use-modules (pharo-builder conf-builder))
 (use-modules (ice-9 readline))
 

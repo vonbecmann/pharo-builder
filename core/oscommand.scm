@@ -1,6 +1,6 @@
 ;;; oscommand.scm --- Operating System Commands
 ;;; Code:
-(define-module (pharo-builder oscommand)
+(define-module (pharo-builder core oscommand)
   #:use-module (ice-9 popen)
   #:use-module (ice-9 rdelim)
   #:export ( 

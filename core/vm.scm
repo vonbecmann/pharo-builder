@@ -8,10 +8,10 @@
 ;; 
 
 ;;; Code:
-(define-module (pharo-builder vm)
+(define-module (pharo-builder core vm)
    #:use-module (oop goops)
    #:use-module (ice-9 format)
-   #:use-module (pharo-builder oscommand)
+   #:use-module (pharo-builder core oscommand)
    #:export (
 	     execute
 	     <vm>
