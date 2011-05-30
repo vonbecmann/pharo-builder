@@ -1,4 +1,4 @@
-(define-module (pharo-builder environment)
+(define-module (pharo-builder project)
   #:use-module (oop goops)
   #:use-module (ice-9 format)
   #:use-module (pharo-builder oscommand)

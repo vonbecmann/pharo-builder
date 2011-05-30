@@ -3,7 +3,7 @@
 (use-modules (pharo-builder oscommand))
 (use-modules (pharo-builder artifacts))
 (use-modules (pharo-builder vm))
-(use-modules (pharo-builder environment))
+(use-modules (pharo-builder project))
 (use-modules (pharo-builder conf-builder))
 (use-modules (ice-9 readline))
 
