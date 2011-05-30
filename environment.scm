@@ -12,6 +12,7 @@
 	    re-build-project
 	    image-filename-at
 	    execute-project
+	    <project>
 	    )
 )
 

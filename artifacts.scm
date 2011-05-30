@@ -1,4 +1,12 @@
 ;;; artifacts.scm --- A repository of artifacts
+
+;;; Commentary:
+;; 
+
+
+;;; History:
+;; 
+
 ;;; Code:
 (define-module (pharo-builder artifacts)
   #:use-module (oop goops)
@@ -11,9 +19,10 @@
 	    unzip
 	    download-all
 	    add-artifact
-	    make-artifact
-	    make-repository
 	    repository
+	    <artifact>
+	    <artifacts-repository>
+	    add-all
 	    )
 )
 
@@ -53,28 +62,18 @@
   "download URL-filename to filename.
    curl --insecure --location --output filename URL-filename."
   (mk-directory (base-path obj))
-  (let* ((cmd (list "curl" "--insecure" "--location" 
+  (let* ((cmd (list "curl" "--insecure" "--location"
 		    "--output" (full-path obj) (download-URL obj))))
     (call-command-list cmd))
 )
 
 (define-method (unzip (obj <artifact>) to-directory)
   "unzip artifact filename to directory."
-  (let* ((cmd  (list "unzip" "-j" (full-path obj) 
+  (let* ((cmd  (list "unzip" "-j" (full-path obj)
 		     "*.image" "*.changes" "-d" to-directory)))
-         (call-command-list cmd)  
+         (call-command-list cmd)
      )
 )
-
-(define (make-artifact name directory-name download-URL)
-  "make an artifact named NAME at DIRECTORY-NAME and
-   download from DOWNLOAD-URL"
-  (define new-artifact
-          (make <artifact>
-	    #:name name 
-	    #:directory-name directory-name
-	    #:download-from download-URL))
-  new-artifact)
 
 ;;
 ;; Artifacts Repository
@@ -122,13 +121,4 @@
   (rm-directory (directory-name obj))
 )
 
-
-(define (make-repository directory-name artifact-list)
-  "make a repository with ARTIFACTS-LIST at a DIRECTORY-NAME"
-  (define new-repository
-    (make <artifacts-repository>
-			   #:directory-name directory-name))
-  (add-all new-repository artifact-list)
-  new-repository
-)
 ;;; artifacts.scm ends here

@@ -1,17 +1,5 @@
 ;; Configuration for the builder
-(define-module (pharo-builder conf)
-  #:use-module (pharo-builder oscommand)
-  #:use-module (pharo-builder artifacts)
-  #:use-module (pharo-builder vm)
-  #:use-module (pharo-builder environment)
-  #:export (
-	    pharo-core
-	    pharo-dev
-	    pharo-unstable-core
-	    pharo-repository
-	    default-vm
-	    )
-)
+(use-modules (pharo-builder conf-builder))
 
 ;;
 ;; Artifacts
@@ -49,3 +37,15 @@
 (define default-vm
   (make-vm "/home/vonbecmann/Pharo/vm/4.4.7.2357-linux/bin/squeak")
 )
+
+(display pharo-repository)
+(newline)
+
+;;;
+;;; a simple project
+;;;
+;;;(define simpleProject 
+;;;  (project "/home/bcontreras/simpleP" default-vm pharo-core))
+;;;  
+(define simpleP 
+  (create-project "/home/vonbecmann/simpleP" default-vm pharo-core))
