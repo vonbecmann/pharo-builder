@@ -41,35 +41,39 @@
   (repository #:accessor repository)
 )
 
-(define-method (write (obj <artifact>) port)
-  (define fmt "artifact ~S download from ~% ~S ~% to directory ~S ~%")
+(define-method (write (self <artifact>) port)
+  (define fmt 
+    "artifact ~S download from ~% ~S ~% to directory ~S ~%")
   (display (format #f
 		   fmt
-		   (name obj)
-		   (download-URL obj)
-		   (directory-name obj)) port)
+		   (name self)
+		   (download-URL self)
+		   (directory-name self)) port)
 )
 
-(define-method (base-path (obj <artifact>))
-  (path-join (directory-name (repository obj)) (directory-name obj))
+(define-method (base-path (self <artifact>))
+  (path-join (directory-name (repository self)) 
+	     (directory-name self))
 )
 
-(define-method (full-path (obj <artifact>))
-  (path-join (base-path obj) (filename obj))
+(define-method (full-path (self <artifact>))
+  (path-join (base-path self) (filename self))
 )
 
-(define-method (download (obj <artifact>))
+(define-method (download (self <artifact>))
   "download URL-filename to filename.
    curl --insecure --location --output filename URL-filename."
-  (mk-directory (base-path obj))
-  (let* ((cmd (list "curl" "--insecure" "--location"
-		    "--output" (full-path obj) (download-URL obj))))
+  (mk-directory (base-path self))
+  (let* ((cmd (list "curl" "--insecure" 
+		    "--location"
+		    "--output" (full-path self) 
+		    (download-URL self))))
     (call-command-list cmd))
 )
 
-(define-method (unzip (obj <artifact>) to-directory)
+(define-method (unzip (self <artifact>) to-directory)
   "unzip artifact filename to directory."
-  (let* ((cmd  (list "unzip" "-j" (full-path obj)
+  (let* ((cmd  (list "unzip" "-j" (full-path self)
 		     "*.image" "*.changes" "-d" to-directory)))
          (call-command-list cmd)
      )
@@ -86,39 +90,39 @@
 		  #:init-keyword #:directory-name)
 )
 
-(define-method (write (obj <artifacts-repository>) port)
+(define-method (write (self <artifacts-repository>) port)
   (define fmt
     "Repository at directory ~S ~% with artifacts: ~% ~S ~% ")
   (display (format #f
 		   fmt
-		   (directory-name obj)
-		   (artifacts obj)) port)
+		   (directory-name self)
+		   (artifacts self)) port)
 )
 
-(define-method (add-artifact (obj <artifacts-repository>) artifact)
-  (set! (repository artifact) obj)
-  (set! (artifacts obj) (append (artifacts obj) (list artifact)))
+(define-method (add-artifact (self <artifacts-repository>) artifact)
+  (set! (repository artifact) self)
+  (set! (artifacts self) (append (artifacts self) (list artifact)))
 )
 
-(define-method (add-all (obj <artifacts-repository>) artifact-list)
+(define-method (add-all (self <artifacts-repository>) artifact-list)
   (if (not (null? artifact-list))
       (begin
-	(add-artifact obj (car artifact-list))
-	(add-all obj (cdr artifact-list)))
+	(add-artifact self (car artifact-list))
+	(add-all self (cdr artifact-list)))
    )
 )
 
-(define-method (download-all (obj <artifacts-repository>))
-  (map download (artifacts obj))
+(define-method (download-all (self <artifacts-repository>))
+  (map download (artifacts self))
 )
 
-(define-method (build (obj <artifacts-repository>))
-  (mk-directory (directory-name obj))
-  (download-all obj)
+(define-method (build (self <artifacts-repository>))
+  (mk-directory (directory-name self))
+  (download-all self)
 )
 
-(define-method (remove (obj <artifacts-repository>))
-  (rm-directory (directory-name obj))
+(define-method (remove (self <artifacts-repository>))
+  (rm-directory (directory-name self))
 )
 
 ;;; artifacts.scm ends here
