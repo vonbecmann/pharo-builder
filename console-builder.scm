@@ -8,6 +8,7 @@
 (use-modules (ice-9 readline))
 
 (activate-readline)
+
 (display "Current Working Directory: ")
 (newline)
 (display cwd)
@@ -17,3 +18,9 @@
 (newline)
 (display mc-package-cache)
 (newline)
+
+(define (main args)
+  (display args)
+  (newline)
+)
+

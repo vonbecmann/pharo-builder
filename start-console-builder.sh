@@ -1,5 +1,7 @@
 #! /bin/bash
-CURRENT_DIRECTORY=$(dirname $(readlink -nf $0))
-BASE_DIRECTORY=$(dirname ${CURRENT_DIRECTORY})
+HOME_DIRECTORY=$(dirname $(readlink -nf $0))
+BASE_DIRECTORY=$(dirname ${HOME_DIRECTORY})
 
-guile -L ${BASE_DIRECTORY} -l ${CURRENT_DIRECTORY}/console-builder.scm
+guile -L ${BASE_DIRECTORY} -l ${HOME_DIRECTORY}/console-builder.scm -e main -- home=${HOME_DIRECTORY} 
+
+
