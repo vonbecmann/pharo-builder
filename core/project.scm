@@ -6,15 +6,14 @@
   #:use-module (pharo-builder core artifacts)
   #:export (
 	    create-project
-	    build-project 
-	    clean-project
+	    build 
+	    clean
 	    delete-project
-	    re-build-project
-	    image-filename-at
-	    execute-project
+	    re-build
+	    execute
 	    <project>
 	    )
-)
+  )
 
 ;;;
 ;;; a project
@@ -25,79 +24,88 @@
   (vm #:accessor vm
       #:init-keyword #:vm)
   (artifact #:accessor artifact
-      #:init-keyword #:artifact)
+	    #:init-keyword #:artifact)
 
+  )
+
+(define-method (write (self <project>) port)
+  (define fmt 
+    "project at ~A based on ~A")
+  (display (format #f
+		   fmt
+		   (directory-name self)
+		   (name (artifact self))) port)
 )
 
-(define-method (src-directory (obj <project>))
+(define-method (src-directory (self <project>))
   "source directory."
-  (path-join (directory-name obj) "src")
-)
+  (path-join (directory-name self) "src")
+  )
 
-(define-method (mk-src-directory (obj <project>))
+(define-method (mk-src-directory (self <project>))
   "make source directory."
-  (let* ((src (src-directory obj)))
+  (let* ((src (src-directory self)))
     (mk-directory src)
     (link-package-cache-at src)
-    (unzip (artifact obj) src)
+    (unzip (artifact self) src)
     )
-)
+  )
 
-(define-method (rm-src-directory (obj <project>))
+(define-method (rm-src-directory (self <project>))
   "remove source directory."
-  (rm-directory (src-directory obj))
-)
+  (rm-directory (src-directory self))
+  )
 
-(define-method (image-filename-at (obj <project>))
+(define-method (image-filename-at (self <project>))
   "image filename at source directory."
   (let* ((cmd 
 	  (list 
 	   "basename $(find " 
-	   (src-directory obj) 
+	   (src-directory self) 
 	   "-name *.image)")))
     (call-input-command-list cmd)
     )
-)
+  )
 
-(define-method (execute-project (obj <project>))
+(define-method (execute (self <project>))
   "execute the given project."
   (let* ((image-filename 
-	  (path-join (src-directory obj) (image-filename-at obj))))
-    (execute (vm obj) image-filename)
+	  (path-join (src-directory self) (image-filename-at self))))
+    (execute-vm (vm self) image-filename)
     )
-  obj
-)
+  self
+  )
 
-(define-method (build-project (obj <project>))
+(define-method (build (self <project>))
   "build the given project."
-  (mk-directory (directory-name obj))
-  (mk-src-directory obj)
-  obj
-)
+  (mk-directory (directory-name self))
+  (mk-src-directory self)
+  self
+  )
 
-(define-method (delete-project (obj <project>))
+(define-method (delete-project (self <project>))
   "delete the given project."
-  (rm-directory (directory-name obj))
-  obj
-)
+  (rm-directory (directory-name self))
+  self
+  )
 
-(define-method (clean-project (obj <project>))
+(define-method (clean (self <project>))
   "clean source directory for the given project."
-  (rm-src-directory obj)
-  obj
-)
+  (rm-src-directory self)
+  self
+  )
 
-(define-method (re-build-project (obj <project>))
+(define-method (re-build (self <project>))
   "clean and build the given project."
-  (build-project (clean-project obj))
-)
+  (build-project (clean-project self))
+  )
 
 (define (create-project directory-name vm artifact)
   "create a new project with VM and ARTIFACT at DIRECTORY-NAME."
   (define new-project 
     (make <project> #:directory-name directory-name
-	            #:vm vm
-		    #:artifact artifact))
+	  #:vm vm
+	  #:artifact artifact))
   new-project
-)
+  )
 

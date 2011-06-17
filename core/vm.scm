@@ -13,7 +13,7 @@
    #:use-module (ice-9 format)
    #:use-module (pharo-builder core oscommand)
    #:export (
-	     execute
+	     execute-vm
 	     <vm>
 	     )
 )
@@ -23,16 +23,16 @@
 	#:init-keyword #:path-to-executable)
 )
 
-(define-method (write (obj <vm>) port)
+(define-method (write (self <vm>) port)
   (define fmt "Virtual Machine at ~S ~%")
   (display (format #f
 		   fmt
-		   (path obj)) port)
+		   (path self)) port)
 )
 
-(define-method (execute (obj <vm>) image-filename)
+(define-method (execute-vm (self <vm>) image-filename)
   "execute a image and don't wait for response."
-  (let* ((cmd (list (path obj) image-filename "&")))
+  (let* ((cmd (list (path self) image-filename "&")))
     (call-command-list cmd))
 )
 

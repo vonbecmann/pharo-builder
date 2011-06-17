@@ -13,7 +13,7 @@
   #:use-module (ice-9 format)
   #:use-module (pharo-builder core oscommand)
   #:export (
-	    build
+	    build-repo
 	    remove
 	    download
 	    unzip
@@ -23,6 +23,7 @@
 	    <artifact>
 	    <artifacts-repository>
 	    add-all
+	    name
 	    )
 )
 
@@ -116,7 +117,7 @@
   (map download (artifacts self))
 )
 
-(define-method (build (self <artifacts-repository>))
+(define-method (build-repo (self <artifacts-repository>))
   (mk-directory (directory-name self))
   (download-all self)
 )
