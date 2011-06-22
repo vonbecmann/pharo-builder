@@ -2,4 +2,7 @@ My Pharo Builder -*- mode:org; -*-
 
 try to implement my pharo environment builder again, but this time with guile.
 
+* TASKS
+** TODO do not modify project folder
+** 
 
