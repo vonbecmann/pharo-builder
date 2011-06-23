@@ -14,6 +14,7 @@
    #:use-module (pharo-builder core oscommand)
    #:export (
 	     execute-vm
+	     execute-headless-vm
 	     <vm>
 	     )
 )
@@ -33,6 +34,15 @@
 (define-method (execute-vm (self <vm>) image-filename)
   "execute a image and don't wait for response."
   (let* ((cmd (list (path self) image-filename "&")))
+    (call-command-list cmd))
+)
+
+(define-method (execute-headless-vm (self <vm>) image-filename script-filename)
+  "execute a image and don't wait for response."
+  (let* ((cmd (list (path self) 
+		    "-vm-display-null" 
+		    "-vm-sound-null" 
+		    image-filename script-filename)))
     (call-command-list cmd))
 )
 

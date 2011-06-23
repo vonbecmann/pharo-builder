@@ -11,6 +11,7 @@
 	    delete-project
 	    re-build
 	    execute
+	    set-up
 	    <project>
 	    )
   )
@@ -78,7 +79,7 @@
 
 (define-method (build (self <project>))
   "build the given project."
-  (mk-directory (directory-name self))
+  (clean self)
   (mk-src-directory self)
   self
   )
@@ -95,17 +96,29 @@
   self
   )
 
-(define-method (re-build (self <project>))
-  "clean and build the given project."
-  (build-project (clean-project self))
+(define-method (mk-home-directory (self <project>))
+  "make home directory."
+  (mk-directory (directory-name self))
+  self
+  )
+
+(define-method (set-up (self <project>))
+  "set up the given project."
+  (let* ((image-filename 
+	  (path-join (src-directory self) (image-filename-at self)))
+	 (script-filename (path-join (directory-name self) "set-up.st"))
+	 )
+    (execute-headless-vm (vm self) image-filename script-filename))
+  self
   )
 
 (define (create-project directory-name vm artifact)
   "create a new project with VM and ARTIFACT at DIRECTORY-NAME."
-  (define new-project 
-    (make <project> #:directory-name directory-name
-	  #:vm vm
-	  #:artifact artifact))
-  new-project
+  (let* ((new-project 
+	 (make <project> #:directory-name directory-name
+	       #:vm vm
+	       #:artifact artifact)))
+    (mk-home-directory new-project)
+    new-project)
   )
 
