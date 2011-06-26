@@ -65,17 +65,21 @@
   "download URL-filename to filename.
    curl --insecure --location --output filename URL-filename."
   (mk-directory (base-path self))
-  (let* ((cmd (list "curl" "--insecure" 
+  (let* (
+	 (cmd (list "curl" "--insecure" 
 		    "--location"
 		    "--output" (full-path self) 
-		    (download-URL self))))
+		    (download-URL self)))
+	 )
     (call-command-list cmd))
 )
 
 (define-method (unzip (self <artifact>) to-directory)
   "unzip artifact filename to directory."
-  (let* ((cmd  (list "unzip" "-j" (full-path self)
-		     "*.image" "*.changes" "-d" to-directory)))
+  (let* (
+	 (cmd  (list "unzip" "-q -j" (full-path self)
+		     "*.image" "*.changes" "-d" to-directory))
+	 )
          (call-command-list cmd)
      )
 )

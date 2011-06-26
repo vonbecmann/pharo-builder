@@ -32,3 +32,22 @@
     )
   )
 
+(define-method (test-set-up-script-at-project (self <project-test>))
+  (let* ( 
+	 (directory-name "/test-project")
+	 (artifact-name "pharo-core")
+	 (test-artifact 
+	  (make-artifact 
+	   artifact-name
+	   "a-directory" 
+	   "http:/download/url"))
+	 (test-vm
+	  (make-vm 
+	   "/path/to/vm"))
+	 (test-project (create-project directory-name test-vm test-artifact))
+	 (expected "/test-project/set-up.st") 
+	 )
+
+    (assert-equal  expected (set-up-script-at test-project))
+    )
+  )

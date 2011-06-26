@@ -8,16 +8,18 @@
 (use-modules (ice-9 readline))
 
 (activate-readline)
-
-(display "Current Working Directory: ")
+(display "User's Home Directory: \n")
+(display uwd)
 (newline)
+(display "Current Working Directory: \n")
 (display cwd)
 (newline)
 (mk-mc-package-cache)
-(display "MC Package Cache Directory: ")
-(newline)
+(display "MC Package Cache Directory: \n")
 (display mc-package-cache)
 (newline)
+
+(load-pharo-builder-conf)
 
 (define (main args)
   (display args)

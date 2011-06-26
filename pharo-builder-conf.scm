@@ -1,6 +1,6 @@
 ;; Configuration for the builder
 (use-modules (pharo-builder conf-builder))
-
+;; just an example
 ;;
 ;; Artifacts
 ;;
@@ -47,5 +47,22 @@
 ;;;(define simpleProject 
 ;;;  (project "/home/bcontreras/simpleP" default-vm pharo-core))
 ;;;  
-(define simpleP 
-  (create-project "/home/vonbecmann/simpleP" default-vm pharo-core))
+;;;(define simpleP 
+;;;  (create-project "/home/vonbecmann/simpleP" default-vm pharo-core))
+(define twm 
+  (create-project 
+   "/home/vonbecmann/pharo-projects/twm" 
+   default-vm
+   pharo-unstable-core))
+
+(define pharo-issue-tracker 
+  (create-project 
+   "/home/vonbecmann/pharo-projects/pharo-issue-tracker" 
+   default-vm
+   pharo-unstable-core))
+
+(define pharo-trunk 
+  (create-project 
+   "/home/vonbecmann/pharo-projects/pharo-trunk" 
+   default-vm
+   pharo-unstable-core))

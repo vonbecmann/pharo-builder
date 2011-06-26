@@ -6,12 +6,13 @@
   #:use-module (pharo-builder core artifacts)
   #:export (
 	    create-project
-	    build 
-	    clean
+	    mk-home-directory
 	    delete-project
-	    re-build
-	    execute
+	    clean
+	    build 
 	    set-up
+	    execute
+	    set-up-script-at
 	    <project>
 	    )
   )
@@ -45,7 +46,9 @@
 
 (define-method (mk-src-directory (self <project>))
   "make source directory."
-  (let* ((src (src-directory self)))
+  (let* (
+	 (src (src-directory self))
+	 )
     (mk-directory src)
     (link-package-cache-at src)
     (unzip (artifact self) src)
@@ -59,19 +62,27 @@
 
 (define-method (image-filename-at (self <project>))
   "image filename at source directory."
-  (let* ((cmd 
+  (let* (
+	 (cmd 
 	  (list 
 	   "basename $(find " 
 	   (src-directory self) 
-	   "-name *.image)")))
-    (call-input-command-list cmd)
+	   "-name *.image)"))
+	 )
+    (path-join (src-directory self) (call-input-command-list cmd))
     )
+  )
+
+(define-method (set-up-script-at (self <project>))
+  "set-up.st script at source directory."
+  (path-join (directory-name self) "set-up.st")
   )
 
 (define-method (execute (self <project>))
   "execute the given project."
-  (let* ((image-filename 
-	  (path-join (src-directory self) (image-filename-at self))))
+  (let* (
+	 (image-filename (image-filename-at self))
+	 )
     (execute-vm (vm self) image-filename)
     )
   self
@@ -81,6 +92,7 @@
   "build the given project."
   (clean self)
   (mk-src-directory self)
+  (set-up self)
   self
   )
 
@@ -104,21 +116,29 @@
 
 (define-method (set-up (self <project>))
   "set up the given project."
-  (let* ((image-filename 
-	  (path-join (src-directory self) (image-filename-at self)))
-	 (script-filename (path-join (directory-name self) "set-up.st"))
+  (let* (
+	 (script-filename (set-up-script-at self))
 	 )
-    (execute-headless-vm (vm self) image-filename script-filename))
+    (if (file-exists? script-filename)
+	(let* (
+	       (image-filename (image-filename-at self))
+	       )
+	  (execute-headless-vm (vm self) image-filename script-filename)
+	  )
+	(display (string-append script-filename " does not exists.\n"))
+	)
+    )
   self
   )
 
 (define (create-project directory-name vm artifact)
   "create a new project with VM and ARTIFACT at DIRECTORY-NAME."
-  (let* ((new-project 
-	 (make <project> #:directory-name directory-name
+  (let* (
+	 (new-project 
+	  (make <project> #:directory-name directory-name
 	       #:vm vm
-	       #:artifact artifact)))
-    (mk-home-directory new-project)
+	       #:artifact artifact))
+	 )
     new-project)
   )
 
