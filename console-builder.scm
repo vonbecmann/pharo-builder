@@ -24,5 +24,9 @@
 (define (main args)
   (display args)
   (newline)
+  (display (list? args))
+  (newline)
+  (display (string? (car args)))
+  (newline)
 )
 

@@ -5,4 +5,12 @@
 	    parse
 	    )
 )
-(define (parse args))
+
+(define option-spec
+       '(
+	 (home (value #t) (required? #t))
+	 )
+)
+(define (parse args)
+  "hola"
+)
