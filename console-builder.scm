@@ -5,6 +5,7 @@
 (use-modules (pharo-builder core vm))
 (use-modules (pharo-builder core project))
 (use-modules (pharo-builder conf-builder))
+(use-modules (pharo-builder command-line parser))
 (use-modules (ice-9 readline))
 
 (activate-readline)
@@ -24,9 +25,8 @@
 (define (main args)
   (display args)
   (newline)
-  (display (list? args))
-  (newline)
-  (display (string? (car args)))
+  (display "Home Directory: \n")
+  (display (parse args))
   (newline)
 )
 
