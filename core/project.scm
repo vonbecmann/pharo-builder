@@ -131,14 +131,4 @@
   self
   )
 
-(define (create-project directory-name vm artifact)
-  "create a new project with VM and ARTIFACT at DIRECTORY-NAME."
-  (let* (
-	 (new-project 
-	  (make <project> #:directory-name directory-name
-	       #:vm vm
-	       #:artifact artifact))
-	 )
-    new-project)
-  )
 

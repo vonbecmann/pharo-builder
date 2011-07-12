@@ -1,32 +1,30 @@
 ;; Console Builder
 (use-modules (oop goops))
 (use-modules (pharo-builder core oscommand))
-(use-modules (pharo-builder core artifacts))
-(use-modules (pharo-builder core vm))
+;;(use-modules (pharo-builder core artifacts))
+;;(use-modules (pharo-builder core vm))
 (use-modules (pharo-builder core project))
 (use-modules (pharo-builder conf-builder))
 (use-modules (pharo-builder command-line parser))
 (use-modules (ice-9 readline))
 
 (activate-readline)
-(display "User's Home Directory: \n")
-(display uwd)
-(newline)
-(display "Current Working Directory: \n")
-(display cwd)
-(newline)
 (mk-mc-package-cache)
 (display "MC Package Cache Directory: \n")
 (display mc-package-cache)
 (newline)
 
-(load-pharo-builder-conf)
 
 (define (main args)
-  (display args)
-  (newline)
-  (display "Home Directory: \n")
-  (display (parse args))
-  (newline)
-)
+  (let*  
+      (
+       (home-arg (parse args))
+       
+       )
+    (home-directory conf-builder home-arg)
+    (newline)
+    (load-default-conf conf-builder)
+    (display conf-builder)
+    )
+  )
 

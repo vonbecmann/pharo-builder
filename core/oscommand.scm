@@ -35,21 +35,6 @@
   (string-append path "/" subpath)
 )
 
-;;; pharo builder configuration.
-(define pharo-builder-conf (path-join uwd "pharo-builder-conf.scm"))
-
-;;; pharo builder configuration exists?.
-(define (pharo-builder-conf-exists?) 
-  (file-exists? pharo-builder-conf)
-)
-
-;;; load pharo builder configuration.
-(define (load-pharo-builder-conf) 
-  (if (pharo-builder-conf-exists?)
-      (load pharo-builder-conf)
-      (display (string-append pharo-builder-conf " not exists.\n"))
-      )
-)
 
 (define (call-command cmd)
   "call a operating system command.
