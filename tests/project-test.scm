@@ -15,15 +15,16 @@
 	 (artifact-name "pharo-core")
 	 (fmt "project at ~A based on ~A")
 	 (test-artifact 
-	  (make-artifact 
+	  (artifact 
 	   artifact-name
 	   "a-directory" 
 	   "http:/download/url"))
 	 (test-vm
-	  (make-vm 
+	  (vm 
+	   "test-vm"
 	   "/path/to/vm"))
 	 (string-port (open-output-string))
-	 (test-project (create-project directory-name test-vm test-artifact))
+	 (test-project (project directory-name test-vm test-artifact))
 	 (expected (format #f fmt directory-name artifact-name)) 
 	 )
 
@@ -37,17 +38,44 @@
 	 (directory-name "/test-project")
 	 (artifact-name "pharo-core")
 	 (test-artifact 
-	  (make-artifact 
+	  (artifact 
 	   artifact-name
 	   "a-directory" 
 	   "http:/download/url"))
 	 (test-vm
-	  (make-vm 
+	  (vm 
+	   "test-vm"
 	   "/path/to/vm"))
-	 (test-project (create-project directory-name test-vm test-artifact))
+	 (test-project (project directory-name test-vm test-artifact))
 	 (expected "/test-project/set-up.st") 
 	 )
 
     (assert-equal  expected (set-up-script-at test-project))
     )
   )
+
+(define-method (test-write-project-definition-to-string (self <project-test>))
+  (let* ( 
+	 (directory-name "/test-project")
+	 (artifact-name "pharo-core")
+	 (vm-name "test-vm")
+	 (test-artifact 
+	  (artifact 
+	   artifact-name
+	   "a-directory" 
+	   "http:/download/url"))
+	 (test-vm
+	  (vm 
+	   vm-name
+	   "/path/to/vm"))
+	 (test-project (project directory-name test-vm test-artifact))
+	 (expected (format #f 
+			   "(define current-project \n\t (project  ~S ~a ~a)\n)" 
+			   directory-name 
+			   "test-vm" 
+			   artifact-name)
+	    )
+	 )
+    (assert-equal expected (with-output-to-string (project-definition test-project)))
+    )
+)

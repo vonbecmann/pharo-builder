@@ -1,7 +1,7 @@
 ;; Console Builder
 (use-modules (oop goops))
 (use-modules (pharo-builder core oscommand))
-;;(use-modules (pharo-builder core artifacts))
+(use-modules (pharo-builder core artifacts))
 ;;(use-modules (pharo-builder core vm))
 (use-modules (pharo-builder core project))
 (use-modules (pharo-builder conf-builder))

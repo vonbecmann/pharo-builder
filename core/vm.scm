@@ -16,10 +16,13 @@
 	     execute-vm
 	     execute-headless-vm
 	     <vm>
+	     vm-name
 	     )
 )
 
 (define-class <vm> ()
+  (name #:accessor vm-name
+	#:init-keyword #:name)
   (path  #:accessor path
 	#:init-keyword #:path-to-executable)
 )

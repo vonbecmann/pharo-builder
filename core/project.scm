@@ -5,7 +5,6 @@
   #:use-module (pharo-builder core vm)
   #:use-module (pharo-builder core artifacts)
   #:export (
-	    create-project
 	    mk-home-directory
 	    delete-project
 	    clean
@@ -14,6 +13,8 @@
 	    execute
 	    set-up-script-at
 	    <project>
+	    save-definition
+	    project-definition
 	    )
   )
 
@@ -78,6 +79,11 @@
   (path-join (directory-name self) "set-up.st")
   )
 
+(define-method (pom-at (self <project>))
+  "pom file at source directory."
+  (path-join (directory-name self) "pom.scm")
+  )
+
 (define-method (execute (self <project>))
   "execute the given project."
   (let* (
@@ -113,6 +119,28 @@
   (mk-directory (directory-name self))
   self
   )
+
+(define-method (project-definition (self <project>))
+  "project definition."
+  (lambda () 
+    (format #t 
+	    "(define current-project \n\t (project  ~S ~a ~a)\n)" 
+	    (directory-name self) 
+	    (vm-name (vm self))
+	    (name (artifact self))
+	    )
+    )
+)
+
+(define-method (save-definition (self <project>))
+  "save definition."
+  (let* (
+	 (pom-filename (pom-at self))
+	 )
+    (with-output-to-file pom-filename (project-definition self))
+      )
+  self
+)
 
 (define-method (set-up (self <project>))
   "set up the given project."

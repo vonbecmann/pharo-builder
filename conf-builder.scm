@@ -24,6 +24,7 @@
 	    home-directory
 	    conf-builder
 	    create-project 
+	    project
 	    )
 )
 
@@ -106,23 +107,31 @@
   new-repository
 )
 
-(define (vm path-to-executable)
+(define (vm name path-to-executable)
   "a new vm with PATH-TO-EXECUTABLE."
   (define new-vm
-    (make <vm> #:path-to-executable path-to-executable)
+    (make <vm> #:name name #:path-to-executable path-to-executable)
     )
   new-vm
+)
+
+(define (project directory-name vm artifact)
+  (define new-project
+    (make <project> #:directory-name directory-name
+	       #:vm vm
+	       #:artifact artifact)
+    )
+  new-project
 )
 
 (define (create-project directory-name vm artifact)
   "create a new project with VM and ARTIFACT at DIRECTORY-NAME."
   (let* (
-	 (new-project 
-	  (make <project> #:directory-name directory-name
-	       #:vm vm
-	       #:artifact artifact))
+	 (new-project (project directory-name vm artifact))
 	 )
-    new-project)
+    (mk-home-directory new-project)
+    (save-definition new-project)
+    )
   )
 
 ;;; conf-builder.scm ends here

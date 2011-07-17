@@ -19,7 +19,6 @@
 	    unzip
 	    download-all
 	    add-artifact
-	    repository
 	    <artifact>
 	    <artifacts-repository>
 	    add-all
@@ -84,7 +83,7 @@
 )
 
 ;;
-;; Artifacts Repository
+;; an Artifacts Repository
 ;;
 (define-class <artifacts-repository> ()
   (artifacts #:accessor artifacts
