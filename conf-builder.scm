@@ -131,6 +131,7 @@
 	 )
     (mk-home-directory new-project)
     (save-definition new-project)
+    (build new-project)
     )
   )
 
