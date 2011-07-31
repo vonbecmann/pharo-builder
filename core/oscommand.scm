@@ -17,10 +17,8 @@
 	    mk-directory
 	    rm-directory
 	    ;; Monticello package cache
-	    mk-mc-package-cache 
-	    rm-mc-package-cache
 	    link-package-cache-at 
-	    mc-package-cache
+	    mc-package-cache-at
 	    )
 )
 
@@ -97,20 +95,8 @@
   (path-join directory-name "package-cache")
 )
 
-(define mc-package-cache 
-  (mc-package-cache-at cwd)
-)
-
-(define (mk-mc-package-cache)
-  (mk-directory mc-package-cache)
-)
-
-(define (rm-mc-package-cache)
-  (rm-directory mc-package-cache)
-)
-
-(define (link-package-cache-at directory-name)
-  (symlink mc-package-cache (mc-package-cache-at directory-name))
+(define (link-package-cache-at package-cache-directory directory-name)
+  (symlink package-cache-directory (mc-package-cache-at directory-name))
 )
 
 

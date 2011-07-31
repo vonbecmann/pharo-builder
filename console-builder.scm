@@ -9,11 +9,6 @@
 (use-modules (ice-9 readline))
 
 (activate-readline)
-(mk-mc-package-cache)
-(display "MC Package Cache Directory: \n")
-(display mc-package-cache)
-(newline)
-
 
 (define (main args)
   (let*  

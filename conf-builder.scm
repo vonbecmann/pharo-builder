@@ -42,19 +42,34 @@
   (current-directory 
 	   #:init-keyword #:current-directory
            #:accessor current-directory)
+  (package-cache-directory 
+           #:init-value ""
+	   #:init-keyword #:package-cache-directory
+           #:accessor package-cache-directory)
   )
 
 (define-method (home-directory (self <conf-builder>) directory)
   (set! (directory-name self) directory)
+  (set! (package-cache-directory self) (mc-package-cache-at directory))
+  (mk-mc-package-cache-directory self)
+)
+
+(define-method (mk-mc-package-cache-directory (self <conf-builder>))
+  (mk-directory (package-cache-directory self))
+)
+
+(define-method (rm-mc-package-cache (self <conf-builder>))
+  (rm-directory (package-cache-directory self))
 )
 
 (define-method (write (self <conf-builder>) port)
-  (define fmt "configuration builder at ~S ~% user's directory: ~S ~% current directory: ~S \n")
+  (define fmt "configuration builder at ~S ~% user's directory: ~S ~% current directory: ~S \n package cache directory: ~S \n")
   (display (format #f
 		   fmt
 		   (directory-name self)
 		   (user-directory self)
 		   (current-directory self)
+		   (package-cache-directory self)
 		   ) port)
 )
 
@@ -117,9 +132,11 @@
 
 (define (project directory-name vm artifact)
   (define new-project
-    (make <project> #:directory-name directory-name
-	       #:vm vm
-	       #:artifact artifact)
+    (make <project> 
+      #:directory-name directory-name
+      #:vm vm
+      #:artifact artifact
+      #:package-cache-directory (package-cache-directory conf-builder))
     )
   new-project
 )

@@ -70,7 +70,7 @@
 	   "/path/to/vm"))
 	 (test-project (project directory-name test-vm test-artifact))
 	 (expected (format #f 
-			   "(define current-project \n\t (project  ~S ~a ~a)\n)" 
+			   "(define current-project \n\t (project \n\t ~S\n\t ~a\n\t ~a\n\t)\n)" 
 			   directory-name 
 			   "test-vm" 
 			   artifact-name)

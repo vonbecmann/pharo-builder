@@ -5,16 +5,17 @@
   #:use-module (pharo-builder core vm)
   #:use-module (pharo-builder core artifacts)
   #:export (
+	    <project>
 	    mk-home-directory
 	    delete-project
 	    clean
-	    build 
 	    set-up
+	    build 
 	    execute
+	    build-execute
 	    set-up-script-at
-	    <project>
-	    save-definition
 	    project-definition
+	    save-definition
 	    )
   )
 
@@ -28,6 +29,8 @@
       #:init-keyword #:vm)
   (artifact #:accessor artifact
 	    #:init-keyword #:artifact)
+  (package-cache-directory #:accessor package-cache-directory 
+	    #:init-keyword #:package-cache-directory)
 
   )
 
@@ -49,9 +52,10 @@
   "make source directory."
   (let* (
 	 (src (src-directory self))
+	 (package-cache-directory (package-cache-directory self))
 	 )
     (mk-directory src)
-    (link-package-cache-at src)
+    (link-package-cache-at package-cache-directory src)
     (unzip (artifact self) src)
     )
   )
@@ -102,6 +106,13 @@
   self
   )
 
+(define-method (build-execute (self <project>))
+  "build and execute the given project."
+  (build self)
+  (execute self)
+  self
+  )
+
 (define-method (delete-project (self <project>))
   "delete the given project."
   (rm-directory (directory-name self))
@@ -124,7 +135,7 @@
   "project definition."
   (lambda () 
     (format #t 
-	    "(define current-project \n\t (project  ~S ~a ~a)\n)" 
+	    "(define current-project \n\t (project \n\t ~S\n\t ~a\n\t ~a\n\t)\n)" 
 	    (directory-name self) 
 	    (vm-name (vm self))
 	    (name (artifact self))
