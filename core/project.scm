@@ -135,7 +135,7 @@
   "project definition."
   (lambda () 
     (format #t 
-	    "(define current-project \n\t (project \n\t ~S\n\t ~a\n\t ~a\n\t)\n)" 
+	    "(define current-project\n\t(project\n\t ~S\n\t ~a\n\t ~a\n\t)\n)" 
 	    (directory-name self) 
 	    (vm-name (vm self))
 	    (name (artifact self))
