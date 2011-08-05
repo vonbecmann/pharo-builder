@@ -19,6 +19,7 @@
     (home-directory conf-builder home-arg)
     (newline)
     (load-default-conf conf-builder)
+    (load-default-pom conf-builder)
     (display conf-builder)
     )
   )
