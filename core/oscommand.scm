@@ -107,9 +107,4 @@
   (symlink package-cache-directory (mc-package-cache-at directory-name))
 )
 
-
-
-
-(provide 'oscommand)
-
 ;;; oscommand.scm ends here

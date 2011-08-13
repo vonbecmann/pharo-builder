@@ -33,6 +33,4 @@
   )
 
 
-(provide 'console-builder)
-
 ;;; console-builder.scm ends here
