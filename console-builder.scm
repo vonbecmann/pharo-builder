@@ -12,14 +12,14 @@
 (define (main args)
   (let*  
       (
-       (home-arg (parse args))
+       (home-directory-arg (parse args))
        
        )
-    (home-directory conf-builder home-arg)
+    (set-home-directory-to home-directory-arg)
     (newline)
-    (load-default-conf conf-builder)
-    (load-default-pom conf-builder)
-    (display conf-builder)
+    (load-default-configuration)
+    (load-current-pom)
+    (display-configuration)
     )
   )
 

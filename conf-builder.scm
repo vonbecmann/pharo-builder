@@ -1,7 +1,8 @@
 ;;; conf-builder.scm --- a configuration builder
 
-;;; Commentary:
-;; 
+;;; Commentary: 
+;;; i know how to manage configuration
+
 
 
 ;;; History:
@@ -16,14 +17,13 @@
   #:use-module (pharo-builder core vm)
   #:use-module (pharo-builder core project)
   #:export (
-	    <conf-builder>
 	    artifact
 	    repository
 	    vm
-	    load-default-conf
-	    load-default-pom
-	    home-directory
-	    conf-builder
+	    load-default-configuration
+	    load-current-pom
+	    set-home-directory-to
+	    display-configuration
 	    create-project 
 	    project
 	    )
@@ -170,4 +170,22 @@
     )
   )
 
+(define (set-home-directory-to directory-name)
+ "set home directory to DIRECTORY-NAME."
+ (home-directory conf-builder directory-name)
+)
+
+(define (load-default-configuration)
+  "load default configuration."
+  (load-default-conf conf-builder)
+)
+
+(define (load-current-pom)
+  "load current pom."
+  (load-default-pom conf-builder)
+)
+
+(define (display-configuration)
+  (display conf-builder)
+)
 ;;; conf-builder.scm ends here
