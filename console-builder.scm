@@ -1,4 +1,13 @@
-;; Console Builder
+;;; console-builder.scm --- set up for the REPL
+
+;;; Commentary:
+;; 
+
+
+;;; History:
+;; 
+
+;;; Code:
 (use-modules (oop goops))
 (use-modules (pharo-builder core oscommand))
 (use-modules (pharo-builder core artifacts))
@@ -10,7 +19,7 @@
 (activate-readline)
 
 (define (main args)
-  (let*  
+  (let*
       (
        (home-directory-arg (parse args))
        
@@ -23,3 +32,7 @@
     )
   )
 
+
+(provide 'console-builder)
+
+;;; console-builder.scm ends here

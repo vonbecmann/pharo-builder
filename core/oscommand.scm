@@ -1,23 +1,31 @@
 ;;; oscommand.scm --- Operating System Commands
+
+;;; Commentary:
+;; 
+
+
+;;; History:
+;; 
+
 ;;; Code:
 (define-module (pharo-builder core oscommand)
   #:use-module (ice-9 popen)
   #:use-module (ice-9 rdelim)
-  #:export ( 
+  #:export (
 	    ;; paths
-	    cwd 
+	    cwd
 	    uwd
-	    path-join 
+	    path-join
 	    ;; pharo-builder-configuration
 	    load-pharo-builder-conf
 	    ;; execute a command
-	    call-command-list 
+	    call-command-list
 	    call-input-command-list
 	    ;; basic commands
 	    mk-directory
 	    rm-directory
 	    ;; Monticello package cache
-	    link-package-cache-at 
+	    link-package-cache-at
 	    mc-package-cache-at
 	    )
 )
@@ -39,8 +47,8 @@
    CMD is a string."
   (define exit-code (system cmd))
   (if (not (zero? exit-code))
-	(error 
-	 (format #f "command ~a failed with exit code ~a" 
+	(error
+	 (format #f "command ~a failed with exit code ~a"
 		 cmd exit-code)))
 )
 
@@ -48,7 +56,7 @@
   "call a operating system command and read input.
    CMD is a string."
   (let* (
-	 (port (open-input-pipe cmd)) 
+	 (port (open-input-pipe cmd))
 	 (str  (read-line port))
 	 )
     (close-pipe port)
@@ -79,19 +87,19 @@
   "make a directory"
   (if (not (directory-exists? directory-name))
       (mkdir directory-name))
-) 
+)
 
 (define (rm-directory directory-name)
   "remove a directory"
   (if (directory-exists? directory-name)
       (call-command-list (list "rm" "-rf" directory-name)))
-) 
+)
 
 
 ;;;
 ;;; monticello package cache directory
 ;;;
-(define (mc-package-cache-at directory-name) 
+(define (mc-package-cache-at directory-name)
   (path-join directory-name "package-cache")
 )
 
@@ -101,3 +109,7 @@
 
 
 
+
+(provide 'oscommand)
+
+;;; oscommand.scm ends here
