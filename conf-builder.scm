@@ -78,34 +78,18 @@
   (path-join (user-directory self) "pharo-builder-conf.scm")
   )
 
-;;; default configuration exists?.
-(define-method (default-conf-exists? (self <conf-builder>))
-  (file-exists? (path-to-default-conf self))
-  )
-
 ;;; load default configuration.
 (define-method (load-default-conf (self <conf-builder>))
-  (if (default-conf-exists? self)
-      (load (path-to-default-conf self))
-      (display (string-append (path-to-default-conf self) " not exists.\n"))
-      )
+  (load-file-if-exists (path-to-default-conf self))
   )
 
 (define-method (path-to-default-pom (self <conf-builder>))
   (path-join (current-directory self) "pom.scm")
   )
 
-;;; default pom exists?.
-(define-method (default-pom-exists? (self <conf-builder>))
-  (file-exists? (path-to-default-pom self))
-  )
-
 ;;; load default pom.
 (define-method (load-default-pom (self <conf-builder>))
-  (if (default-pom-exists? self)
-      (load (path-to-default-pom self))
-      (display (string-append (path-to-default-pom self) " not exists.\n"))
-      )
+  (load-file-if-exists (path-to-default-pom self))
   )
 
 (define conf-builder

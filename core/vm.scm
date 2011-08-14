@@ -42,9 +42,9 @@
 
 (define-method (execute-headless-vm (self <vm>) image-filename script-filename)
   "execute a image and don't wait for response."
-  (let* ((cmd (list (path self) 
-		    "-vm-display-null" 
-		    "-vm-sound-null" 
+  (let* ((cmd (list (path self)
+		    "-vm-display-null"
+		    "-vm-sound-null"
 		    image-filename script-filename)))
     (call-command-list cmd))
 )

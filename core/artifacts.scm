@@ -42,7 +42,7 @@
 )
 
 (define-method (write (self <artifact>) port)
-  (define fmt 
+  (define fmt
     "artifact ~S download from ~% ~S ~% to directory ~S ~%")
   (display (format #f
 		   fmt
@@ -52,7 +52,7 @@
 )
 
 (define-method (base-path (self <artifact>))
-  (path-join (directory-name (repository self)) 
+  (path-join (directory-name (repository self))
 	     (directory-name self))
 )
 
@@ -65,8 +65,8 @@
    curl --insecure --location --output filename URL-filename."
   (mk-directory (base-path self))
   (let* (
-	 (cmd (list "curl --insecure --location --output" 
-		    (full-path self) 
+	 (cmd (list "curl --insecure --location --output"
+		    (full-path self)
 		    (download-URL self)))
 	 )
     (call-command-list cmd))

@@ -16,8 +16,6 @@
 	    cwd
 	    uwd
 	    path-join
-	    ;; pharo-builder-configuration
-	    load-pharo-builder-conf
 	    ;; execute a command
 	    call-command-list
 	    call-input-command-list
@@ -27,6 +25,8 @@
 	    ;; Monticello package cache
 	    link-package-cache-at
 	    mc-package-cache-at
+	    ;;
+	    load-file-if-exists
 	    )
 )
 
@@ -106,5 +106,13 @@
 (define (link-package-cache-at package-cache-directory directory-name)
   (symlink package-cache-directory (mc-package-cache-at directory-name))
 )
+
+(define (load-file-if-exists filename)
+  "load file if exists."
+  (if (file-exists? filename)
+      (load filename)
+      (display (string-append filename " not exists.\n"))
+      )
+  )
 
 ;;; oscommand.scm ends here

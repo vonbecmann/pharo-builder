@@ -1,3 +1,13 @@
+;;; project.scm --- a project
+
+;;; Commentary:
+;; 
+
+
+;;; History:
+;; 
+
+;;; Code:
 (define-module (pharo-builder core project)
   #:use-module (oop goops)
   #:use-module (ice-9 format)
@@ -10,7 +20,7 @@
 	    delete-project
 	    clean
 	    set-up
-	    build 
+	    build
 	    execute
 	    build-execute
 	    set-up-script-at
@@ -29,13 +39,13 @@
       #:init-keyword #:vm)
   (artifact #:accessor artifact
 	    #:init-keyword #:artifact)
-  (package-cache-directory #:accessor package-cache-directory 
+  (package-cache-directory #:accessor package-cache-directory
 	    #:init-keyword #:package-cache-directory)
 
   )
 
 (define-method (write (self <project>) port)
-  (define fmt 
+  (define fmt
     "project at ~A based on ~A")
   (display (format #f
 		   fmt
@@ -68,10 +78,10 @@
 (define-method (image-filename-at (self <project>))
   "image filename at source directory."
   (let* (
-	 (cmd 
-	  (list 
-	   "basename $(find " 
-	   (src-directory self) 
+	 (cmd
+	  (list
+	   "basename $(find "
+	   (src-directory self)
 	   "-name *.image)"))
 	 )
     (path-join (src-directory self) (call-input-command-list cmd))
@@ -133,10 +143,10 @@
 
 (define-method (project-definition (self <project>))
   "project definition."
-  (lambda () 
-    (format #t 
-	    "(define current-project\n\t(project\n\t ~S\n\t ~a\n\t ~a\n\t)\n)" 
-	    (directory-name self) 
+  (lambda ()
+    (format #t
+	    "(define current-project\n\t(project\n\t ~S\n\t ~a\n\t ~a\n\t)\n)"
+	    (directory-name self)
 	    (vm-name (vm self))
 	    (name (artifact self))
 	    )
@@ -170,4 +180,4 @@
   self
   )
 
-
+;;; project.scm ends here
