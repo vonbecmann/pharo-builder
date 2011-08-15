@@ -1,7 +1,7 @@
-;;; conf-builder.scm --- a configuration builder
+;;; pharo-builder.scm --- create pharo projects
 
 ;;; Commentary:
-;;; i know how to manage configuration
+;;; 
 
 
 
@@ -9,7 +9,7 @@
 ;; 
 
 ;;; Code:
-(define-module (pharo-builder conf-builder)
+(define-module (pharo-builder pharo-builder)
   #:use-module (oop goops)
   #:use-module (ice-9 format)
   #:use-module (pharo-builder core oscommand)
@@ -22,6 +22,7 @@
 	    vm
 	    load-default-configuration
 	    load-current-pom
+	    load-pom-at
 	    set-home-directory-to
 	    display-configuration
 	    create-project
@@ -33,7 +34,7 @@
 ;;;
 ;;; configuration builder
 ;;;
-(define-class <conf-builder> ()
+(define-class <pharo-builder> ()
   (directory-name
    #:init-value ""
    #:accessor directory-name)
@@ -49,21 +50,21 @@
    #:accessor package-cache-directory)
   )
 
-(define-method (home-directory (self <conf-builder>) directory)
+(define-method (home-directory (self <pharo-builder>) directory)
   (set! (directory-name self) directory)
   (set! (package-cache-directory self) (mc-package-cache-at directory))
   (mk-mc-package-cache-directory self)
   )
 
-(define-method (mk-mc-package-cache-directory (self <conf-builder>))
+(define-method (mk-mc-package-cache-directory (self <pharo-builder>))
   (mk-directory (package-cache-directory self))
   )
 
-(define-method (rm-mc-package-cache (self <conf-builder>))
+(define-method (rm-mc-package-cache (self <pharo-builder>))
   (rm-directory (package-cache-directory self))
   )
 
-(define-method (write (self <conf-builder>) port)
+(define-method (write (self <pharo-builder>) port)
   (define fmt "configuration builder at ~S ~% user's directory: ~S ~% current directory: ~S \n package cache directory: ~S \n")
   (display (format #f
 		   fmt
@@ -74,26 +75,19 @@
 		   ) port)
   )
 
-(define-method (path-to-default-conf (self <conf-builder>))
+(define-method (path-to-default-conf (self <pharo-builder>))
   (path-join (user-directory self) "pharo-builder-conf.scm")
   )
 
 ;;; load default configuration.
-(define-method (load-default-conf (self <conf-builder>))
+(define-method (load-default-conf (self <pharo-builder>))
   (load-file-if-exists (path-to-default-conf self))
   )
 
-(define-method (path-to-default-pom (self <conf-builder>))
-  (path-join (current-directory self) "pom.scm")
-  )
 
-;;; load default pom.
-(define-method (load-default-pom (self <conf-builder>))
-  (load-file-if-exists (path-to-default-pom self))
-  )
 
-(define conf-builder
-  (make <conf-builder>
+(define pharo-builder
+  (make <pharo-builder>
     #:user-directory uwd
     #:current-directory cwd
     )
@@ -116,7 +110,7 @@
   "a repository with ARTIFACTS-LIST at a DIRECTORY"
   (define new-repository
     (make <artifacts-repository>
-      #:directory-name (path-join (directory-name conf-builder)
+      #:directory-name (path-join (directory-name pharo-builder)
 				  directory)
       )
     )
@@ -138,7 +132,7 @@
       #:directory-name directory-name
       #:vm vm
       #:artifact artifact
-      #:package-cache-directory (package-cache-directory conf-builder))
+      #:package-cache-directory (package-cache-directory pharo-builder))
     )
   new-project
   )
@@ -156,20 +150,29 @@
 
 (define (set-home-directory-to directory-name)
   "set home directory to DIRECTORY-NAME."
-  (home-directory conf-builder directory-name)
+  (home-directory pharo-builder directory-name)
   )
 
 (define (load-default-configuration)
   "load default configuration."
-  (load-default-conf conf-builder)
+  (load-default-conf pharo-builder)
+  )
+
+(define (pom-at directory-name)
+  (path-join directory-name "pom.scm")
+  )
+
+(define (load-pom-at directory-name)
+  "load pom at DIRECTORY-NAME."
+  (load-file-if-exists (pom-at directory-name))
   )
 
 (define (load-current-pom)
-  "load current pom."
-  (load-default-pom conf-builder)
+  "load pom at current directory."
+  (load-pom-at (current-directory pharo-builder))
   )
 
 (define (display-configuration)
-  (display conf-builder)
+  (display pharo-builder)
   )
-;;; conf-builder.scm ends here
+;;; pharo-builder.scm ends here
