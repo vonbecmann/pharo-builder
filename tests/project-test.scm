@@ -2,7 +2,7 @@
   #:use-module (oop goops)
   #:use-module (unit-test)
   #:use-module (pharo-builder core project)
-  #:use-module (pharo-builder conf-builder)
+  #:use-module (pharo-builder pharo-builder)
   )
 
 
@@ -70,7 +70,7 @@
 	   "/path/to/vm"))
 	 (test-project (project directory-name test-vm test-artifact))
 	 (expected (format #f 
-			   "(define current-project\n\t(project\n\t ~S\n\t ~a\n\t ~a\n\t)\n)" 
+			   "(project\n\t ~S\n\t ~a\n\t ~a\n\t)\n" 
 			   directory-name 
 			   "test-vm" 
 			   artifact-name)
