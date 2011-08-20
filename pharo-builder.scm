@@ -15,7 +15,13 @@
   #:use-module (pharo-builder core oscommand)
   #:use-module (pharo-builder core artifacts)
   #:use-module (pharo-builder core vm)
-  #:use-module (pharo-builder core project)
+  #:use-module ((pharo-builder core project)
+		:select (build 
+			 <project> 
+			 create 
+			 execute
+			 delete)
+		:renamer (symbol-prefix-proc 'project:))
   #:export (
 	    artifact
 	    repository
@@ -27,6 +33,10 @@
 	    display-configuration
 	    create-project
 	    project
+	    build
+	    execute
+	    build-execute
+	    delete
 	    )
   )
 
@@ -48,6 +58,9 @@
    #:init-value ""
    #:init-keyword #:package-cache-directory
    #:accessor package-cache-directory)
+  (current-project
+   #:init-keyword #:current-project
+   #:accessor current-project)
   )
 
 (define-method (home-directory (self <pharo-builder>) directory)
@@ -84,15 +97,12 @@
   (load-file-if-exists (path-to-default-conf self))
   )
 
-
-
 (define pharo-builder
   (make <pharo-builder>
     #:user-directory uwd
     #:current-directory cwd
     )
   )
-
 
 (define (artifact name directory-name download-URL)
   "an artifact named NAME at DIRECTORY-NAME and
@@ -128,12 +138,13 @@
 
 (define (project directory-name vm artifact)
   (define new-project
-    (make <project>
+    (make project:<project>
       #:directory-name directory-name
       #:vm vm
       #:artifact artifact
       #:package-cache-directory (package-cache-directory pharo-builder))
     )
+  (set! (current-project pharo-builder) new-project)
   new-project
   )
 
@@ -142,9 +153,8 @@
   (let* (
 	 (new-project (project directory-name vm artifact))
 	 )
-    (mk-home-directory new-project)
-    (save-definition new-project)
-    (build new-project)
+    (project:create new-project)
+    new-project
     )
   )
 
@@ -174,5 +184,42 @@
 
 (define (display-configuration)
   (display pharo-builder)
+  )
+
+(define (catch-unbound thunk)
+  (catch 'goops-error thunk 
+	 (lambda (key . args)
+	   (display "there's no current project.\n"))
+	 )
+  )
+
+(define (build)
+  (catch-unbound 
+   (lambda ()
+     (project:build (current-project pharo-builder)))
+   )
+  )
+
+(define (execute)
+  (catch-unbound 
+   (lambda ()
+     (project:execute (current-project pharo-builder)))
+   )
+  )
+
+(define (build-execute)
+  (catch-unbound 
+   (lambda ()
+     (build)
+     (execute)
+     )
+   )
+)
+
+(define (delete)
+  (catch-unbound 
+   (lambda ()
+     (project:delete (current-project pharo-builder)))
+   )
   )
 ;;; pharo-builder.scm ends here

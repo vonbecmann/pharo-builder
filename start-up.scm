@@ -12,7 +12,6 @@
 (use-modules (oop goops))
 (use-modules (pharo-builder core oscommand))
 (use-modules (pharo-builder core artifacts))
-(use-modules (pharo-builder core project))
 (use-modules (pharo-builder pharo-builder))
 (use-modules (pharo-builder command-line parser))
 (use-modules (ice-9 readline))

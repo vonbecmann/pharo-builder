@@ -17,15 +17,15 @@
   #:export (
 	    <project>
 	    mk-home-directory
-	    delete-project
+	    delete
 	    clean
 	    set-up
 	    build
 	    execute
-	    build-execute
 	    set-up-script-at
 	    project-definition
 	    save-definition
+	    create
 	    )
   )
 
@@ -116,14 +116,7 @@
   self
   )
 
-(define-method (build-execute (self <project>))
-  "build and execute the given project."
-  (build self)
-  (execute self)
-  self
-  )
-
-(define-method (delete-project (self <project>))
+(define-method (delete (self <project>))
   "delete the given project."
   (rm-directory (directory-name self))
   self
@@ -180,4 +173,7 @@
   self
   )
 
+(define-method (create (self <project>))
+  (build (save-definition (mk-home-directory self)))
+)
 ;;; project.scm ends here
