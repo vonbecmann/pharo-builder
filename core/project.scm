@@ -16,8 +16,6 @@
   #:use-module (pharo-builder core artifacts)
   #:export (
 	    <project>
-	    mk-home-directory
-	    delete
 	    clean
 	    set-up
 	    build
@@ -113,12 +111,6 @@
   (clean self)
   (mk-src-directory self)
   (set-up self)
-  self
-  )
-
-(define-method (delete (self <project>))
-  "delete the given project."
-  (rm-directory (directory-name self))
   self
   )
 

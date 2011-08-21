@@ -16,11 +16,12 @@
   #:use-module (pharo-builder core artifacts)
   #:use-module (pharo-builder core vm)
   #:use-module ((pharo-builder core project)
-		:select (build 
+		:select (
+			 build 
 			 <project> 
 			 create 
 			 execute
-			 delete)
+			 )
 		:renamer (symbol-prefix-proc 'project:))
   #:export (
 	    artifact
@@ -36,7 +37,6 @@
 	    build
 	    execute
 	    build-execute
-	    delete
 	    )
   )
 
@@ -216,10 +216,4 @@
    )
 )
 
-(define (delete)
-  (catch-unbound 
-   (lambda ()
-     (project:delete (current-project pharo-builder)))
-   )
-  )
 ;;; pharo-builder.scm ends here
