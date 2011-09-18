@@ -131,7 +131,7 @@
 (define (vm name path-to-executable)
   "a new vm with PATH-TO-EXECUTABLE."
   (define new-vm
-    (make <vm> #:name name #:path-to-executable path-to-executable)
+    (make-vm name path-to-executable)
     )
   new-vm
   )
