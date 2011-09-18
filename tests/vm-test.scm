@@ -1,7 +1,9 @@
 (define-module (pharo-builder tests vm-test)
   #:use-module (oop goops)
   #:use-module (unit-test)
-  #:use-module (pharo-builder core vm)
+  #:use-module ((pharo-builder core vm)
+		:select ( print )
+		)
   #:use-module (pharo-builder pharo-builder)
   )
 

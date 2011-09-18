@@ -9,38 +9,48 @@
 
 ;;; Code:
 (define-module (pharo-builder core vm)
-   #:use-module (oop goops)
    #:use-module (ice-9 format)
    #:use-module (pharo-builder core oscommand)
    #:export (
 	     execute-vm
 	     execute-headless-vm
-	     <vm>
+	     make-vm
 	     vm-name
+	     print
 	     )
 )
 
-(define-class <vm> ()
-  (name #:accessor vm-name
-	#:init-keyword #:name)
-  (path  #:accessor path
-	#:init-keyword #:path-to-executable)
-)
-
-(define-method (write (self <vm>) port)
-  (define fmt "Virtual Machine at ~S ~%")
+(define (print self port)
+  (define fmt "~A virtual machine at ~A ~%")
   (display (format #f
 		   fmt
+		   (vm-name self)
 		   (path self)) port)
 )
 
-(define-method (execute-vm (self <vm>) image-filename)
+(define vm 
+  (make-record-type "vm" '(name path) print)
+)
+
+(define make-vm
+  (record-constructor vm '(name path))
+)
+
+(define path 
+  (record-accessor vm 'path)
+)
+
+(define vm-name
+  (record-accessor vm 'name)
+)
+
+(define (execute-vm self image-filename)
   "execute a image and don't wait for response."
   (let* ((cmd (list (path self) image-filename "&")))
     (call-command-list cmd))
 )
 
-(define-method (execute-headless-vm (self <vm>) image-filename script-filename)
+(define (execute-headless-vm self image-filename script-filename)
   "execute a image and don't wait for response."
   (let* ((cmd (list (path self)
 		    "-vm-display-null"

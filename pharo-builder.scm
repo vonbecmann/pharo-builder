@@ -130,10 +130,9 @@
 
 (define (vm name path-to-executable)
   "a new vm with PATH-TO-EXECUTABLE."
-  (define new-vm
-    (make-vm name path-to-executable)
+  (let* ((new-vm (make-vm name path-to-executable)))
+    new-vm
     )
-  new-vm
   )
 
 (define (project directory-name vm artifact)
