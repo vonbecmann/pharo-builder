@@ -9,13 +9,12 @@
 
 ;;; Code:
 (define-module (pharo-builder core project)
-  #:use-module (oop goops)
   #:use-module (ice-9 format)
   #:use-module (pharo-builder core oscommand)
   #:use-module (pharo-builder core vm)
   #:use-module (pharo-builder core artifacts)
   #:export (
-	    <project>
+	    make-project
 	    clean
 	    set-up
 	    build
@@ -24,25 +23,15 @@
 	    project-definition
 	    save-definition
 	    create
+	    print
 	    )
   )
 
 ;;;
 ;;; a project
 ;;;
-(define-class <project> ()
-  (directory-name #:accessor directory-name
-		  #:init-keyword #:directory-name)
-  (vm #:accessor vm
-      #:init-keyword #:vm)
-  (artifact #:accessor artifact
-	    #:init-keyword #:artifact)
-  (package-cache-directory #:accessor package-cache-directory
-	    #:init-keyword #:package-cache-directory)
 
-  )
-
-(define-method (write (self <project>) port)
+(define (print self port)
   (define fmt
     "project at ~A based on ~A")
   (display (format #f
@@ -51,12 +40,37 @@
 		   (name (artifact self))) port)
 )
 
-(define-method (src-directory (self <project>))
+(define project 
+  (make-record-type "project" 
+		    '(directory-name vm artifact package-cache-directory) print)
+)
+
+(define make-project
+  (record-constructor project '(directory-name vm artifact package-cache-directory))
+)
+
+(define directory-name 
+  (record-accessor project 'directory-name)
+)
+
+(define vm 
+  (record-accessor project 'vm)
+)
+
+(define artifact
+  (record-accessor project 'artifact)
+)
+
+(define package-cache-directory 
+  (record-accessor project 'package-cache-directory)
+)
+		 
+(define (src-directory self)
   "source directory."
   (path-join (directory-name self) "src")
   )
 
-(define-method (mk-src-directory (self <project>))
+(define (mk-src-directory self)
   "make source directory."
   (let* (
 	 (src (src-directory self))
@@ -68,12 +82,12 @@
     )
   )
 
-(define-method (rm-src-directory (self <project>))
+(define (rm-src-directory self)
   "remove source directory."
   (rm-directory (src-directory self))
   )
 
-(define-method (image-filename-at (self <project>))
+(define (image-filename-at self)
   "image filename at source directory."
   (let* (
 	 (cmd
@@ -86,17 +100,17 @@
     )
   )
 
-(define-method (set-up-script-at (self <project>))
+(define (set-up-script-at self)
   "set-up.st script at source directory."
   (path-join (directory-name self) "set-up.st")
   )
 
-(define-method (pom-at (self <project>))
+(define (pom-at self)
   "pom file at source directory."
   (path-join (directory-name self) "pom.scm")
   )
 
-(define-method (execute (self <project>))
+(define (execute self)
   "execute the given project."
   (let* (
 	 (image-filename (image-filename-at self))
@@ -106,7 +120,7 @@
   self
   )
 
-(define-method (build (self <project>))
+(define (build self)
   "build the given project."
   (clean self)
   (mk-src-directory self)
@@ -114,19 +128,19 @@
   self
   )
 
-(define-method (clean (self <project>))
+(define (clean self)
   "clean source directory for the given project."
   (rm-src-directory self)
   self
   )
 
-(define-method (mk-home-directory (self <project>))
+(define (mk-home-directory self)
   "make home directory."
   (mk-directory (directory-name self))
   self
   )
 
-(define-method (project-definition (self <project>))
+(define (project-definition self)
   "project definition."
   (lambda ()
     (format #t
@@ -138,7 +152,7 @@
     )
 )
 
-(define-method (save-definition (self <project>))
+(define (save-definition self)
   "save definition."
   (let* (
 	 (pom-filename (pom-at self))
@@ -148,7 +162,7 @@
   self
 )
 
-(define-method (set-up (self <project>))
+(define (set-up self)
   "set up the given project."
   (let* (
 	 (script-filename (set-up-script-at self))
@@ -165,7 +179,7 @@
   self
   )
 
-(define-method (create (self <project>))
+(define (create self)
   (build (save-definition (mk-home-directory self)))
 )
 ;;; project.scm ends here

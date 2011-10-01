@@ -1,7 +1,13 @@
 (define-module (pharo-builder tests project-test)
   #:use-module (oop goops)
   #:use-module (unit-test)
-  #:use-module (pharo-builder core project)
+  #:use-module ((pharo-builder core project)
+		:select (
+			 print
+			 set-up-script-at
+			 project-definition
+			 )
+		)
   #:use-module (pharo-builder pharo-builder)
   )
 
@@ -9,7 +15,7 @@
 (define-class <project-test> (<test-case>)
   )
 
-(define-method (test-write-to-string (self <project-test>))
+(define-method (test-print-to-string (self <project-test>))
   (let* ( 
 	 (directory-name "/test-project")
 	 (artifact-name "pharo-core")
@@ -28,7 +34,7 @@
 	 (expected (format #f fmt directory-name artifact-name)) 
 	 )
 
-    (write test-project string-port)
+    (print test-project string-port)
     (assert-equal  expected (get-output-string string-port))
     )
   )

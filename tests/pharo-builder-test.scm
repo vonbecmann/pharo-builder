@@ -19,3 +19,22 @@
     (assert-true (record? test-vm))
     )
   )
+
+(define-method (test-project (self <pharo-builder-test>))
+  (let* ( 
+	 (directory-name "/test-project")
+	 (artifact-name "pharo-core")
+	 (test-artifact 
+	  (artifact 
+	   artifact-name
+	   "a-directory" 
+	   "http:/download/url"))
+	 (test-vm
+	  (vm 
+	   "test-vm"
+	   "/path/to/vm"))
+	 (test-project (project directory-name test-vm test-artifact))
+	 )
+    (assert-true (record? test-project))
+    )
+  )

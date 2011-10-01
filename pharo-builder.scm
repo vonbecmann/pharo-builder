@@ -18,7 +18,7 @@
   #:use-module ((pharo-builder core project)
 		:select (
 			 build 
-			 <project> 
+			 make-project
 			 create 
 			 execute
 			 )
@@ -136,16 +136,16 @@
   )
 
 (define (project directory-name vm artifact)
-  (define new-project
-    (make project:<project>
-      #:directory-name directory-name
-      #:vm vm
-      #:artifact artifact
-      #:package-cache-directory (package-cache-directory pharo-builder))
-    )
-  (set! (current-project pharo-builder) new-project)
-  new-project
+  (let* ((new-project
+    (project:make-project directory-name
+			  vm
+			  artifact
+			  (package-cache-directory pharo-builder))))
+   
+    (set! (current-project pharo-builder) new-project)
+    new-project
   )
+)
 
 (define (create-project directory-name vm artifact)
   "create a new project with VM and ARTIFACT at DIRECTORY-NAME."
