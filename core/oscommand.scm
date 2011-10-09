@@ -50,6 +50,7 @@
 	(error
 	 (format #f "command ~a failed with exit code ~a"
 		 cmd exit-code)))
+  exit-code
 )
 
 (define (call-input-command cmd)
