@@ -120,7 +120,7 @@
   "a repository with ARTIFACTS-LIST at a DIRECTORY"
   (define new-repository
     (make <artifacts-repository>
-      #:directory-name (path-join (directory-name pharo-builder)
+      #:directory-name (path-join (user-directory pharo-builder)
 				  directory)
       )
     )
