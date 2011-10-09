@@ -3,9 +3,9 @@
 ;;
 ;; Artifacts
 ;;
-(define pharo-core 
+(define core 
   (artifact 
-       "pharo-core"
+       "core"
        "core" 
        "http://www.pharo-project.org/pharo-download/stable-core")
 )
@@ -15,14 +15,14 @@
 ;;
 (define pharo-repository 
   (repository ".pharo-artifacts"
-		   (list pharo-core))
+		   (list core))
 )
 
 ;;;
 ;;; Default Virtual Machine
 ;;;
 (define default-vm
-  (vm "/home/vonbecmann/Pharo/vm/4.4.7.2357-linux/bin/squeak")
+  (vm "default-vm" "/home/vonbecmann/Pharo/vm/4.4.7.2357-linux/bin/squeak")
 )
 
 
