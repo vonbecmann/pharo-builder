@@ -35,7 +35,7 @@
 		   (directory-name self)) port)
 )
 
-(define fields '(name directory-name download-url filename repository))
+(define fields '(name download-url filename repository))
 
 (define artifact 
   (make-record-type "artifact"
@@ -53,8 +53,8 @@
   (record-accessor artifact 'name)
 )
 
-(define directory-name
-  (record-accessor artifact 'directory-name)
+(define (directory-name self)
+  (name self)
 )
 
 (define download-url

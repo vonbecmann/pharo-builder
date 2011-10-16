@@ -14,16 +14,14 @@
 (define-method (test-artifact-print-to-string (self <artifact-test>))
   (let* ( 
 	 (name "artifact-name")
-	 (path "/path/to/artifact")
 	 (url "download-url")
 	 (fmt "artifact ~S download from ~% ~S ~% to directory ~S ~%")
 	 (test-artifact
 	  (artifact
 	   name
-	   path
 	   url))
 	 (string-port (open-output-string))
-	 (expected (format #f fmt name url path)) 
+	 (expected (format #f fmt name url name)) 
 	 )
 
     (artifact:print test-artifact string-port)

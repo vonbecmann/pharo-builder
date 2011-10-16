@@ -23,7 +23,6 @@
 	 (test-artifact 
 	  (artifact 
 	   "pharo-core"
-	   "a-directory" 
 	   "http:/download/url"))
 	 )
     (assert-true (record? test-artifact))
@@ -35,7 +34,6 @@
 	 (test-artifact 
 	  (artifact 
 	   "pharo-core"
-	   "a-directory" 
 	   "http:/download/url"))
 	 (test-vm
 	  (vm 
@@ -52,7 +50,6 @@
 	 (test-artifact 
 	  (artifact 
 	   "pharo-core"
-	   "a-directory" 
 	   "http:/download/url"))
 	 (test-repository (repository "directory-name" (list test-artifact test-artifact)))
 	 )

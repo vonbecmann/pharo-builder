@@ -107,12 +107,12 @@
     )
   )
 
-(define (artifact name directory-name download-url)
-  "an artifact named NAME at DIRECTORY-NAME and
+(define (artifact name download-url)
+  "an artifact named NAME and
    download from DOWNLOAD-URL"
   (let* (
 	 (new-artifact 
-	  (artifact:make-artifact name directory-name download-url "latest.zip" '()))
+	  (artifact:make-artifact name download-url "latest.zip" '()))
 	 )
     new-artifact)
 )

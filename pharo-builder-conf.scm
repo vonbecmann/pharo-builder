@@ -6,7 +6,6 @@
 (define core 
   (artifact 
        "core"
-       "core" 
        "http://www.pharo-project.org/pharo-download/stable-core")
 )
 

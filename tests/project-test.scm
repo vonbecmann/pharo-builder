@@ -23,7 +23,6 @@
 	 (test-artifact 
 	  (artifact 
 	   artifact-name
-	   "a-directory" 
 	   "http:/download/url"))
 	 (test-vm
 	  (vm 
@@ -46,7 +45,6 @@
 	 (test-artifact 
 	  (artifact 
 	   artifact-name
-	   "a-directory" 
 	   "http:/download/url"))
 	 (test-vm
 	  (vm 
@@ -68,7 +66,6 @@
 	 (test-artifact 
 	  (artifact 
 	   artifact-name
-	   "a-directory" 
 	   "http:/download/url"))
 	 (test-vm
 	  (vm 
