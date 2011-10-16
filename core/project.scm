@@ -12,7 +12,8 @@
   #:use-module (ice-9 format)
   #:use-module (pharo-builder core oscommand)
   #:use-module (pharo-builder core vm)
-  #:use-module (pharo-builder core artifacts)
+  #:use-module ((pharo-builder core artifact)
+		:renamer (symbol-prefix-proc 'artifact:))
   #:export (
 	    make-project
 	    clean
@@ -23,7 +24,6 @@
 	    project-definition
 	    save-definition
 	    create
-	    print
 	    )
   )
 
@@ -37,16 +37,18 @@
   (display (format #f
 		   fmt
 		   (directory-name self)
-		   (name (artifact self))) port)
+		   (artifact:name (artifact self))) port)
 )
+
+(define fields '(directory-name vm artifact package-cache-directory))
 
 (define project 
   (make-record-type "project" 
-		    '(directory-name vm artifact package-cache-directory) print)
+		    fields print)
 )
 
 (define make-project
-  (record-constructor project '(directory-name vm artifact package-cache-directory))
+  (record-constructor project fields)
 )
 
 (define directory-name 
@@ -78,7 +80,7 @@
 	 )
     (mk-directory src)
     (link-package-cache-at package-cache-directory src)
-    (unzip (artifact self) src)
+    (artifact:unzip (artifact self) src)
     )
   )
 
@@ -117,7 +119,6 @@
 	 )
     (execute-vm (vm self) image-filename)
     )
-  self
   )
 
 (define (build self)
@@ -125,19 +126,16 @@
   (clean self)
   (mk-src-directory self)
   (set-up self)
-  self
   )
 
 (define (clean self)
   "clean source directory for the given project."
   (rm-src-directory self)
-  self
   )
 
 (define (mk-home-directory self)
   "make home directory."
   (mk-directory (directory-name self))
-  self
   )
 
 (define (project-definition self)
@@ -147,7 +145,7 @@
 	    "(project\n\t ~S\n\t ~a\n\t ~a\n\t)\n"
 	    (directory-name self)
 	    (vm-name (vm self))
-	    (name (artifact self))
+	    (artifact:name (artifact self))
 	    )
     )
 )
@@ -159,7 +157,6 @@
 	 )
     (with-output-to-file pom-filename (project-definition self))
       )
-  self
 )
 
 (define (set-up self)
@@ -176,10 +173,11 @@
 	(display (string-append script-filename " does not exists.\n"))
 	)
     )
-  self
   )
 
 (define (create self)
-  (build (save-definition (mk-home-directory self)))
+  (mk-home-directory self)
+  (save-definition self)
+  (build self)
 )
 ;;; project.scm ends here

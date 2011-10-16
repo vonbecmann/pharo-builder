@@ -13,7 +13,10 @@
   #:use-module (oop goops)
   #:use-module (ice-9 format)
   #:use-module (pharo-builder core oscommand)
-  #:use-module (pharo-builder core artifacts)
+  #:use-module ((pharo-builder core artifact)
+		:renamer (symbol-prefix-proc 'artifact:))		
+  #:use-module ((pharo-builder core repository)
+		:renamer (symbol-prefix-proc 'repository:))		
   #:use-module (pharo-builder core vm)
   #:use-module ((pharo-builder core project)
 		:select (
@@ -104,29 +107,26 @@
     )
   )
 
-(define (artifact name directory-name download-URL)
+(define (artifact name directory-name download-url)
   "an artifact named NAME at DIRECTORY-NAME and
    download from DOWNLOAD-URL"
-  (define new-artifact
-    (make <artifact>
-      #:name name
-      #:directory-name directory-name
-      #:download-from download-URL
-      )
-    )
-  new-artifact)
+  (let* (
+	 (new-artifact 
+	  (artifact:make-artifact name directory-name download-url "latest.zip" '()))
+	 )
+    new-artifact)
+)
 
 (define (repository directory artifact-list)
   "a repository with ARTIFACTS-LIST at a DIRECTORY"
-  (define new-repository
-    (make <artifacts-repository>
-      #:directory-name (path-join (user-directory pharo-builder)
-				  directory)
-      )
-    )
-  (add-all new-repository artifact-list)
-  new-repository
-  )
+  (let* ((new-repository
+	 (repository:make-repository
+	    '()
+	    (path-join (user-directory pharo-builder) directory)
+	    )))
+    (repository:add-all new-repository artifact-list)
+    new-repository)
+)
 
 (define (vm name path-to-executable)
   "a new vm with PATH-TO-EXECUTABLE."
@@ -136,11 +136,13 @@
   )
 
 (define (project directory-name vm artifact)
-  (let* ((new-project
-    (project:make-project directory-name
-			  vm
-			  artifact
-			  (package-cache-directory pharo-builder))))
+  (let* (
+	 (new-project
+	      (project:make-project directory-name
+		  vm
+		  artifact
+		  (package-cache-directory pharo-builder)))
+	 )
    
     (set! (current-project pharo-builder) new-project)
     new-project
@@ -195,7 +197,8 @@
 (define (build)
   (catch-unbound 
    (lambda ()
-     (project:build (current-project pharo-builder)))
+     (project:build (current-project pharo-builder))
+     )
    )
   )
 

@@ -16,7 +16,6 @@
 	     execute-headless-vm
 	     make-vm
 	     vm-name
-	     print
 	     )
 )
 
@@ -28,12 +27,14 @@
 		   (path self)) port)
 )
 
+(define fields '(name path))
+
 (define vm 
-  (make-record-type "vm" '(name path) print)
+  (make-record-type "vm" fields print)
 )
 
 (define make-vm
-  (record-constructor vm '(name path))
+  (record-constructor vm fields)
 )
 
 (define path 

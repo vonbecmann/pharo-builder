@@ -15,7 +15,7 @@
 (define-class <project-test> (<test-case>)
   )
 
-(define-method (test-print-to-string (self <project-test>))
+(define-method (test-project-print-to-string (self <project-test>))
   (let* ( 
 	 (directory-name "/test-project")
 	 (artifact-name "pharo-core")

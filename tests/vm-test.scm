@@ -10,7 +10,7 @@
 (define-class <vm-test> (<test-case>)
   )
 
-(define-method (test-print-to-string (self <vm-test>))
+(define-method (test-vm-print-to-string (self <vm-test>))
   (let* ( 
 	 (name "test-vm")
 	 (path "/path/to/vm")

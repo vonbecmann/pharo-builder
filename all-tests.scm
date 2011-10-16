@@ -5,5 +5,7 @@
 (use-modules (pharo-builder tests vm-test))
 (use-modules (pharo-builder tests pharo-builder-test))
 (use-modules (pharo-builder tests oscommand-test))
+(use-modules (pharo-builder tests artifact-test))
+(use-modules (pharo-builder tests repository-test))
 
 (exit-with-summary (run-all-defined-test-cases))
