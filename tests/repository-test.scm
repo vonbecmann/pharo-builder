@@ -3,7 +3,8 @@
   #:use-module (unit-test)
   #:use-module (pharo-builder core oscommand)
   #:use-module ((pharo-builder core repository)
-		:select ( repository-print )
+		:select ( print )
+		:renamer (symbol-prefix-proc 'repository:)
 		)
   #:use-module (pharo-builder pharo-builder)
   )
@@ -23,7 +24,7 @@
 	 (expected (format #f fmt full-path '())) 
 	 )
 
-    (repository-print test-repository string-port)
+    (repository:print test-repository string-port)
     (assert-equal expected (get-output-string string-port))
     )
   )

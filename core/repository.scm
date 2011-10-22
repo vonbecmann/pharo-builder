@@ -20,7 +20,6 @@
 	    make-repository
 	    add-all
 	    name
-	    repository-print
 	    directory-name
 	    )
 )
@@ -28,7 +27,7 @@
 ;;
 ;; an Artifacts Repository
 ;;
-(define (repository-print self port)
+(define (print self port)
   (define fmt
     "Repository at directory ~S ~% with artifacts: ~% ~S ~% ")
   (display (format #f
@@ -42,7 +41,7 @@
 (define repository 
   (make-record-type "repository" 
 		    fields
-		    repository-print)
+		    print)
 )
 
 (define make-repository
