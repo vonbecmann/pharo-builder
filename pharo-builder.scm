@@ -17,7 +17,8 @@
 		:renamer (symbol-prefix-proc 'artifact:))		
   #:use-module ((pharo-builder core repository)
 		:renamer (symbol-prefix-proc 'repository:))		
-  #:use-module (pharo-builder core vm)
+  #:use-module ((pharo-builder core vm)
+		:renamer (symbol-prefix-proc 'vm:))		
   #:use-module ((pharo-builder core project)
 		:select (
 			 build 
@@ -50,6 +51,7 @@
 (define-class <pharo-builder> ()
   (directory-name
    #:init-value ""
+   #:init-keyword #:directory-name
    #:accessor directory-name)
   (user-directory
    #:init-keyword #:user-directory
@@ -130,7 +132,7 @@
 
 (define (vm name path-to-executable)
   "a new vm with PATH-TO-EXECUTABLE."
-  (let* ((new-vm (make-vm name path-to-executable)))
+  (let* ((new-vm (vm:make-vm name path-to-executable)))
     new-vm
     )
   )
