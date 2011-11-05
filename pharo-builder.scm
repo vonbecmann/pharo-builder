@@ -70,7 +70,6 @@
 
 (define-method (home-directory (self <pharo-builder>) directory)
   (set! (directory-name self) directory)
-  (set! (package-cache-directory self) (mc-package-cache-at directory))
   (mk-mc-package-cache-directory self)
   )
 
@@ -106,6 +105,7 @@
   (make <pharo-builder>
     #:user-directory uwd
     #:current-directory cwd
+    #:package-cache-directory (mc-package-cache-at uwd)
     )
   )
 
