@@ -1,4 +1,4 @@
-(define-module (pharo-builder tests artifact-test)
+(define-module (pharo-builder unit-tests artifact-test)
   #:use-module (oop goops)
   #:use-module (unit-test)
   #:use-module ((pharo-builder core artifact)

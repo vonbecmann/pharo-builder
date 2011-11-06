@@ -1,4 +1,4 @@
-(define-module (pharo-builder tests parser-test)
+(define-module (pharo-builder unit-tests parser-test)
   #:use-module (oop goops)
   #:use-module (unit-test)
   #:use-module (pharo-builder command-line parser)

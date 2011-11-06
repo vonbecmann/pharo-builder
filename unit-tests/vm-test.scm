@@ -1,4 +1,4 @@
-(define-module (pharo-builder tests vm-test)
+(define-module (pharo-builder unit-tests vm-test)
   #:use-module (oop goops)
   #:use-module (unit-test)
   #:use-module ((pharo-builder core vm)

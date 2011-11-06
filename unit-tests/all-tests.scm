@@ -1,0 +1,11 @@
+(use-modules (oop goops))
+(use-modules (unit-test))
+(use-modules (pharo-builder unit-tests project-test))
+(use-modules (pharo-builder unit-tests parser-test))
+(use-modules (pharo-builder unit-tests vm-test))
+(use-modules (pharo-builder unit-tests pharo-builder-test))
+(use-modules (pharo-builder unit-tests oscommand-test))
+(use-modules (pharo-builder unit-tests artifact-test))
+(use-modules (pharo-builder unit-tests repository-test))
+
+(exit-with-summary (run-all-defined-test-cases))

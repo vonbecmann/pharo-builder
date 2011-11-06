@@ -1,4 +1,4 @@
-(define-module (pharo-builder tests pharo-builder-test)
+(define-module (pharo-builder unit-tests pharo-builder-test)
   #:use-module (oop goops)
   #:use-module (unit-test)
   #:use-module ((pharo-builder pharo-builder)

@@ -1,4 +1,4 @@
-(define-module (pharo-builder tests repository-test)
+(define-module (pharo-builder unit-tests repository-test)
   #:use-module (oop goops)
   #:use-module (unit-test)
   #:use-module (pharo-builder core oscommand)
