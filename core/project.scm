@@ -19,7 +19,7 @@
 	    clean
 	    set-up
 	    build
-	    execute
+	    open
 	    set-up-script-at
 	    project-definition
 	    save-definition
@@ -112,8 +112,8 @@
   (path-join (directory-name self) "pom.scm")
   )
 
-(define (execute self)
-  "execute the given project."
+(define (open self)
+  "open the given project."
   (let* (
 	 (image-filename (image-filename-at self))
 	 )

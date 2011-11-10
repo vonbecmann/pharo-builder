@@ -24,7 +24,7 @@
 			 build 
 			 make-project
 			 create 
-			 execute
+			 open
 			 )
 		:renamer (symbol-prefix-proc 'project:))
   #:export (
@@ -39,8 +39,8 @@
 	    create-project
 	    project
 	    build
-	    execute
-	    build-execute
+	    open
+	    current
 	    )
   )
 
@@ -204,18 +204,17 @@
    )
   )
 
-(define (execute)
+(define (open)
   (catch-unbound 
    (lambda ()
-     (project:execute (current-project pharo-builder)))
+     (project:open (current-project pharo-builder)))
    )
   )
 
-(define (build-execute)
+(define (current)
   (catch-unbound 
    (lambda ()
-     (build)
-     (execute)
+     (current-project pharo-builder)
      )
    )
 )
