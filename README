@@ -5,7 +5,7 @@ try to implement my pharo environment builder again, but this time with guile.
 * TASKS
 ** DONE rename execute to open
 ** DONE add current function
-** TODO refine parser. remove old dependencies.
+** DONE refine parser. remove old dependencies.
 ** TODO move source code to src folder
 *** fix shell scripts
 *** fix module names

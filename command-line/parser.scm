@@ -9,8 +9,6 @@
 
 ;;; Code:
 (define-module (pharo-builder command-line parser)
-  #:use-module (oop goops)
-  #:use-module (ice-9 format)
   #:use-module (ice-9 getopt-long)
   #:export (
 	    parse
