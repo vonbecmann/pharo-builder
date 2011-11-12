@@ -1,12 +1,11 @@
-(define-module (pharo-builder unit-tests artifact-test)
-  #:use-module (oop goops)
-  #:use-module (unit-test)
-  #:use-module ((pharo-builder core artifact)
+(use-modules (oop goops))
+(use-modules (unit-test))
+(use-modules ((core artifact)
 		:select ( print )
 		:renamer (symbol-prefix-proc 'artifact:)
-		)
-  #:use-module (pharo-builder pharo-builder)
-  )
+		))
+(use-modules (pharo-builder))
+
 
 (define-class <artifact-test> (<test-case>)
   )

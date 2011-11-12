@@ -1,9 +1,7 @@
-(define-module (pharo-builder unit-tests pharo-builder-test)
-  #:use-module (oop goops)
-  #:use-module (unit-test)
-  #:use-module ((pharo-builder pharo-builder)
-		:select (vm artifact project repository <pharo-builder>))
-  )
+(use-modules (oop goops))
+(use-modules (unit-test))
+(use-modules (pharo-builder))
+
 
 (define-class <pharo-builder-test> (<test-case>)
   )

@@ -8,7 +8,7 @@
 ;; 
 
 ;;; Code:
-(define-module (pharo-builder core oscommand)
+(define-module (core oscommand)
   #:use-module (ice-9 popen)
   #:use-module (ice-9 rdelim)
   #:export (

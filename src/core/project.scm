@@ -8,11 +8,11 @@
 ;; 
 
 ;;; Code:
-(define-module (pharo-builder core project)
+(define-module (core project)
   #:use-module (ice-9 format)
-  #:use-module (pharo-builder core oscommand)
-  #:use-module (pharo-builder core vm)
-  #:use-module ((pharo-builder core artifact)
+  #:use-module (core oscommand)
+  #:use-module (core vm)
+  #:use-module ((core artifact)
 		:renamer (symbol-prefix-proc 'artifact:))
   #:export (
 	    make-project

@@ -1,15 +1,14 @@
-(define-module (pharo-builder unit-tests project-test)
-  #:use-module (oop goops)
-  #:use-module (unit-test)
-  #:use-module ((pharo-builder core project)
+(use-modules (oop goops))
+(use-modules (unit-test))
+(use-modules ((core project)
 		:select (
 			 print
 			 set-up-script-at
 			 project-definition
 			 )
-		)
-  #:use-module (pharo-builder pharo-builder)
-  )
+		:renamer (symbol-prefix-proc 'project:)
+		))
+(use-modules (pharo-builder))
 
 
 (define-class <project-test> (<test-case>)
@@ -33,7 +32,7 @@
 	 (expected (format #f fmt directory-name artifact-name)) 
 	 )
 
-    (print test-project string-port)
+    (project:print test-project string-port)
     (assert-equal  expected (get-output-string string-port))
     )
   )
@@ -54,7 +53,7 @@
 	 (expected "/test-project/set-up.st") 
 	 )
 
-    (assert-equal  expected (set-up-script-at test-project))
+    (assert-equal  expected (project:set-up-script-at test-project))
     )
   )
 
@@ -79,6 +78,6 @@
 			   artifact-name)
 	    )
 	 )
-    (assert-equal expected (with-output-to-string (project-definition test-project)))
+    (assert-equal expected (with-output-to-string (project:project-definition test-project)))
     )
 )

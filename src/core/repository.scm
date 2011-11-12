@@ -8,10 +8,10 @@
 ;; 
 
 ;;; Code:
-(define-module (pharo-builder core repository)
+(define-module (core repository)
   #:use-module (ice-9 format)
-  #:use-module (pharo-builder core oscommand)
-  #:use-module (pharo-builder core artifact)
+  #:use-module (core oscommand)
+  #:use-module (core artifact)
   #:export (
 	    build-repo
 	    remove

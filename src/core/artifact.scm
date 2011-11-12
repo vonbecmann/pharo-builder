@@ -8,10 +8,10 @@
 ;; 
 
 ;;; Code:
-(define-module (pharo-builder core artifact)
+(define-module (core artifact)
   #:use-module (ice-9 format)
-  #:use-module (pharo-builder core oscommand)
-  #:use-module ((pharo-builder core repository)
+  #:use-module (core oscommand)
+  #:use-module ((core repository)
 		:renamer (symbol-prefix-proc 'repository:))
   #:export (
 	    download

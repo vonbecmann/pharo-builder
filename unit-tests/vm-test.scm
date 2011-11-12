@@ -1,11 +1,10 @@
-(define-module (pharo-builder unit-tests vm-test)
-  #:use-module (oop goops)
-  #:use-module (unit-test)
-  #:use-module ((pharo-builder core vm)
+(use-modules (oop goops))
+(use-modules (unit-test))
+(use-modules ((core vm)
 		:select ( print )
-		)
-  #:use-module (pharo-builder pharo-builder)
-  )
+		))
+(use-modules (pharo-builder))
+
 
 (define-class <vm-test> (<test-case>)
   )

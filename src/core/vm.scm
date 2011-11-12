@@ -8,9 +8,9 @@
 ;; 
 
 ;;; Code:
-(define-module (pharo-builder core vm)
+(define-module (core vm)
    #:use-module (ice-9 format)
-   #:use-module (pharo-builder core oscommand)
+   #:use-module (core oscommand)
    #:export (
 	     execute-vm
 	     execute-headless-vm

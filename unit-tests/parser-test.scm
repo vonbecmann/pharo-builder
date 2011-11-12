@@ -1,8 +1,7 @@
-(define-module (pharo-builder unit-tests parser-test)
-  #:use-module (oop goops)
-  #:use-module (unit-test)
-  #:use-module (pharo-builder command-line parser)
-  )
+(use-modules (oop goops))
+(use-modules (unit-test))
+(use-modules (command-line parser))
+
 (define-class <parser-test> (<test-case>)
   )
 

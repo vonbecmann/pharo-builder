@@ -9,17 +9,17 @@
 ;; 
 
 ;;; Code:
-(define-module (pharo-builder pharo-builder)
+(define-module (pharo-builder)
   #:use-module (oop goops)
   #:use-module (ice-9 format)
-  #:use-module (pharo-builder core oscommand)
-  #:use-module ((pharo-builder core artifact)
+  #:use-module (core oscommand)
+  #:use-module ((core artifact)
 		:renamer (symbol-prefix-proc 'artifact:))		
-  #:use-module ((pharo-builder core repository)
+  #:use-module ((core repository)
 		:renamer (symbol-prefix-proc 'repository:))		
-  #:use-module ((pharo-builder core vm)
+  #:use-module ((core vm)
 		:renamer (symbol-prefix-proc 'vm:))		
-  #:use-module ((pharo-builder core project)
+  #:use-module ((core project)
 		:select (
 			 build 
 			 make-project
@@ -41,6 +41,7 @@
 	    build
 	    open
 	    current
+	    <pharo-builder>
 	    )
   )
 

@@ -10,11 +10,11 @@
 
 ;;; Code:
 (use-modules (oop goops))
-(use-modules (pharo-builder core oscommand))
-(use-modules (pharo-builder core artifact))
-(use-modules (pharo-builder core repository))
-(use-modules (pharo-builder pharo-builder))
-(use-modules (pharo-builder command-line parser))
+(use-modules (core oscommand))
+(use-modules (core artifact))
+(use-modules (core repository))
+(use-modules (pharo-builder))
+(use-modules (command-line parser))
 (use-modules (ice-9 readline))
 
 (activate-readline)

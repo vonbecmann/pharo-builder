@@ -8,7 +8,7 @@
 ;; 
 
 ;;; Code:
-(define-module (pharo-builder command-line parser)
+(define-module (command-line parser)
   #:use-module (ice-9 getopt-long)
   #:export (
 	    parse

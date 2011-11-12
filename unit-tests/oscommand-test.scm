@@ -1,8 +1,7 @@
-(define-module (pharo-builder unit-tests oscommand-test)
-  #:use-module (oop goops)
-  #:use-module (unit-test)
-  #:use-module (pharo-builder core oscommand)
-  )
+(use-modules (oop goops))
+(use-modules (unit-test))
+(use-modules (core oscommand))
+
 
 (define-class <oscommand-test> (<test-case>)
   )
