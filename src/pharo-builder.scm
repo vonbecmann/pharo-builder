@@ -71,6 +71,9 @@
   (current-repository
    #:init-keyword #:current-repository
    #:accessor current-repository)
+  (virtual-machines
+   #:init-value (make-hash-table)
+   #:accessor virtual-machines)
   )
 
 (define-method (home-directory (self <pharo-builder>) directory)
@@ -106,6 +109,14 @@
   (load-file-if-exists (path-to-default-conf self))
   )
 
+(define-method (add-vm (self <pharo-builder>) vm)
+  (hashq-set! (virtual-machines self) (vm:vm-name vm) vm)
+  )
+
+(define-method (get-vm (self <pharo-builder>) vm-name)
+  (hashq-ref (virtual-machines self) vm-name)
+  )
+
 (define pharo-builder
   (make <pharo-builder>
     #:user-directory uwd
@@ -138,6 +149,7 @@
 (define (vm name path-to-executable)
   "a new vm with PATH-TO-EXECUTABLE."
   (let* ((new-vm (vm:make-vm name path-to-executable)))
+    (add-vm pharo-builder new-vm)
     new-vm
     )
   )
@@ -147,7 +159,7 @@
 	 (new-project
 	      (project:make-project 
 	          directory-name
-		  vm
+		  (get-vm pharo-builder vm)
 		  (repository:artifact-ref (current-repository pharo-builder) 
 					   artifact)
 		  (package-cache-directory pharo-builder)))
