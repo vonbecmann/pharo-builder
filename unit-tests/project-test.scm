@@ -5,6 +5,7 @@
 			 print
 			 set-up-script-at
 			 project-definition
+			 make-project
 			 )
 		:renamer (symbol-prefix-proc 'project:)
 		))
@@ -17,18 +18,12 @@
 (define-method (test-project-print-to-string (self <project-test>))
   (let* ( 
 	 (directory-name "/test-project")
-	 (artifact-name "pharo-core")
+	 (artifact-name 'pharo-core)
 	 (fmt "project at ~A based on ~A")
-	 (test-artifact 
-	  (artifact 
-	   artifact-name
-	   "http:/download/url"))
-	 (test-vm
-	  (vm 
-	   "test-vm"
-	   "/path/to/vm"))
+	 (test-artifact (artifact  artifact-name "http:/download/url"))
+	 (test-vm  (vm 'test-vm "/path/to/vm"))
 	 (string-port (open-output-string))
-	 (test-project (project directory-name test-vm test-artifact))
+	 (test-project (project:make-project directory-name test-vm test-artifact ".package-cache"))
 	 (expected (format #f fmt directory-name artifact-name)) 
 	 )
 
@@ -40,39 +35,26 @@
 (define-method (test-set-up-script-at-project (self <project-test>))
   (let* ( 
 	 (directory-name "/test-project")
-	 (artifact-name "pharo-core")
-	 (test-artifact 
-	  (artifact 
-	   artifact-name
-	   "http:/download/url"))
-	 (test-vm
-	  (vm 
-	   "test-vm"
-	   "/path/to/vm"))
-	 (test-project (project directory-name test-vm test-artifact))
+	 (test-artifact (artifact 'pharo-core "http:/download/url"))
+	 (test-vm (vm 'test-vm "/path/to/vm"))
+	 (test-project (project:make-project directory-name test-vm test-artifact ".package-cache"))
 	 (expected "/test-project/set-up.st") 
 	 )
 
-    (assert-equal  expected (project:set-up-script-at test-project))
+    (assert-equal expected (project:set-up-script-at test-project))
     )
   )
 
 (define-method (test-write-project-definition-to-string (self <project-test>))
   (let* ( 
 	 (directory-name "/test-project")
-	 (artifact-name "pharo-core")
-	 (vm-name "test-vm")
-	 (test-artifact 
-	  (artifact 
-	   artifact-name
-	   "http:/download/url"))
-	 (test-vm
-	  (vm 
-	   vm-name
-	   "/path/to/vm"))
-	 (test-project (project directory-name test-vm test-artifact))
+	 (artifact-name 'pharo-core)
+	 (vm-name 'test-vm)
+	 (test-artifact (artifact artifact-name "http:/download/url"))
+	 (test-vm (vm vm-name "/path/to/vm"))
+	 (test-project (project:make-project directory-name test-vm test-artifact "./package-cache"))
 	 (expected (format #f 
-			   "(project\n\t ~S\n\t ~a\n\t ~a\n\t)\n" 
+			   "(project\n\t ~S\n\t '~a\n\t '~a\n\t)\n" 
 			   directory-name 
 			   "test-vm" 
 			   artifact-name)
@@ -81,3 +63,13 @@
     (assert-equal expected (with-output-to-string (project:project-definition test-project)))
     )
 )
+
+(define-method (test-project (self <project-test>))
+  (let* ( 
+	 (test-artifact (artifact 'pharo-core "http:/download/url"))
+	 (test-vm (vm 'test-vm "/path/to/vm"))
+	 (test-project (project:make-project "/test-project" test-vm test-artifact "/package-cache"))
+	 )
+    (assert-true (record? test-project))
+    )
+  )

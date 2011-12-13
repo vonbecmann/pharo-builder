@@ -12,7 +12,7 @@
 
 (define-method (test-artifact-print-to-string (self <artifact-test>))
   (let* ( 
-	 (name "artifact-name")
+	 (name 'artifact-name)
 	 (url "download-url")
 	 (fmt "artifact ~S download from ~% ~S ~% to directory ~S ~%")
 	 (test-artifact
@@ -20,7 +20,7 @@
 	   name
 	   url))
 	 (string-port (open-output-string))
-	 (expected (format #f fmt name url name)) 
+	 (expected (format #f fmt name url (symbol->string name))) 
 	 )
 
     (artifact:print test-artifact string-port)

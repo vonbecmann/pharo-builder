@@ -11,13 +11,10 @@
 
 (define-method (test-vm-print-to-string (self <vm-test>))
   (let* ( 
-	 (name "test-vm")
+	 (name 'test-vm)
 	 (path "/path/to/vm")
 	 (fmt "~A virtual machine at ~A \n")
-	 (test-vm
-	  (vm 
-	   "test-vm"
-	   "/path/to/vm"))
+	 (test-vm (vm name path))
 	 (string-port (open-output-string))
 	 (expected (format #f fmt name path)) 
 	 )

@@ -17,10 +17,11 @@
 	    remove
 	    download-all
 	    add-artifact
-	    make-repository
+	    new-repository-for
 	    add-all
 	    name
 	    directory-name
+	    artifact-ref
 	    )
 )
 
@@ -33,9 +34,12 @@
   (display (format #f
 		   fmt
 		   (directory-name self)
-		   (artifacts self)) port)
+		   (hash-to-pair-list (artifacts self))) port)
 )
 
+(define (hash-to-pair-list table)
+  (hash-map->list cons table)
+)
 (define fields '(artifacts directory-name))
 
 (define repository 
@@ -64,7 +68,7 @@
 
 (define (add-artifact self artifact)
   (set-repository artifact self)
-  (set-artifacts self (append (artifacts self) (list artifact)))
+  (hashq-set! (artifacts self) (artifact-name artifact) artifact)
 )
 
 (define (add-all self artifact-list)
@@ -86,6 +90,14 @@
 
 (define (remove self)
   (rm-directory (directory-name self))
+)
+
+(define (new-repository-for directory)
+  (make-repository (make-hash-table) directory)
+)
+
+(define (artifact-ref self artifact-name)
+  (hashq-ref (artifacts self) artifact-name)
 )
 
 ;;; repository.scm ends here

@@ -2,7 +2,7 @@
 (use-modules (unit-test))
 (use-modules (core oscommand))
 (use-modules ((core repository)
-		:select ( print )
+		:select (print artifact-ref new-repository-for add-artifact)
 		:renamer (symbol-prefix-proc 'repository:)
 		))
 (use-modules (pharo-builder))
@@ -14,13 +14,12 @@
 (define-method (test-repository-print-to-string (self <repository-test>))
   (let* ( 
 	 (directory-name ".my-repository")
-	 (full-path (path-join uwd directory-name))
 	 (fmt "Repository at directory ~S ~% with artifacts: ~% ~S ~% ")
 	 (test-repository
-	    (repository directory-name
-		   '()))
+	    (repository:new-repository-for directory-name)
+	    )
 	 (string-port (open-output-string))
-	 (expected (format #f fmt full-path '())) 
+	 (expected (format #f fmt directory-name '())) 
 	 )
 
     (repository:print test-repository string-port)
@@ -28,4 +27,14 @@
     )
   )
 
+(define-method (test-artifact-ref (self <repository-test>))
+  (let* ( 
+	 (test-artifact (artifact 'pharo-core "http:/download/url"))
+	 (test-repository (repository:new-repository-for "directory-name" ))
+	 )
+    (repository:add-artifact test-repository test-artifact)
+    (display test-repository)
+    (assert-equal test-artifact (repository:artifact-ref test-repository 'pharo-core))
+    )
+  )
 

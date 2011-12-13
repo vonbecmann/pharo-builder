@@ -42,6 +42,7 @@
 	    open
 	    current
 	    <pharo-builder>
+	    repo
 	    )
   )
 
@@ -67,6 +68,9 @@
   (current-project
    #:init-keyword #:current-project
    #:accessor current-project)
+  (current-repository
+   #:init-keyword #:current-repository
+   #:accessor current-repository)
   )
 
 (define-method (home-directory (self <pharo-builder>) directory)
@@ -123,11 +127,11 @@
 (define (repository directory artifact-list)
   "a repository with ARTIFACTS-LIST at a DIRECTORY"
   (let* ((new-repository
-	 (repository:make-repository
-	    '()
+	 (repository:new-repository-for
 	    (path-join (user-directory pharo-builder) directory)
 	    )))
     (repository:add-all new-repository artifact-list)
+    (set! (current-repository pharo-builder) new-repository)
     new-repository)
 )
 
@@ -141,9 +145,11 @@
 (define (project directory-name vm artifact)
   (let* (
 	 (new-project
-	      (project:make-project directory-name
+	      (project:make-project 
+	          directory-name
 		  vm
-		  artifact
+		  (repository:artifact-ref (current-repository pharo-builder) 
+					   artifact)
 		  (package-cache-directory pharo-builder)))
 	 )
    
@@ -197,25 +203,26 @@
 	 )
   )
 
-(define (build)
-  (catch-unbound 
-   (lambda ()
-     (project:build (current-project pharo-builder))
-     )
-   )
-  )
-
-(define (open)
-  (catch-unbound 
-   (lambda ()
-     (project:open (current-project pharo-builder)))
-   )
-  )
-
 (define (current)
   (catch-unbound 
    (lambda ()
      (current-project pharo-builder)
+     )
+   )
+)
+
+(define (build)
+  (project:build (current))
+ )
+
+(define (open)
+  (project:open (current))
+)
+
+(define (repo)
+  (catch-unbound 
+   (lambda ()
+     (current-repository pharo-builder)
      )
    )
 )

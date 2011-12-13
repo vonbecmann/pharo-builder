@@ -37,7 +37,7 @@
   (display (format #f
 		   fmt
 		   (directory-name self)
-		   (artifact:name (artifact self))) port)
+		   (artifact:artifact-name (artifact self))) port)
 )
 
 (define fields '(directory-name vm artifact package-cache-directory))
@@ -142,10 +142,10 @@
   "project definition."
   (lambda ()
     (format #t
-	    "(project\n\t ~S\n\t ~a\n\t ~a\n\t)\n"
+	    "(project\n\t ~S\n\t '~a\n\t '~a\n\t)\n"
 	    (directory-name self)
 	    (vm-name (vm self))
-	    (artifact:name (artifact self))
+	    (artifact:artifact-name (artifact self))
 	    )
     )
 )

@@ -17,7 +17,7 @@
 	    download
 	    unzip
 	    make-artifact
-	    name
+	    artifact-name
 	    set-repository
 	    )
 )
@@ -30,7 +30,7 @@
     "artifact ~S download from ~% ~S ~% to directory ~S ~%")
   (display (format #f
 		   fmt
-		   (name self)
+		   (artifact-name self)
 		   (download-url self)
 		   (directory-name self)) port)
 )
@@ -49,12 +49,12 @@
 		      )
 )
 
-(define name
+(define artifact-name
   (record-accessor artifact 'name)
 )
 
 (define (directory-name self)
-  (name self)
+  (symbol->string (artifact-name self))
 )
 
 (define download-url
