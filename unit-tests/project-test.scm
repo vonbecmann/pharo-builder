@@ -64,12 +64,3 @@
     )
 )
 
-(define-method (test-project (self <project-test>))
-  (let* ( 
-	 (test-artifact (artifact 'pharo-core "http:/download/url"))
-	 (test-vm (vm 'test-vm "/path/to/vm"))
-	 (test-project (project:make-project "/test-project" test-vm test-artifact "/package-cache"))
-	 )
-    (assert-true (record? test-project))
-    )
-  )

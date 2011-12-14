@@ -6,33 +6,6 @@
 (define-class <pharo-builder-test> (<test-case>)
   )
 
-(define-method (test-vm (self <pharo-builder-test>))
-  (let* ( 
-	 (test-vm (vm 'test-vm "/path/to/vm"))
-	 )
-    (assert-true (record? test-vm))
-    )
-  )
-
-(define-method (test-artifact (self <pharo-builder-test>))
-  (let* ( 
-	 (test-artifact (artifact 'pharo-core "http:/download/url"))
-	 )
-    (assert-true (record? test-artifact))
-    )
-  )
-
-
-(define-method (test-repository (self <pharo-builder-test>))
-  (let* ( 
-	 (test-artifact (artifact 'pharo-core "http:/download/url"))
-	 (test-repository (repository "directory-name" 
-				      (list test-artifact test-artifact)))
-	 )
-    (assert-true (record? test-repository))
-    )
-  )
-
 (define-method (test-pharo-builder-print-to-string (self <pharo-builder-test>))
   (let* ( 
 	 (directory-name "a-directory")

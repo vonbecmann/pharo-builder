@@ -40,6 +40,11 @@
 (define (hash-to-pair-list table)
   (hash-map->list cons table)
 )
+
+(define (hash-to-artifact-list table)
+  (hash-map->list (lambda (key value) value) table)
+)
+
 (define fields '(artifacts directory-name))
 
 (define repository 
@@ -80,7 +85,7 @@
 )
 
 (define (download-all self)
-  (map download (artifacts self))
+  (map download (hash-to-artifact-list (artifacts self)))
 )
 
 (define (build-repo self)
