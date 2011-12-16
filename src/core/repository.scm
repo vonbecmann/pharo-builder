@@ -63,10 +63,6 @@
   (record-accessor repository 'artifacts)
 )
 
-(define set-artifacts
-  (record-modifier repository 'artifacts)
-)
-
 (define directory-name
   (record-accessor repository 'directory-name)
 )

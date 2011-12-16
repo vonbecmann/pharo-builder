@@ -43,6 +43,7 @@
 	    current
 	    <pharo-builder>
 	    repo
+	    artifact-named
 	    )
   )
 
@@ -239,4 +240,7 @@
    )
 )
 
+(define (artifact-named artifact-name)
+  (repository:artifact-ref (repo) artifact-name)
+)
 ;;; pharo-builder.scm ends here

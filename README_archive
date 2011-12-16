@@ -1,0 +1,43 @@
+#    -*- mode: org -*-
+
+
+Archived entries from file /home/vonbecmann/workspaces/pharo-builder/README
+* DONE rename execute to open
+  :PROPERTIES:
+  :ARCHIVE_TIME: 2011-12-15 Thu 20:39
+  :ARCHIVE_FILE: ~/workspaces/pharo-builder/README
+  :ARCHIVE_OLPATH: TASKS
+  :ARCHIVE_CATEGORY: README
+  :ARCHIVE_TODO: DONE
+  :END:
+* DONE add current function
+  :PROPERTIES:
+  :ARCHIVE_TIME: 2011-12-15 Thu 20:39
+  :ARCHIVE_FILE: ~/workspaces/pharo-builder/README
+  :ARCHIVE_OLPATH: TASKS
+  :ARCHIVE_CATEGORY: README
+  :ARCHIVE_TODO: DONE
+  :END:
+* DONE refine parser. remove old dependencies.
+  :PROPERTIES:
+  :ARCHIVE_TIME: 2011-12-15 Thu 20:39
+  :ARCHIVE_FILE: ~/workspaces/pharo-builder/README
+  :ARCHIVE_OLPATH: TASKS
+  :ARCHIVE_CATEGORY: README
+  :ARCHIVE_TODO: DONE
+  :END:
+* DONE move source code to src folder
+  :PROPERTIES:
+  :ARCHIVE_TIME: 2011-12-15 Thu 20:40
+  :ARCHIVE_FILE: ~/workspaces/pharo-builder/README
+  :ARCHIVE_OLPATH: TASKS
+  :ARCHIVE_CATEGORY: README
+  :ARCHIVE_TODO: DONE
+  :END:
+** fix shell scripts
+** fix module names
+
+
+
+
+

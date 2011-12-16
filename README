@@ -3,10 +3,6 @@ My Pharo Builder -*- mode:org; -*-
 try to implement my pharo environment builder again, but this time with guile.
 
 * TASKS
-** DONE rename execute to open
-** DONE add current function
-** DONE refine parser. remove old dependencies.
-** DONE move source code to src folder
-*** fix shell scripts
-*** fix module names
+
+** TODO set-up image
 

@@ -9,6 +9,7 @@
 	    )
   (remove (repo))
   (build-repo (repo))
+  (artifact-named 'my-core)
   (create-project directory-name 'my-cog-vm 'my-core)
   (load-pom-at directory-name)
   (build)

@@ -1,27 +1,23 @@
 ;; Configuration for the builder
 ;; just an example
-;;
-;; Artifacts
-;;
-(define core 
-  (artifact 
-       "core"
-       "http://www.pharo-project.org/pharo-download/stable-core")
-)
 
 ;;
 ;; Pharo Artifacts Repository
 ;;
-(define pharo-repository 
-  (repository ".pharo-artifacts"
-		   (list core))
-)
+
+(repository ".pharo-artifacts"
+	    (list 
+	     (artifact 
+	      'core
+	      "http://www.pharo-project.org/pharo-download/stable-core")
+	     )
+	    )
+
 
 ;;;
 ;;; Default Virtual Machine
 ;;;
-(define default-vm
-  (vm "default-vm" "/home/vonbecmann/Pharo/vm/4.4.7.2357-linux/bin/squeak")
-)
+(vm 'default-vm "/home/vonbecmann/Pharo/vm/4.4.7.2357-linux/bin/squeak")
+
 
 
