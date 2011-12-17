@@ -209,15 +209,26 @@
   (display pharo-builder)
   )
 
-(define (catch-unbound thunk)
-  (catch 'goops-error thunk 
+(define (catch-goops-error thunk handler)
+  (catch 'goops-error thunk handler)
+)
+
+(define (catch-project-error thunk)
+  (catch-goops-error thunk 
 	 (lambda (key . args)
 	   (display "there's no current project.\n"))
 	 )
   )
 
-(define (current)
-  (catch-unbound 
+(define (catch-repo-error thunk)
+  (catch-goops-error thunk 
+	 (lambda (key . args)
+	   (display "there's no current repo.\n"))
+	 )
+  )
+
+(define (current-pom)
+  (catch-project-error 
    (lambda ()
      (current-project pharo-builder)
      )
@@ -225,15 +236,15 @@
 )
 
 (define (build)
-  (project:build (current))
+  (project:build (current-pom))
  )
 
 (define (open)
-  (project:open (current))
+  (project:open (current-pom))
 )
 
 (define (repo)
-  (catch-unbound 
+  (catch-repo-error
    (lambda ()
      (current-repository pharo-builder)
      )
