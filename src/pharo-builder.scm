@@ -40,7 +40,7 @@
 	    project
 	    build
 	    open
-	    current
+	    current-pom
 	    <pharo-builder>
 	    repo
 	    artifact-named
