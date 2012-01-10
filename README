@@ -4,7 +4,7 @@ try to implement my pharo environment builder again, but this time with guile.
 
 * TASKS
 
-** TODO remove clos from pharo-builder
+** DONE remove clos from pharo-builder
 
 ** TODO set-up image
 

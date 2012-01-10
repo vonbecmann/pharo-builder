@@ -10,7 +10,6 @@
 
 ;;; Code:
 (define-module (pharo-builder)
-  #:use-module (oop goops)
   #:use-module (ice-9 format)
   #:use-module (core oscommand)
   #:use-module ((core artifact)
@@ -41,7 +40,7 @@
 	    build
 	    open
 	    current-pom
-	    <pharo-builder>
+	    make-pharo-builder
 	    repo
 	    artifact-named
 	    )
@@ -51,46 +50,15 @@
 ;;;
 ;;; configuration builder
 ;;;
-(define-class <pharo-builder> ()
-  (directory-name
-   #:init-value ""
-   #:init-keyword #:directory-name
-   #:accessor directory-name)
-  (user-directory
-   #:init-keyword #:user-directory
-   #:accessor user-directory)
-  (current-directory
-   #:init-keyword #:current-directory
-   #:accessor current-directory)
-  (package-cache-directory
-   #:init-value ""
-   #:init-keyword #:package-cache-directory
-   #:accessor package-cache-directory)
-  (current-project
-   #:init-keyword #:current-project
-   #:accessor current-project)
-  (current-repository
-   #:init-keyword #:current-repository
-   #:accessor current-repository)
-  (virtual-machines
-   #:init-value (make-hash-table)
-   #:accessor virtual-machines)
-  )
+(define fields '(directory-name 
+		 user-directory 
+		 current-directory
+		 package-cache-directory
+		 current-project
+		 current-repository
+		 virtual-machines))
 
-(define-method (home-directory (self <pharo-builder>) directory)
-  (set! (directory-name self) directory)
-  (mk-mc-package-cache-directory self)
-  )
-
-(define-method (mk-mc-package-cache-directory (self <pharo-builder>))
-  (mk-directory (package-cache-directory self))
-  )
-
-(define-method (rm-mc-package-cache (self <pharo-builder>))
-  (rm-directory (package-cache-directory self))
-  )
-
-(define-method (write (self <pharo-builder>) port)
+(define (print self port)
   (define fmt "configuration builder at ~S ~% user's directory: ~S ~% current directory: ~S \n package cache directory: ~S \n")
   (display (format #f
 		   fmt
@@ -101,30 +69,115 @@
 		   ) port)
   )
 
-(define-method (path-to-default-conf (self <pharo-builder>))
+(define pharo-builder-record
+  (make-record-type "pharo-builder-record"
+		    fields
+		    print)
+)
+(define make-pharo-builder
+  (record-constructor pharo-builder-record
+		      fields
+		      )
+)
+(define directory-name
+  (record-accessor pharo-builder-record 'directory-name)
+)
+(define set-directory-name
+  (record-modifier pharo-builder-record 'directory-name)
+)
+(define package-cache-directory
+  (record-accessor pharo-builder-record 'package-cache-directory)
+)
+(define user-directory
+  (record-accessor pharo-builder-record 'user-directory)
+)
+(define current-directory
+  (record-accessor pharo-builder-record 'current-directory)
+)
+(define virtual-machines
+  (record-accessor pharo-builder-record 'virtual-machines)
+)
+(define current-repository
+  (record-accessor pharo-builder-record 'current-repository)
+)
+(define set-current-repository
+  (record-modifier pharo-builder-record 'current-repository)
+)
+(define current-project
+  (record-accessor pharo-builder-record 'current-project)
+)
+(define set-current-project
+  (record-modifier pharo-builder-record 'current-project)
+)
+;; (define-class <pharo-builder> ()
+;;   (directory-name
+;;    #:init-value ""
+;;    #:init-keyword #:directory-name
+;;    #:accessor directory-name)
+;;   (user-directory
+;;    #:init-keyword #:user-directory
+;;    #:accessor user-directory)
+;;   (current-directory
+;;    #:init-keyword #:current-directory
+;;    #:accessor current-directory)
+;;   (package-cache-directory
+;;    #:init-value ""
+;;    #:init-keyword #:package-cache-directory
+;;    #:accessor package-cache-directory)
+;;   (current-project
+;;    #:init-keyword #:current-project
+;;    #:accessor current-project)
+;;   (current-repository
+;;    #:init-keyword #:current-repository
+;;    #:accessor current-repository)
+;;   (virtual-machines
+;;    #:init-value (make-hash-table)
+;;    #:accessor virtual-machines)
+;;   )
+(define pharo-builder
+  (make-pharo-builder
+    ""
+    uwd
+    cwd
+    (mc-package-cache-at uwd)
+    '()
+    '()
+    (make-hash-table)
+    )
+  )
+
+
+(define (home-directory self directory)
+  (set-directory-name self directory)
+  (mk-mc-package-cache-directory self)
+  )
+
+(define (mk-mc-package-cache-directory self)
+  (mk-directory (package-cache-directory self))
+  )
+
+(define (rm-mc-package-cache self)
+  (rm-directory (package-cache-directory self))
+  )
+
+
+(define (path-to-default-conf self)
   (path-join (user-directory self) "pharo-builder-conf.scm")
   )
 
 ;;; load default configuration.
-(define-method (load-default-conf (self <pharo-builder>))
+(define (load-default-conf self)
   (load-file-if-exists (path-to-default-conf self))
   )
 
-(define-method (add-vm (self <pharo-builder>) vm)
+(define (add-vm self vm)
   (hashq-set! (virtual-machines self) (vm:vm-name vm) vm)
   )
 
-(define-method (get-vm (self <pharo-builder>) vm-name)
+(define (get-vm self vm-name)
   (hashq-ref (virtual-machines self) vm-name)
   )
 
-(define pharo-builder
-  (make <pharo-builder>
-    #:user-directory uwd
-    #:current-directory cwd
-    #:package-cache-directory (mc-package-cache-at uwd)
-    )
-  )
 
 (define (artifact name download-url)
   "an artifact named NAME and
@@ -143,7 +196,7 @@
 	    (path-join (user-directory pharo-builder) directory)
 	    )))
     (repository:add-all new-repository artifact-list)
-    (set! (current-repository pharo-builder) new-repository)
+    (set-current-repository pharo-builder new-repository)
     new-repository)
 )
 
@@ -166,7 +219,7 @@
 		  (package-cache-directory pharo-builder)))
 	 )
    
-    (set! (current-project pharo-builder) new-project)
+    (set-current-project pharo-builder new-project)
     new-project
   )
 )

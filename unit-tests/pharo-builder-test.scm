@@ -20,11 +20,14 @@
 			   current-directory 
 			   package-directory)) 
 	 (test-pharo-builder 
-	   (make <pharo-builder>
-	     #:directory-name directory-name
-	     #:user-directory user-directory
-	     #:current-directory current-directory
-	     #:package-cache-directory package-directory
+	   (make-pharo-builder
+	     directory-name
+	     user-directory
+	     current-directory
+	     package-directory
+	     '()
+	     '()
+	     (make-hash-table)
 	     ))
 	     
 	 )
