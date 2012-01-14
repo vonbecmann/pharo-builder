@@ -38,7 +38,7 @@
 	 (test-artifact (artifact 'pharo-core "http:/download/url"))
 	 (test-vm (vm 'test-vm "/path/to/vm"))
 	 (test-project (project:make-project directory-name test-vm test-artifact ".package-cache"))
-	 (expected "/test-project/set-up.st") 
+	 (expected "file:/test-project/set-up.st") 
 	 )
 
     (assert-equal expected (project:set-up-script-at test-project))

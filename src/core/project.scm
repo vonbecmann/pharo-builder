@@ -104,7 +104,7 @@
 
 (define (set-up-script-at self)
   "set-up.st script at source directory."
-  (path-join (directory-name self) "set-up.st")
+  (string-append "file:" (path-join (directory-name self) "set-up.st"))
   )
 
 (define (pom-at self)
