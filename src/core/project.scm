@@ -104,7 +104,7 @@
 
 (define (set-up-script-at self)
   "set-up.st script at source directory."
-  (string-append "file:" (path-join (directory-name self) "set-up.st"))
+  (path-join (directory-name self) "set-up.st")
   )
 
 (define (pom-at self)
@@ -168,7 +168,8 @@
 	(let* (
 	       (image-filename (image-filename-at self))
 	       )
-	  (execute-headless-vm (vm self) image-filename script-filename)
+	  (execute-headless-vm (vm self) image-filename 
+			       (string-append "file:" script-filename))
 	  )
 	(display (string-append script-filename " does not exists.\n"))
 	)
