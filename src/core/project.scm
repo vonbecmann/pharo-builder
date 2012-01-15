@@ -168,8 +168,7 @@
 	(let* (
 	       (image-filename (image-filename-at self))
 	       )
-	  (execute-headless-vm (vm self) image-filename 
-			       (string-append "file:" script-filename))
+	  (execute-headless-vm (vm self) image-filename script-filename)
 	  )
 	(display (string-append script-filename " does not exists.\n"))
 	)
