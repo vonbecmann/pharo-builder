@@ -41,10 +41,6 @@
   (hash-map->list cons table)
 )
 
-(define (hash-to-artifact-list table)
-  (hash-map->list (lambda (key value) value) table)
-)
-
 (define fields '(artifacts directory-name))
 
 (define repository 
@@ -78,6 +74,10 @@
 	(add-artifact self (car artifact-list))
 	(add-all self (cdr artifact-list)))
    )
+)
+
+(define (hash-to-artifact-list table)
+  (hash-map->list (lambda (key value) value) table)
 )
 
 (define (download-all self)
