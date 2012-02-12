@@ -4,7 +4,7 @@
 		:select ( print )
 		:renamer (symbol-prefix-proc 'artifact:)
 		))
-(use-modules (pharo-builder))
+(use-modules (api))
 
 
 (define-class <artifact-test> (<test-case>)

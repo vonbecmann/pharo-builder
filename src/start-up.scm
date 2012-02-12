@@ -13,7 +13,7 @@
 (use-modules (core oscommand))
 (use-modules (core artifact))
 (use-modules (core repository))
-(use-modules (pharo-builder))
+(use-modules (api))
 (use-modules (command-line parser))
 (use-modules (ice-9 readline))
 

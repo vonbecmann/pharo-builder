@@ -3,7 +3,7 @@
 (use-modules ((core vm)
 		:select ( print )
 		))
-(use-modules (pharo-builder))
+(use-modules (api))
 
 
 (define-class <vm-test> (<test-case>)

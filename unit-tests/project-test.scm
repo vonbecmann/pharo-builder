@@ -9,7 +9,7 @@
 			 )
 		:renamer (symbol-prefix-proc 'project:)
 		))
-(use-modules (pharo-builder))
+(use-modules (api))
 
 
 (define-class <project-test> (<test-case>)

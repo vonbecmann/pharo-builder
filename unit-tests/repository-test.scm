@@ -5,7 +5,7 @@
 		:select (print artifact-ref new-repository-for add-artifact)
 		:renamer (symbol-prefix-proc 'repository:)
 		))
-(use-modules (pharo-builder))
+(use-modules (api))
 
 
 (define-class <repository-test> (<test-case>)
