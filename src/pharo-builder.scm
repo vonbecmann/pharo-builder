@@ -24,6 +24,7 @@
 			 make-project
 			 create 
 			 open
+			 set-directory-name
 			 )
 		:renamer (symbol-prefix-proc 'project:))
   #:export (
@@ -42,6 +43,7 @@
 	    current-pom
 	    make-pharo-builder
 	    repo
+	    vms
 	    artifact-named
 	    )
   )
@@ -59,13 +61,14 @@
 		 virtual-machines))
 
 (define (print self port)
-  (define fmt "configuration builder at ~S ~% user's directory: ~S ~% current directory: ~S \n package cache directory: ~S \n")
+  (define fmt "configuration builder at ~S ~% user's directory: ~S ~% current directory: ~S \n package cache directory: ~S \n current ~S \n")
   (display (format #f
 		   fmt
 		   (directory-name self)
 		   (user-directory self)
 		   (current-directory self)
 		   (package-cache-directory self)
+		   (current-project self)
 		   ) port)
   )
 
@@ -109,31 +112,7 @@
 (define set-current-project
   (record-modifier pharo-builder-record 'current-project)
 )
-;; (define-class <pharo-builder> ()
-;;   (directory-name
-;;    #:init-value ""
-;;    #:init-keyword #:directory-name
-;;    #:accessor directory-name)
-;;   (user-directory
-;;    #:init-keyword #:user-directory
-;;    #:accessor user-directory)
-;;   (current-directory
-;;    #:init-keyword #:current-directory
-;;    #:accessor current-directory)
-;;   (package-cache-directory
-;;    #:init-value ""
-;;    #:init-keyword #:package-cache-directory
-;;    #:accessor package-cache-directory)
-;;   (current-project
-;;    #:init-keyword #:current-project
-;;    #:accessor current-project)
-;;   (current-repository
-;;    #:init-keyword #:current-repository
-;;    #:accessor current-repository)
-;;   (virtual-machines
-;;    #:init-value (make-hash-table)
-;;    #:accessor virtual-machines)
-;;   )
+
 (define pharo-builder
   (make-pharo-builder
     ""
@@ -167,7 +146,11 @@
 
 ;;; load default configuration.
 (define (load-default-conf self)
-  (load-file-if-exists (path-to-default-conf self))
+  (if-file-exists-do (path-to-default-conf self)
+		     (lambda (filename)
+		       (load filename)
+		       )
+		     )
   )
 
 (define (add-vm self vm)
@@ -208,11 +191,11 @@
     )
   )
 
-(define (project directory-name vm artifact)
+(define (project vm artifact)
   (let* (
 	 (new-project
 	      (project:make-project 
-	          directory-name
+	          (current-directory pharo-builder)
 		  (get-vm pharo-builder vm)
 		  (repository:artifact-ref (current-repository pharo-builder) 
 					   artifact)
@@ -227,7 +210,14 @@
 (define (create-project directory-name vm artifact)
   "create a new project with VM and ARTIFACT at DIRECTORY-NAME."
   (let* (
-	 (new-project (project directory-name vm artifact))
+	 (new-project 
+	      (project:make-project 
+	          directory-name
+		  (get-vm pharo-builder vm)
+		  (repository:artifact-ref (current-repository pharo-builder) 
+					   artifact)
+		  (package-cache-directory pharo-builder))
+	     )
 	 )
     (project:create new-project)
     new-project
@@ -250,7 +240,14 @@
 
 (define (load-pom-at directory-name)
   "load pom at DIRECTORY-NAME."
-  (load-file-if-exists (pom-at directory-name))
+  (if-file-exists-do (pom-at directory-name)
+		     (lambda (filename)
+		       (load filename)
+		       (project:set-directory-name  
+		       	        (current-project pharo-builder)
+		       	        directory-name)
+		       )
+		     )
   )
 
 (define (load-current-pom)
@@ -262,31 +259,15 @@
   (display pharo-builder)
   )
 
-(define (catch-goops-error thunk handler)
-  (catch 'goops-error thunk handler)
-)
-
-(define (catch-project-error thunk)
-  (catch-goops-error thunk 
-	 (lambda (key . args)
-	   (display "there's no current project.\n"))
-	 )
-  )
-
-(define (catch-repo-error thunk)
-  (catch-goops-error thunk 
-	 (lambda (key . args)
-	   (display "there's no current repo.\n"))
-	 )
-  )
-
 (define (current-pom)
-  (catch-project-error 
+  (catch #t 
    (lambda ()
      (current-project pharo-builder)
      )
+   (lambda (key . args)
+	   (display "there's no current project.\n"))
    )
-)
+  )
 
 (define (build)
   (project:build (current-pom))
@@ -297,10 +278,22 @@
 )
 
 (define (repo)
-  (catch-repo-error
+  (catch #t
    (lambda ()
      (current-repository pharo-builder)
      )
+   (lambda (key . args)
+	   (display "there's no current repo.\n"))
+   )
+)
+
+(define (vms)
+  (catch #t
+   (lambda ()
+     (hash-map->list cons (virtual-machines pharo-builder))
+     )
+   (lambda (key . args)
+	   (display "there aren't vms.\n"))
    )
 )
 

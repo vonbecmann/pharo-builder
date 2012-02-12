@@ -26,7 +26,7 @@
 	    link-package-cache-at
 	    mc-package-cache-at
 	    ;;
-	    load-file-if-exists
+	    if-file-exists-do
 	    )
 )
 
@@ -40,7 +40,6 @@
   "PATH / SUBPATH"
   (string-append path "/" subpath)
 )
-
 
 (define (call-command cmd)
   "call a operating system command.
@@ -108,12 +107,13 @@
   (symlink package-cache-directory (mc-package-cache-at directory-name))
 )
 
-(define (load-file-if-exists filename)
-  "load file if exists."
+(define (if-file-exists-do filename thunk)
+  "if file exists then do thunk otherwise display FILENAME not exists."
   (if (file-exists? filename)
-      (load filename)
+      (thunk filename)
       (display (string-append filename " not exists.\n"))
       )
   )
+	   
 
 ;;; oscommand.scm ends here

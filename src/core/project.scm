@@ -24,6 +24,7 @@
 	    project-definition
 	    save-definition
 	    create
+	    set-directory-name
 	    )
   )
 
@@ -53,6 +54,10 @@
 
 (define directory-name 
   (record-accessor project 'directory-name)
+)
+
+(define set-directory-name 
+  (record-modifier project 'directory-name)
 )
 
 (define vm 
@@ -142,8 +147,7 @@
   "project definition."
   (lambda ()
     (format #t
-	    "(project\n\t ~S\n\t '~a\n\t '~a\n\t)\n"
-	    (directory-name self)
+	    "(project\n\t '~a\n\t '~a\n\t)\n"
 	    (vm-name (vm self))
 	    (artifact:artifact-name (artifact self))
 	    )

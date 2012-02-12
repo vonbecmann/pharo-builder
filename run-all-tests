@@ -1,4 +1,3 @@
 #! /bin/bash
-HOME_DIRECTORY=$(dirname $(readlink -nf $0))
-
-guile -L ${HOME_DIRECTORY}/src -l ${HOME_DIRECTORY}/unit-tests/all-tests.scm
+./run-unit-tests
+./run-functional-tests

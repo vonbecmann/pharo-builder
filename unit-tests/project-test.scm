@@ -54,8 +54,7 @@
 	 (test-vm (vm vm-name "/path/to/vm"))
 	 (test-project (project:make-project directory-name test-vm test-artifact "./package-cache"))
 	 (expected (format #f 
-			   "(project\n\t ~S\n\t '~a\n\t '~a\n\t)\n" 
-			   directory-name 
+			   "(project\n\t '~a\n\t '~a\n\t)\n" 
 			   "test-vm" 
 			   artifact-name)
 	    )
