@@ -113,8 +113,8 @@
   )
 
 (define (output-filename-at self)
-  "output filename at directory."
-  (path-join (directory-name self) "output.log")
+  "output filename at source directory."
+  (path-join (src-directory self) "output.log")
   )
 
 (define (pom-at self)
