@@ -45,18 +45,20 @@
   (record-accessor vm 'name)
 )
 
-(define (execute-vm self image-filename)
+(define (execute-vm self image-filename output-filename)
   "execute a image and don't wait for response."
-  (let* ((cmd (list (path self) image-filename "&")))
+  (let* ((cmd (list (path self) image-filename ">" output-filename "2>&1" "&")))
     (call-command-list cmd))
 )
 
-(define (execute-headless-vm self image-filename script-filename)
+(define (execute-headless-vm self image-filename script-filename output-filename)
   "execute a image and don't wait for response."
   (let* ((cmd (list (path self)
 		    "-vm-display-null"
 		    "-vm-sound-null"
-		    image-filename script-filename)))
+		    image-filename 
+		    script-filename
+		    ">" output-filename "2>&1")))
     (call-command-list cmd))
 )
 

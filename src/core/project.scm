@@ -108,8 +108,13 @@
   )
 
 (define (set-up-script-at self)
-  "set-up.st script at source directory."
+  "set-up.st script at directory."
   (path-join (directory-name self) "set-up.st")
+  )
+
+(define (output-filename-at self)
+  "output filename at directory."
+  (path-join (directory-name self) "output.log")
   )
 
 (define (pom-at self)
@@ -121,8 +126,9 @@
   "open the given project."
   (let* (
 	 (image-filename (image-filename-at self))
+	 (output-filename (output-filename-at self))
 	 )
-    (execute-vm (vm self) image-filename)
+    (execute-vm (vm self) image-filename output-filename)
     )
   )
 
@@ -171,8 +177,12 @@
     (if (file-exists? script-filename)
 	(let* (
 	       (image-filename (image-filename-at self))
+	       (output-filename (output-filename-at self))
 	       )
-	  (execute-headless-vm (vm self) image-filename script-filename)
+	  (execute-headless-vm (vm self) 
+			       image-filename 
+			       script-filename 
+			       output-filename)
 	  )
 	(display (string-append script-filename " does not exists.\n"))
 	)
