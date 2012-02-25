@@ -1,9 +1,7 @@
 ;;; pharo-builder.scm --- create pharo projects
 
 ;;; Commentary:
-;;; 
-
-
+;;; helps you create pharo projects
 
 ;;; History:
 ;; 
@@ -13,12 +11,12 @@
   #:use-module (ice-9 format)
   #:use-module (core oscommand)
   #:use-module ((core vm)
-		:renamer (symbol-prefix-proc 'vm:))		
+		:renamer (symbol-prefix-proc 'vm:))
   #:export (
 	    make-pharo-builder
 	    home-directory
 	    load-default-conf
-	    user-directory 
+	    user-directory
 	    current-repository
 	    set-current-repository
 	    add-vm
@@ -34,8 +32,8 @@
 ;;;
 ;;; configuration builder
 ;;;
-(define fields '(directory-name 
-		 user-directory 
+(define fields '(directory-name
+		 user-directory
 		 current-directory
 		 package-cache-directory
 		 current-project

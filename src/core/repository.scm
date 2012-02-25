@@ -1,8 +1,7 @@
 ;;; repository.scm --- A repository of artifacts
 
 ;;; Commentary:
-;; 
-
+;; A repository of artifacts
 
 ;;; History:
 ;; 
@@ -25,9 +24,6 @@
 	    )
 )
 
-;;
-;; an Artifacts Repository
-;;
 (define (print self port)
   (define fmt
     "Repository at directory ~S ~% with artifacts: ~% ~S ~% ")
@@ -43,14 +39,14 @@
 
 (define fields '(artifacts directory-name))
 
-(define repository 
-  (make-record-type "repository" 
+(define repository
+  (make-record-type "repository"
 		    fields
 		    print)
 )
 
 (define make-repository
-  (record-constructor repository 
+  (record-constructor repository
 		      fields
 		      )
 )

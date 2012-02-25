@@ -1,7 +1,7 @@
 ;;; parser.scm --- command line parser
 
 ;;; Commentary:
-;; 
+;; parse arguments from command line
 
 
 ;;; History:
@@ -17,6 +17,7 @@
 
 
 (define (parse args)
+  "parse home argument from command line"
   (let* (
 	 (option-spec
 	  '(

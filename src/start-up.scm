@@ -1,8 +1,8 @@
-;;; start-up.scm --- set up default configuration
+;;; start-up.scm --- main entry point
 
 
 ;;; Commentary:
-;; 
+;; set up default configuration
 
 
 ;;; History:

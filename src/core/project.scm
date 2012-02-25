@@ -1,8 +1,7 @@
 ;;; project.scm --- a project
 
 ;;; Commentary:
-;; 
-
+;; a pharo project
 
 ;;; History:
 ;; 
@@ -28,10 +27,6 @@
 	    )
   )
 
-;;;
-;;; a project
-;;;
-
 (define (print self port)
   (define fmt
     "project at ~A based on ~A")
@@ -43,8 +38,8 @@
 
 (define fields '(directory-name vm artifact package-cache-directory))
 
-(define project 
-  (make-record-type "project" 
+(define project
+  (make-record-type "project"
 		    fields print)
 )
 
@@ -52,15 +47,15 @@
   (record-constructor project fields)
 )
 
-(define directory-name 
+(define directory-name
   (record-accessor project 'directory-name)
 )
 
-(define set-directory-name 
+(define set-directory-name
   (record-modifier project 'directory-name)
 )
 
-(define vm 
+(define vm
   (record-accessor project 'vm)
 )
 
@@ -68,7 +63,7 @@
   (record-accessor project 'artifact)
 )
 
-(define package-cache-directory 
+(define package-cache-directory
   (record-accessor project 'package-cache-directory)
 )
 		 
@@ -179,9 +174,9 @@
 	       (image-filename (image-filename-at self))
 	       (output-filename (output-filename-at self))
 	       )
-	  (execute-headless-vm (vm self) 
-			       image-filename 
-			       script-filename 
+	  (execute-headless-vm (vm self)
+			       image-filename
+			       script-filename
 			       output-filename)
 	  )
 	(display (string-append script-filename " does not exists.\n"))

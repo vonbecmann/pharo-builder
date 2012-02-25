@@ -1,7 +1,7 @@
 ;;; artifact.scm --- A pharo artifact
 
 ;;; Commentary:
-;; 
+;; An artifact
 
 
 ;;; History:
@@ -20,66 +20,6 @@
 	    artifact-name
 	    set-repository
 	    )
-)
-
-;;;
-;;; an Artifact
-;;;
-(define (print self port)
-  (define fmt
-    "artifact ~S download from ~% ~S ~% to directory ~S ~%")
-  (display (format #f
-		   fmt
-		   (artifact-name self)
-		   (download-url self)
-		   (directory-name self)) port)
-)
-
-(define fields '(name download-url filename repository))
-
-(define artifact 
-  (make-record-type "artifact"
-		    fields
-		    print)
-)
-
-(define make-artifact
-  (record-constructor artifact 
-		      fields
-		      )
-)
-
-(define artifact-name
-  (record-accessor artifact 'name)
-)
-
-(define (directory-name self)
-  (symbol->string (artifact-name self))
-)
-
-(define download-url
-  (record-accessor artifact 'download-url)
-)
-
-(define filename
-  (record-accessor artifact 'filename)
-)
-
-(define repository
-  (record-accessor artifact 'repository)
-)
-
-(define set-repository
-  (record-modifier artifact 'repository)
-)
-
-(define (base-path self)
-  (path-join (repository:directory-name (repository self))
-	     (directory-name self))
-)
-
-(define (full-path self)
-  (path-join (base-path self) (filename self))
 )
 
 (define (download self)
@@ -102,6 +42,63 @@
 	 )
          (call-command-list cmd)
      )
+)
+
+(define (print self port)
+  (define fmt
+    "artifact ~S download from ~% ~S ~% to directory ~S ~%")
+  (display (format #f
+		   fmt
+		   (artifact-name self)
+		   (download-url self)
+		   (directory-name self)) port)
+)
+
+(define fields '(name download-url filename repository))
+
+(define artifact
+  (make-record-type "artifact"
+		    fields
+		    print)
+)
+
+(define make-artifact
+  (record-constructor artifact
+		      fields
+		      )
+)
+
+(define artifact-name
+  (record-accessor artifact 'name)
+)
+
+(define set-repository
+  (record-modifier artifact 'repository)
+)
+
+(define (directory-name self)
+  (symbol->string (artifact-name self))
+)
+
+(define download-url
+  (record-accessor artifact 'download-url)
+)
+
+(define filename
+  (record-accessor artifact 'filename)
+)
+
+(define repository
+  (record-accessor artifact 'repository)
+)
+
+(define (base-path self)
+  (path-join (repository:directory-name (repository self))
+	     (directory-name self))
+)
+
+(define (full-path self)
+  (path-join (base-path self) (filename self))
 )
 
 ;;; artifact.scm ends here

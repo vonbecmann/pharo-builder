@@ -1,8 +1,7 @@
 ;;; oscommand.scm --- Operating System Commands
 
 ;;; Commentary:
-;; 
-
+;; Operating System Commands
 
 ;;; History:
 ;; 
@@ -114,6 +113,5 @@
       (display (string-append filename " not exists.\n"))
       )
   )
-	   
 
 ;;; oscommand.scm ends here

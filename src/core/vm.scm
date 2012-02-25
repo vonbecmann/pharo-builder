@@ -3,7 +3,6 @@
 ;;; Commentary:
 ;; execute an image
 
-
 ;;; History:
 ;; 
 
@@ -29,7 +28,7 @@
 
 (define fields '(name path))
 
-(define vm 
+(define vm
   (make-record-type "vm" fields print)
 )
 
@@ -37,7 +36,7 @@
   (record-constructor vm fields)
 )
 
-(define path 
+(define path
   (record-accessor vm 'path)
 )
 
@@ -46,17 +45,19 @@
 )
 
 (define (execute-vm self image-filename output-filename)
-  "execute a image and don't wait for response."
+  "execute a image and don't wait for the response.
+   std error and output are redirected to OUTPUT-FILENAME"
   (let* ((cmd (list (path self) image-filename ">" output-filename "2>&1" "&")))
     (call-command-list cmd))
 )
 
 (define (execute-headless-vm self image-filename script-filename output-filename)
-  "execute a image and don't wait for response."
+  "execute a image and wait for the response.
+   std error and output are redirected to OUTPUT-FILENAME"
   (let* ((cmd (list (path self)
 		    "-vm-display-null"
 		    "-vm-sound-null"
-		    image-filename 
+		    image-filename
 		    script-filename
 		    ">" output-filename "2>&1")))
     (call-command-list cmd))
