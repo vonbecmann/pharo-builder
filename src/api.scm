@@ -10,8 +10,8 @@
 		:renamer (symbol-prefix-proc 'artifact:))
   #:use-module ((core repository)
 		:renamer (symbol-prefix-proc 'repository:))
-  #:use-module ((core vm)
-		:renamer (symbol-prefix-proc 'vm:))
+  #:use-module ((core source)
+		:renamer (symbol-prefix-proc 'source:))
   #:use-module ((core project)
 		:select (
 			 build
@@ -40,6 +40,10 @@
 	    artifact-named
 	    vm
 	    vms
+	    vm-named
+	    install
+	    source
+	    sources
 	    )
   )
 
@@ -51,6 +55,7 @@
     (mc-package-cache-at uwd)
     '()
     '()
+    (make-hash-table)
     (make-hash-table)
     )
   )
@@ -70,6 +75,17 @@
      )
    (lambda (key . args)
 	   (display "there aren't vms.\n"))
+   )
+)
+
+(define (sources)
+  "all sources."
+  (catch #t
+   (lambda ()
+     (hash-map->list cons (st-sources pharo-builder))
+     )
+   (lambda (key . args)
+   	   (display "there aren't sources.\n"))
    )
 )
 
@@ -108,6 +124,17 @@
 (define (artifact-named artifact-name)
   "get artifact named ARTIFACT-NAME"
   (repository:artifact-ref (repo) artifact-name)
+)
+
+(define (vm-named vm-name)
+  "get vm named VM-NAME"
+  (repository:artifact-ref (repo) vm-name)
+)
+
+(define (install vm)
+  "install VM with references to sources"
+  (artifact:install vm (hash-map->list (lambda (key value) value) 
+				       (st-sources pharo-builder)))
 )
 
 ;; Loading
@@ -193,18 +220,24 @@
 
 (define (artifact name download-url)
   "an artifact named NAME and download from DOWNLOAD-URL"
-  (let* (
-	 (new-artifact
-	  (artifact:make-artifact name download-url "latest.zip" '()))
-	 )
-    new-artifact)
+  (artifact:make-artifact name download-url "latest.zip" '() "" "")
 )
 
-(define (vm name path-to-executable)
-  "a vm with PATH-TO-EXECUTABLE."
-  (let* ((new-vm (vm:make-vm name path-to-executable)))
+(define (vm name download-url installation-directory path-to-executable)
+  "a vm install at INSTALLATION-DIRECTORY with PATH-TO-EXECUTABLE."
+  (let* ((new-vm (artifact:make-artifact name download-url "latest.zip" '() installation-directory path-to-executable)))
     (add-vm pharo-builder new-vm)
-    new-vm
+    )
+  )
+
+(define (source name filename directory)
+  "a source file at DIRECTORY"
+  (let* ((new-source (source:make-source
+		  name 
+		  filename
+		  directory 
+		  )))
+    (add-source pharo-builder new-source)
     )
   )
 

@@ -21,7 +21,7 @@
 	 (artifact-name 'pharo-core)
 	 (fmt "project at ~A based on ~A")
 	 (test-artifact (artifact  artifact-name "http:/download/url"))
-	 (test-vm  (vm 'test-vm "/path/to/vm"))
+	 (test-vm  (vm 'test-vm "http:/download/url" "installation-directory" "/path/to/vm"))
 	 (string-port (open-output-string))
 	 (test-project (project:make-project directory-name test-vm test-artifact ".package-cache"))
 	 (expected (format #f fmt directory-name artifact-name)) 
@@ -36,7 +36,7 @@
   (let* ( 
 	 (directory-name "/test-project")
 	 (test-artifact (artifact 'pharo-core "http:/download/url"))
-	 (test-vm (vm 'test-vm "/path/to/vm"))
+	 (test-vm (vm 'test-vm "http:/download/url" "installation-directory" "/path/to/vm"))
 	 (test-project (project:make-project directory-name test-vm test-artifact ".package-cache"))
 	 (expected "/test-project/set-up.st") 
 	 )
@@ -51,7 +51,7 @@
 	 (artifact-name 'pharo-core)
 	 (vm-name 'test-vm)
 	 (test-artifact (artifact artifact-name "http:/download/url"))
-	 (test-vm (vm vm-name "/path/to/vm"))
+	 (test-vm (vm vm-name "http:/download/url" "installation-directory" "/path/to/vm"))
 	 (test-project (project:make-project directory-name test-vm test-artifact "./package-cache"))
 	 (expected (format #f 
 			   "(project\n\t '~a\n\t '~a\n\t)\n" 

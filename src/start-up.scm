@@ -12,6 +12,7 @@
 (use-modules (oop goops))
 (use-modules (core oscommand))
 (use-modules (core artifact))
+(use-modules (core source))
 (use-modules (core repository))
 (use-modules (api))
 (use-modules (command-line parser))

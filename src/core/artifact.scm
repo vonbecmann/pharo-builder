@@ -11,14 +11,19 @@
 (define-module (core artifact)
   #:use-module (ice-9 format)
   #:use-module (core oscommand)
+  #:use-module ((core source)
+		:renamer (symbol-prefix-proc 'source:))
   #:use-module ((core repository)
 		:renamer (symbol-prefix-proc 'repository:))
   #:export (
 	    download
 	    unzip
+	    install
 	    make-artifact
 	    artifact-name
 	    set-repository
+	    execute-vm
+	    execute-headless-vm
 	    )
 )
 
@@ -37,11 +42,21 @@
 (define (unzip self to-directory)
   "unzip artifact filename to directory."
   (let* (
-	 (cmd  (list "unzip -q -j" (full-path self)
-		     "*.image *.changes -d" to-directory))
+	 (cmd  (list "unzip -q -j" (full-path self) "*.image *.changes -d" to-directory))
 	 )
          (call-command-list cmd)
      )
+)
+
+(define (install self sources)
+  "install artifact filename to installation-directory."
+  (mk-directory (installation-directory self))
+  (let* (
+	 (cmd  (list "unzip -q -o" (full-path self) "-d" (installation-directory self)))
+	 )
+         (call-command-list cmd)
+     )
+  (for-each (lambda (source) (source:link-at source (installation-directory self))) sources)
 )
 
 (define (print self port)
@@ -51,10 +66,16 @@
 		   fmt
 		   (artifact-name self)
 		   (download-url self)
-		   (directory-name self)) port)
+		   (directory-name self)
+		   (installation-directory self)) port)
 )
 
-(define fields '(name download-url filename repository))
+(define fields '(name 
+		 download-url 
+		 filename 
+		 repository 
+		 installation-directory
+		 path-to-executable))
 
 (define artifact
   (make-record-type "artifact"
@@ -92,6 +113,18 @@
   (record-accessor artifact 'repository)
 )
 
+(define installation-directory
+  (record-accessor artifact 'installation-directory)
+)
+
+(define path-to-executable
+  (record-accessor artifact 'path-to-executable)
+)
+
+(define (path self)
+  (path-join (installation-directory self) (path-to-executable self))
+)
+
 (define (base-path self)
   (path-join (repository:directory-name (repository self))
 	     (directory-name self))
@@ -99,6 +132,25 @@
 
 (define (full-path self)
   (path-join (base-path self) (filename self))
+)
+
+(define (execute-vm self image-filename output-filename)
+  "execute a image and don't wait for the response.
+   std error and output are redirected to OUTPUT-FILENAME"
+  (let* ((cmd (list (path self) image-filename ">" output-filename "2>&1" "&")))
+    (call-command-list cmd))
+)
+
+(define (execute-headless-vm self image-filename script-filename output-filename)
+  "execute a image and wait for the response.
+   std error and output are redirected to OUTPUT-FILENAME"
+  (let* ((cmd (list (path self)
+		    "-vm-display-null"
+		    "-vm-sound-null"
+		    image-filename
+		    script-filename
+		    ">" output-filename "2>&1")))
+    (call-command-list cmd))
 )
 
 ;;; artifact.scm ends here

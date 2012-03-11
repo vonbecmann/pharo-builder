@@ -2,10 +2,10 @@
 (use-modules (unit-test))
 (load "project-test.scm")
 (load "parser-test.scm")
-(load "vm-test.scm")
 (load "pharo-builder-test.scm")
 (load "oscommand-test.scm")
 (load "artifact-test.scm")
 (load "repository-test.scm")
+(load "source-test.scm")
 
 (exit-with-summary (run-all-defined-test-cases))

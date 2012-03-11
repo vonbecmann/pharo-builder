@@ -30,6 +30,7 @@
 	     current-project
 	     '()
 	     (make-hash-table)
+	     (make-hash-table)	     
 	     ))
 	     
 	 )

@@ -10,14 +10,14 @@
 	     (artifact 
 	      'core
 	      "http://www.pharo-project.org/pharo-download/stable-core")
+	     (vm 
+	      'pharo-cog-vm 
+	      "https://ci.lille.inria.fr/pharo/view/Cog/job/Cog-Unix/lastSuccessfulBuild/artifact/Cog.zip"
+	      "/home/vonbecmann/bin/pharo-cog-vm"
+              "CogVM")
 	     )
 	    )
 
-
-;;;
-;;; Default Virtual Machine
-;;;
-(vm 'default-vm "/home/vonbecmann/Pharo/vm/4.4.7.2357-linux/bin/squeak")
-
+(source 'pharov10 "PharoV10.sources" "/home/vonbecmann/bin/sources")
 
 

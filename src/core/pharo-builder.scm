@@ -10,8 +10,10 @@
 (define-module (core pharo-builder)
   #:use-module (ice-9 format)
   #:use-module (core oscommand)
-  #:use-module ((core vm)
-		:renamer (symbol-prefix-proc 'vm:))
+  #:use-module ((core artifact)
+		:renamer (symbol-prefix-proc 'artifact:))
+  #:use-module ((core source)
+		:renamer (symbol-prefix-proc 'source:))
   #:export (
 	    make-pharo-builder
 	    home-directory
@@ -26,6 +28,8 @@
 	    package-cache-directory
 	    current-project
 	    set-current-project
+	    add-source
+	    st-sources
 	    )
   )
 
@@ -38,7 +42,8 @@
 		 package-cache-directory
 		 current-project
 		 current-repository
-		 virtual-machines))
+		 virtual-machines
+		 sources))
 
 (define (print self port)
   (define fmt "configuration builder at ~S ~% user's directory: ~S ~% current directory: ~S \n package cache directory: ~S \n current ~S \n")
@@ -93,6 +98,10 @@
   (record-modifier pharo-builder-record 'current-project)
 )
 
+(define st-sources
+  (record-accessor pharo-builder-record 'sources)
+)
+
 (define (home-directory self directory)
   (set-directory-name self directory)
   (mk-mc-package-cache-directory self)
@@ -120,11 +129,15 @@
   )
 
 (define (add-vm self vm)
-  (hashq-set! (virtual-machines self) (vm:vm-name vm) vm)
+  (hashq-set! (virtual-machines self) (artifact:artifact-name vm) vm)
   )
 
 (define (get-vm self vm-name)
   (hashq-ref (virtual-machines self) vm-name)
+  )
+
+(define (add-source self source)
+  (hashq-set! (st-sources self) (source:source-name source) source)
   )
 
 ;;; pharo-builder.scm ends here

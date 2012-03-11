@@ -10,7 +10,6 @@
 (define-module (core project)
   #:use-module (ice-9 format)
   #:use-module (core oscommand)
-  #:use-module (core vm)
   #:use-module ((core artifact)
 		:renamer (symbol-prefix-proc 'artifact:))
   #:export (
@@ -123,7 +122,7 @@
 	 (image-filename (image-filename-at self))
 	 (output-filename (output-filename-at self))
 	 )
-    (execute-vm (vm self) image-filename output-filename)
+    (artifact:execute-vm (vm self) image-filename output-filename)
     )
   )
 
@@ -149,7 +148,7 @@
   (lambda ()
     (format #t
 	    "(project\n\t '~a\n\t '~a\n\t)\n"
-	    (vm-name (vm self))
+	    (artifact:artifact-name (vm self))
 	    (artifact:artifact-name (artifact self))
 	    )
     )
@@ -174,10 +173,10 @@
 	       (image-filename (image-filename-at self))
 	       (output-filename (output-filename-at self))
 	       )
-	  (execute-headless-vm (vm self)
-			       image-filename
-			       script-filename
-			       output-filename)
+	  (artifact:execute-headless-vm (vm self)
+					image-filename
+					script-filename
+					output-filename)
 	  )
 	(display (string-append script-filename " does not exists.\n"))
 	)
