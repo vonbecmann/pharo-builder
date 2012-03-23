@@ -66,38 +66,38 @@
   (record-accessor project 'package-cache-directory)
 )
 		 
-(define (src-directory self)
-  "source directory."
-  (path-join (directory-name self) "src")
+(define (target-directory self)
+  "target directory."
+  (path-join (directory-name self) "target")
   )
 
-(define (mk-src-directory self)
-  "make source directory."
+(define (mk-target-directory self)
+  "make target directory."
   (let* (
-	 (src (src-directory self))
+	 (target (target-directory self))
 	 (package-cache-directory (package-cache-directory self))
 	 )
-    (mk-directory src)
-    (link-package-cache-at package-cache-directory src)
-    (artifact:unzip (artifact self) src)
+    (mk-directory target)
+    (link-package-cache-at package-cache-directory target)
+    (artifact:unzip (artifact self) target)
     )
   )
 
-(define (rm-src-directory self)
-  "remove source directory."
-  (rm-directory (src-directory self))
+(define (rm-target-directory self)
+  "remove target directory."
+  (rm-directory (target-directory self))
   )
 
 (define (image-filename-at self)
-  "image filename at source directory."
+  "image filename at target directory."
   (let* (
 	 (cmd
 	  (list
 	   "basename $(find "
-	   (src-directory self)
+	   (target-directory self)
 	   "-name *.image)"))
 	 )
-    (path-join (src-directory self) (call-input-command-list cmd))
+    (path-join (target-directory self) (call-input-command-list cmd))
     )
   )
 
@@ -107,12 +107,12 @@
   )
 
 (define (output-filename-at self)
-  "output filename at source directory."
-  (path-join (src-directory self) "output.log")
+  "output filename at target directory."
+  (path-join (target-directory self) "output.log")
   )
 
 (define (pom-at self)
-  "pom file at source directory."
+  "pom file at home directory."
   (path-join (directory-name self) "pom.scm")
   )
 
@@ -129,13 +129,13 @@
 (define (build self)
   "build the given project."
   (clean self)
-  (mk-src-directory self)
+  (mk-target-directory self)
   (set-up self)
   )
 
 (define (clean self)
-  "clean source directory for the given project."
-  (rm-src-directory self)
+  "clean target directory for the given project."
+  (rm-target-directory self)
   )
 
 (define (mk-home-directory self)
