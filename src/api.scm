@@ -69,46 +69,22 @@
 
 (define (vms)
   "all virtual machines."
-  (catch #t
-   (lambda ()
-     (hash-map->list cons (virtual-machines pharo-builder))
-     )
-   (lambda (key . args)
-	   (display "there aren't vms.\n"))
-   )
+  (hash-map->list cons (virtual-machines pharo-builder))
 )
 
 (define (sources)
   "all sources."
-  (catch #t
-   (lambda ()
-     (hash-map->list cons (st-sources pharo-builder))
-     )
-   (lambda (key . args)
-   	   (display "there aren't sources.\n"))
-   )
+  (hash-map->list cons (st-sources pharo-builder))
 )
 
 (define (repo)
   "current repository"
-  (catch #t
-   (lambda ()
-     (current-repository pharo-builder)
-     )
-   (lambda (key . args)
-	   (display "there's no current repo.\n"))
-   )
+  (current-repository pharo-builder)
 )
 
 (define (current-pom)
   "current project"
-  (catch #t
-   (lambda ()
-     (current-project pharo-builder)
-     )
-   (lambda (key . args)
-	   (display "there's no current project.\n"))
-   )
+  (current-project pharo-builder)
   )
 
 (define (build)
@@ -132,9 +108,8 @@
 )
 
 (define (install vm)
-  "install VM with references to sources"
-  (artifact:install vm (hash-map->list (lambda (key value) value) 
-				       (st-sources pharo-builder)))
+  "install VM"
+  (artifact:install vm)
 )
 
 ;; Loading
@@ -218,14 +193,14 @@
   )
 )
 
-(define (artifact name download-url)
-  "an artifact named NAME and download from DOWNLOAD-URL"
-  (artifact:make-artifact name download-url "latest.zip" '() "" "")
+(define (artifact name download-url source-name)
+  "an artifact named NAME and download from DOWNLOAD-URL, based on SOURCE-NAME"
+  (artifact:make-artifact-for name download-url (get-source pharo-builder source-name))
 )
 
 (define (vm name download-url installation-directory path-to-executable)
   "a vm install at INSTALLATION-DIRECTORY with PATH-TO-EXECUTABLE."
-  (let* ((new-vm (artifact:make-artifact name download-url "latest.zip" '() installation-directory path-to-executable)))
+  (let* ((new-vm (artifact:make-vm-for name download-url installation-directory path-to-executable)))
     (add-vm pharo-builder new-vm)
     )
   )

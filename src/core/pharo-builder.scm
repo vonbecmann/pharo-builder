@@ -30,6 +30,7 @@
 	    set-current-project
 	    add-source
 	    st-sources
+	    get-source
 	    )
   )
 
@@ -138,6 +139,10 @@
 
 (define (add-source self source)
   (hashq-set! (st-sources self) (source:source-name source) source)
+  )
+
+(define (get-source self source-name)
+  (hashq-ref (st-sources self) source-name)
   )
 
 ;;; pharo-builder.scm ends here

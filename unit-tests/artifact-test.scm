@@ -12,13 +12,13 @@
 
 (define-method (test-artifact-print-to-string (self <artifact-test>))
   (let* ( 
+	 (test-source
+	  (source 'pharov10 "PharoV10.sources" "/home/vonbecmann/bin/sources"))
 	 (name 'artifact-name)
 	 (url "download-url")
 	 (fmt "artifact ~S download from ~% ~S ~% to directory ~S ~%")
 	 (test-artifact
-	  (artifact
-	   name
-	   url))
+	  (artifact name url 'pharov10))
 	 (string-port (open-output-string))
 	 (expected (format #f fmt name url (symbol->string name))) 
 	 )

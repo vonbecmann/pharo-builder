@@ -20,7 +20,9 @@
 	 (directory-name "/test-project")
 	 (artifact-name 'pharo-core)
 	 (fmt "project at ~A based on ~A")
-	 (test-artifact (artifact  artifact-name "http:/download/url"))
+	 (test-source
+	  (source 'pharov10 "PharoV10.sources" "/home/vonbecmann/bin/sources"))
+	 (test-artifact (artifact  artifact-name "http:/download/url" 'pharov10))
 	 (test-vm  (vm 'test-vm "http:/download/url" "installation-directory" "/path/to/vm"))
 	 (string-port (open-output-string))
 	 (test-project (project:make-project directory-name test-vm test-artifact ".package-cache"))
@@ -35,7 +37,9 @@
 (define-method (test-set-up-script-at-project (self <project-test>))
   (let* ( 
 	 (directory-name "/test-project")
-	 (test-artifact (artifact 'pharo-core "http:/download/url"))
+	 (test-source
+	  (source 'pharov10 "PharoV10.sources" "/home/vonbecmann/bin/sources"))
+	 (test-artifact (artifact 'pharo-core "http:/download/url" 'pharov10))
 	 (test-vm (vm 'test-vm "http:/download/url" "installation-directory" "/path/to/vm"))
 	 (test-project (project:make-project directory-name test-vm test-artifact ".package-cache"))
 	 (expected "/test-project/set-up.st") 
@@ -50,7 +54,9 @@
 	 (directory-name "/test-project")
 	 (artifact-name 'pharo-core)
 	 (vm-name 'test-vm)
-	 (test-artifact (artifact artifact-name "http:/download/url"))
+	 (test-source
+	  (source 'pharov10 "PharoV10.sources" "/home/vonbecmann/bin/sources"))
+	 (test-artifact (artifact artifact-name "http:/download/url" 'pharov10))
 	 (test-vm (vm vm-name "http:/download/url" "installation-directory" "/path/to/vm"))
 	 (test-project (project:make-project directory-name test-vm test-artifact "./package-cache"))
 	 (expected (format #f 

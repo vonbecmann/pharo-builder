@@ -29,7 +29,9 @@
 
 (define-method (test-artifact-ref (self <repository-test>))
   (let* ( 
-	 (test-artifact (artifact 'pharo-core "http:/download/url"))
+	 (test-source
+	  (source 'pharov10 "PharoV10.sources" "/home/vonbecmann/bin/sources"))
+	 (test-artifact (artifact 'pharo-core "http:/download/url" 'pharov10))
 	 (test-repository (repository:new-repository-for "directory-name" ))
 	 )
     (repository:add-artifact test-repository test-artifact)

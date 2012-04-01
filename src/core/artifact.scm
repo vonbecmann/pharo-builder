@@ -11,15 +11,16 @@
 (define-module (core artifact)
   #:use-module (ice-9 format)
   #:use-module (core oscommand)
-  #:use-module ((core source)
-		:renamer (symbol-prefix-proc 'source:))
   #:use-module ((core repository)
 		:renamer (symbol-prefix-proc 'repository:))
+  #:use-module ((core source)
+		:renamer (symbol-prefix-proc 'source:))
   #:export (
 	    download
 	    unzip
 	    install
-	    make-artifact
+	    make-artifact-for
+	    make-vm-for
 	    artifact-name
 	    set-repository
 	    execute-vm
@@ -45,10 +46,11 @@
 	 (cmd  (list "unzip -q -j" (full-path self) "*.image *.changes -d" to-directory))
 	 )
          (call-command-list cmd)
+	 (source:link-at (source self) to-directory)
      )
 )
 
-(define (install self sources)
+(define (install self)
   "install artifact filename to installation-directory."
   (mk-directory (installation-directory self))
   (let* (
@@ -56,7 +58,6 @@
 	 )
          (call-command-list cmd)
      )
-  (for-each (lambda (source) (source:link-at source (installation-directory self))) sources)
 )
 
 (define (print self port)
@@ -74,6 +75,7 @@
 		 download-url 
 		 filename 
 		 repository 
+		 source
 		 installation-directory
 		 path-to-executable))
 
@@ -87,6 +89,14 @@
   (record-constructor artifact
 		      fields
 		      )
+)
+
+(define (make-artifact-for name download-url source)
+  (make-artifact name download-url "latest.zip" '() source "" "")
+)
+
+(define (make-vm-for name download-url installation-directory path-to-executable)
+  (make-artifact name download-url "latest.zip" '() '() installation-directory path-to-executable)
 )
 
 (define artifact-name
@@ -103,6 +113,10 @@
 
 (define download-url
   (record-accessor artifact 'download-url)
+)
+
+(define source
+  (record-accessor artifact 'source)
 )
 
 (define filename
