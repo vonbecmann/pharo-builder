@@ -41,7 +41,7 @@
 	    vm
 	    vms
 	    vm-named
-	    install
+	    install-vm-named
 	    source
 	    sources
 	    )
@@ -54,7 +54,7 @@
     cwd
     (mc-package-cache-at uwd)
     '()
-    '()
+    (repository:new-repository-for (path-join uwd ".pharo-artifacts"))
     (make-hash-table)
     (make-hash-table)
     )
@@ -104,12 +104,12 @@
 
 (define (vm-named vm-name)
   "get vm named VM-NAME"
-  (repository:artifact-ref (repo) vm-name)
+  (get-vm pharo-builder vm-name)
 )
 
-(define (install vm)
+(define (install-vm-named vm-name)
   "install VM"
-  (artifact:install vm)
+  (artifact:install (vm-named vm-name))
 )
 
 ;; Loading
@@ -148,15 +148,12 @@
   )
 
 ;; Instance Creation
-(define (repository directory artifact-list)
-  "a repository with ARTIFACTS-LIST at a DIRECTORY"
-  (let* ((new-repository
-	 (repository:new-repository-for
-	    (path-join (user-directory pharo-builder) directory)
-	    )))
-    (repository:add-all new-repository artifact-list)
-    (set-current-repository pharo-builder new-repository)
-    new-repository)
+(define (repository directory)
+  "a repository at a DIRECTORY"
+  (repository:set-directory-name 
+   (repo) 
+   (path-join (user-directory pharo-builder) directory))
+  (repo) 
 )
 
 (define (create-project directory-name vm artifact)
@@ -166,7 +163,7 @@
 	      (project:make-project
 	          directory-name
 		  (get-vm pharo-builder vm)
-		  (repository:artifact-ref (current-repository pharo-builder)
+		  (repository:artifact-ref (repo)
 					   artifact)
 		  (package-cache-directory pharo-builder))
 	     )
@@ -180,14 +177,12 @@
   "a project based on ARTIFACT running on VM."
   (let* (
 	 (new-project
-	      (project:make-project
-	          (current-directory pharo-builder)
-		  (get-vm pharo-builder vm)
-		  (repository:artifact-ref (current-repository pharo-builder)
-					   artifact)
-		  (package-cache-directory pharo-builder)))
+	  (project:make-project
+	   (current-directory pharo-builder)
+	   (get-vm pharo-builder vm)
+	   (repository:artifact-ref (repo) artifact)
+	   (package-cache-directory pharo-builder)))
 	 )
-   
     (set-current-project pharo-builder new-project)
     new-project
   )
@@ -195,13 +190,21 @@
 
 (define (artifact name download-url source-name)
   "an artifact named NAME and download from DOWNLOAD-URL, based on SOURCE-NAME"
-  (artifact:make-artifact-for name download-url (get-source pharo-builder source-name))
+  (let* (
+	 (new-artifact (artifact:make-artifact-for name download-url 
+				     (get-source pharo-builder source-name)))
+	 )
+    (repository:add-artifact (repo) new-artifact) 
+    new-artifact
+    )
 )
 
 (define (vm name download-url installation-directory path-to-executable)
   "a vm install at INSTALLATION-DIRECTORY with PATH-TO-EXECUTABLE."
   (let* ((new-vm (artifact:make-vm-for name download-url installation-directory path-to-executable)))
+    (repository:add-artifact (repo) new-vm) 
     (add-vm pharo-builder new-vm)
+    new-vm
     )
   )
 

@@ -13,7 +13,7 @@
 
 
 (define-class <project-test> (<test-case>)
-  )
+ ) 
 
 (define-method (test-project-print-to-string (self <project-test>))
   (let* ( 
@@ -22,13 +22,12 @@
 	 (fmt "project at ~A based on ~A")
 	 (test-source
 	  (source 'pharov10 "PharoV10.sources" "/home/vonbecmann/bin/sources"))
-	 (test-artifact (artifact  artifact-name "http:/download/url" 'pharov10))
-	 (test-vm  (vm 'test-vm "http:/download/url" "installation-directory" "/path/to/vm"))
+	 (test-artifact (artifact artifact-name "http:/download/url" 'pharov10))
+	 (test-vm (vm 'test-vm "http:/download/url" "installation-directory" "/path/to/vm"))
 	 (string-port (open-output-string))
 	 (test-project (project:make-project directory-name test-vm test-artifact ".package-cache"))
 	 (expected (format #f fmt directory-name artifact-name)) 
 	 )
-
     (project:print test-project string-port)
     (assert-equal  expected (get-output-string string-port))
     )
@@ -60,7 +59,7 @@
 	 (test-vm (vm vm-name "http:/download/url" "installation-directory" "/path/to/vm"))
 	 (test-project (project:make-project directory-name test-vm test-artifact "./package-cache"))
 	 (expected (format #f 
-			   "(project\n\t '~a\n\t '~a\n\t)\n" 
+			   "(pb:project\n\t '~a\n\t '~a\n\t)\n" 
 			   "test-vm" 
 			   artifact-name)
 	    )

@@ -2,6 +2,6 @@
 HOME_DIRECTORY=$(dirname $(readlink -nf $0))
 
 guile -L ${HOME_DIRECTORY}/src \
-      -l ${HOME_DIRECTORY}/src/start-up.scm \
-      -s ${HOME_DIRECTORY}/unit-tests/functional-test.scm \
-      -e main -- --home=${HOME_DIRECTORY} 
+    -l ${HOME_DIRECTORY}/unit-tests/functional-test.scm \
+    -e main  -- --home=${HOME_DIRECTORY} 
+

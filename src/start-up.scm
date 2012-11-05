@@ -9,13 +9,12 @@
 ;; 
 
 ;;; Code:
-(use-modules (oop goops))
-(use-modules (core oscommand))
-(use-modules (core artifact))
-(use-modules (core source))
-(use-modules (core repository))
-(use-modules (api))
-(use-modules (command-line parser))
+(use-modules  ((core artifact)
+	       :renamer (symbol-prefix-proc 'pb:)))
+(use-modules  ((api)
+	       :renamer (symbol-prefix-proc 'pb:)))
+(use-modules ((command-line parser)
+	      :renamer (symbol-prefix-proc 'parser:)))
 (use-modules (ice-9 readline))
 
 (activate-readline)
@@ -23,13 +22,13 @@
 (define (main args)
   (let*
       (
-       (home-directory-arg (parse args))
+       (home-directory-arg (parser:parse args))
        )
-    (set-home-directory-to home-directory-arg)
+    (pb:set-home-directory-to home-directory-arg)
     (newline)
-    (load-default-configuration)
-    (load-current-pom)
-    (display-configuration)
+    (pb:load-default-configuration)
+    (pb:load-current-pom)
+    (pb:display-configuration)
     )
   )
 

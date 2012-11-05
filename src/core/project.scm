@@ -147,7 +147,7 @@
   "project definition."
   (lambda ()
     (format #t
-	    "(project\n\t '~a\n\t '~a\n\t)\n"
+	    "(pb:project\n\t '~a\n\t '~a\n\t)\n"
 	    (artifact:artifact-name (vm self))
 	    (artifact:artifact-name (artifact self))
 	    )

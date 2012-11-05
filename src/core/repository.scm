@@ -17,9 +17,9 @@
 	    download-all
 	    add-artifact
 	    new-repository-for
-	    add-all
 	    name
 	    directory-name
+	    set-directory-name
 	    artifact-ref
 	    )
 )
@@ -59,17 +59,13 @@
   (record-accessor repository 'directory-name)
 )
 
+(define set-directory-name
+  (record-modifier repository 'directory-name)
+)
+
 (define (add-artifact self artifact)
   (set-repository artifact self)
   (hashq-set! (artifacts self) (artifact-name artifact) artifact)
-)
-
-(define (add-all self artifact-list)
-  (if (not (null? artifact-list))
-      (begin
-	(add-artifact self (car artifact-list))
-	(add-all self (cdr artifact-list)))
-   )
 )
 
 (define (hash-to-artifact-list table)
