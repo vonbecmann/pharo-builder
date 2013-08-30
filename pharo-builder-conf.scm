@@ -7,17 +7,16 @@
 
 (pb:repository ".pharo-artifacts")
 
+(pb:source 'pharov20 "PharoV20.sources" "/home/vonbecmann/bin/sources")
+
 (pb:artifact 
- 'core
- "http://www.pharo-project.org/pharo-download/stable-core"
- 'pharov10)
+ 'pharo-20
+ "http://files.pharo.org/image/20/latest.zip"
+ 'pharov20)
 
 (pb:vm 
- 'pharo-cog-vm 
- "https://ci.lille.inria.fr/pharo/view/Cog/job/Cog-Unix/lastSuccessfulBuild/artifact/Cog.zip"
- "/home/vonbecmann/bin/pharo-cog-vm"
- "CogVM")
-
-(pb:source 'pharov10 "PharoV10.sources" "/home/vonbecmann/bin/sources")
-
+ 'pharo-vm 
+ "http://files.pharo.org/vm/pharo/linux/stable.zip"
+ "/home/vonbecmann/bin/pharo-vm"
+ "pharo")
 
