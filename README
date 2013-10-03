@@ -4,9 +4,9 @@ try to implement my pharo environment builder again, but this time with guile.
 
 * REQUIRES
 - apt-get install curl
-- at-get install guile-1.8
-- at-get install guile-1.8-doc
-- apt-get install guile-library
+- at-get install guile-2.0
+- at-get install guile-2.0-doc
+
 
 
 * TASKS

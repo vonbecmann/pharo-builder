@@ -1,27 +1,18 @@
-(use-modules (oop goops))
-(use-modules (unit-test))
+(define-module (oscommand-test))
+(use-modules (srfi srfi-64))
 (use-modules (core oscommand))
 
+(test-begin "oscommand-test")
 
-(define-class <oscommand-test> (<test-case>)
-  )
+(test-equal "unzip-is-installed"
+	    0 
+	    (let* ((unzip-version '("unzip -v")))
+	      (call-command-list unzip-version))
+)
 
-(define-method (test-unzip-is-installed (self <oscommand-test>))
-  (let* ( 
-	 (unzip-version '("unzip -v"))
-	 (expected 0)
-	 )
+(test-equal "curl-is-installed" 
+	    0
+	    (let* ((curl-version '("curl -V")))
+	      (call-command-list curl-version)))
 
-    (assert-equal expected (call-command-list unzip-version))
-    )
-  )
-
-(define-method (test-curl-is-installed (self <oscommand-test>))
-  (let* ( 
-	 (curl-version '("curl -V"))
-	 (expected 0)
-	 )
-
-    (assert-equal expected (call-command-list curl-version))
-    )
-  )
+(test-end)

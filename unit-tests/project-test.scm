@@ -1,5 +1,5 @@
-(use-modules (oop goops))
-(use-modules (unit-test))
+(define-module (project-test))
+(use-modules (srfi srfi-64))
 (use-modules ((core project)
 		:select (
 			 print
@@ -11,60 +11,34 @@
 		))
 (use-modules (api))
 
+(test-begin "project-test")
 
-(define-class <project-test> (<test-case>)
- ) 
+(define directory-name "/test-project")
+(define artifact-name 'pharo-core)
+(define vm-name 'test-vm)
+(define test-source (source 'pharov10 "PharoV10.sources" "/home/vonbecmann/bin/sources"))
+(define test-artifact (artifact artifact-name "http:/download/url" 'pharov10))
+(define test-vm (vm vm-name "http:/download/url" "installation-directory" "/path/to/vm"))
+(define test-project (project:make-project directory-name test-vm test-artifact "./package-cache"))
 
-(define-method (test-project-print-to-string (self <project-test>))
-  (let* ( 
-	 (directory-name "/test-project")
-	 (artifact-name 'pharo-core)
-	 (fmt "project at ~A based on ~A")
-	 (test-source
-	  (source 'pharov10 "PharoV10.sources" "/home/vonbecmann/bin/sources"))
-	 (test-artifact (artifact artifact-name "http:/download/url" 'pharov10))
-	 (test-vm (vm 'test-vm "http:/download/url" "installation-directory" "/path/to/vm"))
-	 (string-port (open-output-string))
-	 (test-project (project:make-project directory-name test-vm test-artifact ".package-cache"))
-	 (expected (format #f fmt directory-name artifact-name)) 
-	 )
-    (project:print test-project string-port)
-    (assert-equal  expected (get-output-string string-port))
-    )
-  )
-
-(define-method (test-set-up-script-at-project (self <project-test>))
-  (let* ( 
-	 (directory-name "/test-project")
-	 (test-source
-	  (source 'pharov10 "PharoV10.sources" "/home/vonbecmann/bin/sources"))
-	 (test-artifact (artifact 'pharo-core "http:/download/url" 'pharov10))
-	 (test-vm (vm 'test-vm "http:/download/url" "installation-directory" "/path/to/vm"))
-	 (test-project (project:make-project directory-name test-vm test-artifact ".package-cache"))
-	 (expected "/test-project/set-up.st") 
-	 )
-
-    (assert-equal expected (project:set-up-script-at test-project))
-    )
-  )
-
-(define-method (test-write-project-definition-to-string (self <project-test>))
-  (let* ( 
-	 (directory-name "/test-project")
-	 (artifact-name 'pharo-core)
-	 (vm-name 'test-vm)
-	 (test-source
-	  (source 'pharov10 "PharoV10.sources" "/home/vonbecmann/bin/sources"))
-	 (test-artifact (artifact artifact-name "http:/download/url" 'pharov10))
-	 (test-vm (vm vm-name "http:/download/url" "installation-directory" "/path/to/vm"))
-	 (test-project (project:make-project directory-name test-vm test-artifact "./package-cache"))
-	 (expected (format #f 
-			   "(pb:project\n\t '~a\n\t '~a\n\t)\n" 
-			   "test-vm" 
-			   artifact-name)
-	    )
-	 )
-    (assert-equal expected (with-output-to-string (project:project-definition test-project)))
-    )
+(test-equal "project as string" 
+	    (format #f "project at ~A based on ~A" directory-name artifact-name)
+	    (let* ((string-port (open-output-string)))
+	      (project:print test-project string-port) 
+	      (get-output-string string-port)
+	      )
 )
+
+(test-equal "project's setup script" 
+	    "/test-project/set-up.st" 
+	    (project:set-up-script-at test-project)
+)
+
+(test-equal "project's definition"
+	    (format #f "(pb:project\n\t '~a\n\t '~a\n\t)\n" vm-name artifact-name)
+	    (with-output-to-string (project:project-definition test-project))
+)
+
+(test-end)
+
 

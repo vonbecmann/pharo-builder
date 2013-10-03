@@ -1,11 +1,13 @@
-(use-modules (oop goops))
-(use-modules (unit-test))
-(load "project-test.scm")
-(load "parser-test.scm")
-(load "pharo-builder-test.scm")
-(load "oscommand-test.scm")
-(load "artifact-test.scm")
-(load "repository-test.scm")
-(load "source-test.scm")
+(use-modules (srfi srfi-64))
+(use-modules (project-test))
+(use-modules (parser-test))
+(use-modules (pharo-builder-test))
+(use-modules (oscommand-test))
+(use-modules (artifact-test))
+(use-modules (repository-test)) 
+(use-modules (source-test))
 
-(exit-with-summary (run-all-defined-test-cases))
+(exit (= (test-runner-fail-count (test-runner-current)) 0))
+
+
+

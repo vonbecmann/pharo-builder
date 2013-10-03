@@ -1,24 +1,17 @@
-(use-modules (oop goops))
-(use-modules (unit-test))
+(define-module (parser-test))
+(use-modules (srfi srfi-64))
 (use-modules (command-line parser))
 
-(define-class <parser-test> (<test-case>)
-  )
+(test-begin "parser-test")
 
-(define-method (test-parse-command-line-when-home-exists (self <parser-test>))
-  (let* (
-	 (command-line '("guile" "--home=/home/bcontreras/pharo-builder"))
-	 (expected "/home/bcontreras/pharo-builder")
-	 )
-    (assert-equal expected (parse command-line))
-    )
+(test-equal "parse command line when home exists"
+	    "/home/bcontreras/pharo-builder"   
+	    (parse '("guile" "--home=/home/bcontreras/pharo-builder"))
 )
 
-(define-method (test-parse-command-line-when-home-doesnot-exists (self <parser-test>))
-  (let* (
-	 (command-line '("guile"))
-	 (expected #f)
-	 )
-    (assert-equal expected (parse command-line))
-    )
+(test-equal "parse command line when home doesn't exists"
+	    #f   
+	    (parse '("guile"))
 )
+
+(test-end)
