@@ -17,6 +17,6 @@
 (pb:vm 
  'pharo-vm 
  "http://files.pharo.org/vm/pharo/linux/stable.zip"
- "/home/vonbecmann/bin/pharo-vm"
+ "/home/vonbecmann/bin/pharo"
  "pharo")
 

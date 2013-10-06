@@ -16,7 +16,7 @@
       ((home-directory-arg (parser:parse args))
        (directory-name (path-join uwd "a-test"))
        (vm-directory (path-join directory-name "pharo-cog-vm"))
-       (path-to-executable "CogVM"))
+       (path-to-executable "pharo"))
 
     (pb:set-home-directory-to home-directory-arg)
     (newline)
@@ -24,14 +24,14 @@
     (rm-directory directory-name)
     (mk-directory directory-name)
     (pb:repository ".test-pharo-artifacts")
-    (pb:source 'pharov10 "PharoV10.sources" "/home/vonbecmann/bin/sources")
+    (pb:source 'pharov20 "PharoV20.sources" "/home/vonbecmann/bin/sources")
     (pb:artifact 
      'my-core
-     "https://ci.lille.inria.fr/pharo/view/Pharo%201.4/job/Pharo%201.4/lastSuccessfulBuild/artifact/Pharo-1.4.zip"
-     'pharov10)
+     "http://files.pharo.org/image/20/latest.zip"
+     'pharov20)
     (pb:vm 
      'my-cog-vm
-     "https://ci.lille.inria.fr/pharo/view/Cog/job/Cog-VM/Architecture=32,OS=linux/lastSuccessfulBuild/artifact/Cog-linux.zip"
+     "http://files.pharo.org/vm/pharo/linux/stable.zip"
      vm-directory
      path-to-executable)
 
