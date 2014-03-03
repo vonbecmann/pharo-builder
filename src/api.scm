@@ -41,7 +41,6 @@
 	    vm
 	    vms
 	    vm-named
-	    install-vm-named
 	    source
 	    sources
 	    )
@@ -107,10 +106,6 @@
   (get-vm pharo-builder vm-name)
 )
 
-(define (install-vm-named vm-name)
-  "install VM"
-  (artifact:install (vm-named vm-name))
-)
 
 ;; Loading
 ;;
@@ -199,9 +194,9 @@
     )
 )
 
-(define (vm name download-url installation-directory path-to-executable)
-  "a vm install at INSTALLATION-DIRECTORY with PATH-TO-EXECUTABLE."
-  (let* ((new-vm (artifact:make-vm-for name download-url installation-directory path-to-executable)))
+(define (vm name download-url path-to-executable)
+  "a vm with PATH-TO-EXECUTABLE."
+  (let* ((new-vm (artifact:make-vm-for name download-url path-to-executable)))
     (repository:add-artifact (repo) new-vm) 
     (add-vm pharo-builder new-vm)
     new-vm

@@ -15,7 +15,6 @@
   (let*
       ((home-directory-arg (parser:parse args))
        (directory-name (path-join uwd "a-test"))
-       (vm-directory (path-join directory-name "pharo-cog-vm"))
        (path-to-executable "pharo"))
 
     (pb:set-home-directory-to home-directory-arg)
@@ -32,7 +31,6 @@
     (pb:vm 
      'my-cog-vm
      "http://files.pharo.org/vm/pharo/linux/stable.zip"
-     vm-directory
      path-to-executable)
 
     (repository:remove (pb:repo))
@@ -41,7 +39,6 @@
 
     (pb:artifact-named 'my-core)
     (pb:vms)
-    (pb:install-vm-named 'my-cog-vm)
 
     (pb:sources)
     (pb:create-project directory-name 'my-cog-vm 'my-core)

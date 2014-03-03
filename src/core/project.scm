@@ -79,6 +79,7 @@
 	 )
     (mk-directory target)
     (link-package-cache-at package-cache-directory target)
+    (artifact:unzip-vm (vm self) target)
     (artifact:unzip (artifact self) target)
     )
   )
@@ -111,6 +112,11 @@
   (path-join (target-directory self) "output.log")
   )
 
+(define (vm-filename-at self)
+  "vm filename at target directory."
+  (path-join (target-directory self) (artifact:path-to-executable (vm self)))
+  )
+
 (define (pom-at self)
   "pom file at home directory."
   (path-join (directory-name self) "pom.scm")
@@ -119,10 +125,11 @@
 (define (open self)
   "open the given project."
   (let* (
+	 (vm-filename (vm-filename-at self))
 	 (image-filename (image-filename-at self))
 	 (output-filename (output-filename-at self))
 	 )
-    (artifact:execute-vm (vm self) image-filename output-filename)
+    (execute vm-filename image-filename output-filename)
     )
   )
 
@@ -170,13 +177,14 @@
 	 )
     (if (file-exists? script-filename)
 	(let* (
+	       (vm-filename (vm-filename-at self))
 	       (image-filename (image-filename-at self))
 	       (output-filename (output-filename-at self))
 	       )
-	  (artifact:execute-headless-vm (vm self)
-					image-filename
-					script-filename
-					output-filename)
+	  (execute-headless vm-filename
+			       image-filename
+			       script-filename
+			       output-filename)
 	  )
 	(display (string-append script-filename " does not exists.\n"))
 	)
@@ -188,4 +196,24 @@
   (save-definition self)
   (build self)
 )
+
+(define (execute vm-filename image-filename output-filename)
+  "execute a image and don't wait for the response.
+   std error and output are redirected to OUTPUT-FILENAME"
+  (let* ((cmd (list vm-filename image-filename ">" output-filename "2>&1" "&")))
+    (call-command-list cmd))
+)
+
+(define (execute-headless vm-filename image-filename script-filename output-filename)
+  "execute a image and wait for the response.
+   std error and output are redirected to OUTPUT-FILENAME"
+  (let* ((cmd (list vm-filename
+		    "-vm-display-null"
+		    "-vm-sound-null"
+		    image-filename
+		    script-filename
+		    ">" output-filename "2>&1")))
+    (call-command-list cmd))
+)
+
 ;;; project.scm ends here

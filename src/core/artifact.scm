@@ -18,13 +18,12 @@
   #:export (
 	    download
 	    unzip
-	    install
+	    unzip-vm
 	    make-artifact-for
 	    make-vm-for
 	    artifact-name
 	    set-repository
-	    execute-vm
-	    execute-headless-vm
+	    path-to-executable
 	    )
 )
 
@@ -50,15 +49,15 @@
      )
 )
 
-(define (install self)
-  "install artifact filename to installation-directory."
-  (mk-directory (installation-directory self))
+(define (unzip-vm self to-directory)
+  "unzip vm filename to directory."
   (let* (
-	 (cmd  (list "unzip -q -o" (full-path self) "-d" (installation-directory self)))
+	 (cmd  (list "unzip -q -o" (full-path self) "-d" to-directory))
 	 )
          (call-command-list cmd)
      )
 )
+
 
 (define (print self port)
   (define fmt
@@ -67,8 +66,7 @@
 		   fmt
 		   (artifact-name self)
 		   (download-url self)
-		   (directory-name self)
-		   (installation-directory self)) port)
+		   (directory-name self)) port)
 )
 
 (define fields '(name 
@@ -76,7 +74,6 @@
 		 filename 
 		 repository 
 		 source
-		 installation-directory
 		 path-to-executable))
 
 (define artifact
@@ -92,11 +89,11 @@
 )
 
 (define (make-artifact-for name download-url source)
-  (make-artifact name download-url "latest.zip" '() source "" "")
+  (make-artifact name download-url "latest.zip" '() source "")
 )
 
-(define (make-vm-for name download-url installation-directory path-to-executable)
-  (make-artifact name download-url "latest.zip" '() '() installation-directory path-to-executable)
+(define (make-vm-for name download-url path-to-executable)
+  (make-artifact name download-url "latest.zip" '() '() path-to-executable)
 )
 
 (define artifact-name
@@ -127,16 +124,8 @@
   (record-accessor artifact 'repository)
 )
 
-(define installation-directory
-  (record-accessor artifact 'installation-directory)
-)
-
 (define path-to-executable
   (record-accessor artifact 'path-to-executable)
-)
-
-(define (path self)
-  (path-join (installation-directory self) (path-to-executable self))
 )
 
 (define (base-path self)
@@ -146,25 +135,6 @@
 
 (define (full-path self)
   (path-join (base-path self) (filename self))
-)
-
-(define (execute-vm self image-filename output-filename)
-  "execute a image and don't wait for the response.
-   std error and output are redirected to OUTPUT-FILENAME"
-  (let* ((cmd (list (path self) image-filename ">" output-filename "2>&1" "&")))
-    (call-command-list cmd))
-)
-
-(define (execute-headless-vm self image-filename script-filename output-filename)
-  "execute a image and wait for the response.
-   std error and output are redirected to OUTPUT-FILENAME"
-  (let* ((cmd (list (path self)
-		    "-vm-display-null"
-		    "-vm-sound-null"
-		    image-filename
-		    script-filename
-		    ">" output-filename "2>&1")))
-    (call-command-list cmd))
 )
 
 ;;; artifact.scm ends here
