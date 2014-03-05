@@ -124,13 +124,7 @@
 
 (define (open self)
   "open the given project."
-  (let* (
-	 (vm-filename (vm-filename-at self))
-	 (image-filename (image-filename-at self))
-	 (output-filename (output-filename-at self))
-	 )
-    (execute vm-filename image-filename output-filename)
-    )
+  (execute self)
   )
 
 (define (build self)
@@ -167,28 +161,12 @@
 	 (pom-filename (pom-at self))
 	 )
     (with-output-to-file pom-filename (project-definition self))
-      )
+    )
 )
 
 (define (set-up self)
   "set up the given project."
-  (let* (
-	 (script-filename (set-up-script-at self))
-	 )
-    (if (file-exists? script-filename)
-	(let* (
-	       (vm-filename (vm-filename-at self))
-	       (image-filename (image-filename-at self))
-	       (output-filename (output-filename-at self))
-	       )
-	  (execute-headless vm-filename
-			       image-filename
-			       script-filename
-			       output-filename)
-	  )
-	(display (string-append script-filename " does not exists.\n"))
-	)
-    )
+  (execute-headless self)
   )
 
 (define (create self)
@@ -197,23 +175,37 @@
   (build self)
 )
 
-(define (execute vm-filename image-filename output-filename)
+(define (execute self)
   "execute a image and don't wait for the response.
    std error and output are redirected to OUTPUT-FILENAME"
-  (let* ((cmd (list vm-filename image-filename ">" output-filename "2>&1" "&")))
+  (let* (
+	 (vm-filename (vm-filename-at self))
+	 (image-filename (image-filename-at self))
+	 (output-filename (output-filename-at self))
+	 (cmd (list vm-filename image-filename ">" output-filename "2>&1" "&"))
+	 )
     (call-command-list cmd))
 )
 
-(define (execute-headless vm-filename image-filename script-filename output-filename)
+(define (execute-headless self)
   "execute a image and wait for the response.
    std error and output are redirected to OUTPUT-FILENAME"
-  (let* ((cmd (list vm-filename
-		    "-vm-display-null"
-		    "-vm-sound-null"
-		    image-filename
-		    script-filename
-		    ">" output-filename "2>&1")))
-    (call-command-list cmd))
+  (let* (
+	 (script-filename (set-up-script-at self))
+	 )
+    (if (file-exists? script-filename)
+	(let* (
+	       (vm-filename (vm-filename-at self))
+	       (image-filename (image-filename-at self))
+	       (output-filename (output-filename-at self))
+	       (cmd (list vm-filename "-vm-display-null" "-vm-sound-null" 
+			  image-filename script-filename ">" output-filename "2>&1"))
+	       )
+	  (call-command-list cmd)
+	  )
+	(display (string-append script-filename " does not exists.\n"))
+	)
+    )
 )
 
 ;;; project.scm ends here

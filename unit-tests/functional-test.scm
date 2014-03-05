@@ -1,6 +1,5 @@
 (use-modules (core oscommand))
 (use-modules (core artifact))
-;; (use-modules (core source))
 (use-modules ((core repository)
 	      :renamer (symbol-prefix-proc 'repository:)))
 (use-modules  ((api)
@@ -30,7 +29,7 @@
      'pharov20)
     (pb:vm 
      'my-cog-vm
-     "http://files.pharo.org/vm/pharo/linux/stable.zip"
+     "http://files.pharo.org/vm/pharo/linux/stable.bak.zip"
      path-to-executable)
 
     (repository:remove (pb:repo))

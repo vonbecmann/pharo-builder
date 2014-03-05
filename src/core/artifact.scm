@@ -58,7 +58,6 @@
      )
 )
 
-
 (define (print self port)
   (define fmt
     "artifact ~S download from ~% ~S ~% to directory ~S ~%")
