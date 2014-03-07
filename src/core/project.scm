@@ -9,6 +9,7 @@
 ;;; Code:
 (define-module (core project)
   #:use-module (ice-9 format)
+  #:use-module (srfi srfi-9)
   #:use-module (core oscommand)
   #:use-module ((core artifact)
 		:renamer (symbol-prefix-proc 'artifact:))
@@ -26,49 +27,35 @@
 	    )
   )
 
+(define-record-type project
+  (project-new directory vm artifact package-cache-directory)
+  project?
+  (directory directory set-directory!)
+  (vm vm)
+  (artifact artifact)
+  (package-cache-directory package-cache-directory)
+)
+
+(define (make-project directory vm artifact package-cache-directory)
+  (project-new directory vm artifact package-cache-directory)
+)
+
 (define (print self port)
   (define fmt
     "project at ~A based on ~A")
   (display (format #f
 		   fmt
-		   (directory-name self)
+		   (directory self)
 		   (artifact:artifact-name (artifact self))) port)
 )
 
-(define fields '(directory-name vm artifact package-cache-directory))
-
-(define project
-  (make-record-type "project"
-		    fields print)
+(define (set-directory-name self directory)
+  (set-directory! self directory)
 )
 
-(define make-project
-  (record-constructor project fields)
-)
-
-(define directory-name
-  (record-accessor project 'directory-name)
-)
-
-(define set-directory-name
-  (record-modifier project 'directory-name)
-)
-
-(define vm
-  (record-accessor project 'vm)
-)
-
-(define artifact
-  (record-accessor project 'artifact)
-)
-
-(define package-cache-directory
-  (record-accessor project 'package-cache-directory)
-)
-		 
 (define (target-directory self)
   "target directory."
-  (path-join (directory-name self) "target")
+  (path-join (directory self) "target")
   )
 
 (define (mk-target-directory self)
@@ -104,7 +91,7 @@
 
 (define (set-up-script-at self)
   "set-up.st script at directory."
-  (path-join (directory-name self) "set-up.st")
+  (path-join (directory self) "set-up.st")
   )
 
 (define (output-filename-at self)
@@ -119,7 +106,7 @@
 
 (define (pom-at self)
   "pom file at home directory."
-  (path-join (directory-name self) "pom.scm")
+  (path-join (directory self) "pom.scm")
   )
 
 (define (open self)
@@ -141,7 +128,7 @@
 
 (define (mk-home-directory self)
   "make home directory."
-  (mk-directory (directory-name self))
+  (mk-directory (directory self))
   )
 
 (define (project-definition self)
