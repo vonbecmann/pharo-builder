@@ -9,6 +9,7 @@
 ;;; Code:
 (define-module (core repository)
   #:use-module (ice-9 format)
+  #:use-module (srfi srfi-9)
   #:use-module (core oscommand)
   #:use-module (core artifact)
   #:export (
@@ -17,11 +18,17 @@
 	    download-all
 	    add-artifact
 	    new-repository-for
-	    name
 	    directory-name
 	    set-directory-name
 	    artifact-ref
 	    )
+)
+
+(define-record-type repository
+  (make-repository artifacts directory)
+  repository?
+  (artifacts artifacts)
+  (directory directory set-directory!)
 )
 
 (define (print self port)
@@ -37,30 +44,12 @@
   (hash-map->list cons table)
 )
 
-(define fields '(artifacts directory-name))
-
-(define repository
-  (make-record-type "repository"
-		    fields
-		    print)
+(define (directory-name self)
+  (directory self)
 )
 
-(define make-repository
-  (record-constructor repository
-		      fields
-		      )
-)
-
-(define artifacts
-  (record-accessor repository 'artifacts)
-)
-
-(define directory-name
-  (record-accessor repository 'directory-name)
-)
-
-(define set-directory-name
-  (record-modifier repository 'directory-name)
+(define (set-directory-name self directory)
+  (set-directory! self directory)
 )
 
 (define (add-artifact self artifact)
