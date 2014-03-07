@@ -6,11 +6,20 @@
 
 (define-module (core source)
   #:use-module (core oscommand)
+  #:use-module (srfi srfi-9)
   #:export (
 	    make-source
 	    source-name
 	    link-at
 	    )
+)
+
+(define-record-type source
+  (source-new name filename directory)
+  source?
+  (name name)
+  (filename filename)
+  (directory directory)
 )
 
 (define (print self port)
@@ -23,33 +32,12 @@
 		   (directory self)) port)
 )
 
-(define fields '(name 
-		 filename 
-		 directory
-		 ))
-
-(define source
-  (make-record-type "source"
-		    fields
-		    print)
+(define (make-source name filename directory)
+  (source-new name filename directory)
 )
 
-(define make-source
-  (record-constructor source
-		      fields
-		      )
-)
-
-(define source-name
-  (record-accessor source 'name)
-)
-
-(define filename
-  (record-accessor source 'filename)
-)
-
-(define directory
-  (record-accessor source 'directory)
+(define (source-name self)
+  (name self)
 )
 
 (define (source-path self)
