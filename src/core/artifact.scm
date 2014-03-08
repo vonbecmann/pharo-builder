@@ -10,6 +10,7 @@
 ;;; Code:
 (define-module (core artifact)
   #:use-module (ice-9 format)
+  #:use-module (srfi srfi-9)
   #:use-module (core oscommand)
   #:use-module ((core repository)
 		:renamer (symbol-prefix-proc 'repository:))
@@ -25,6 +26,17 @@
 	    set-repository
 	    path-to-executable
 	    )
+)
+
+(define-record-type artifact
+  (make-artifact name download-url filename repository source executable)
+  artifact?
+  (name name) 
+  (download-url download-url) 
+  (filename filename) 
+  (repository repository set-repository!) 
+  (source source) 
+  (executable executable)
 )
 
 (define (download self)
@@ -68,25 +80,6 @@
 		   (directory-name self)) port)
 )
 
-(define fields '(name 
-		 download-url 
-		 filename 
-		 repository 
-		 source
-		 path-to-executable))
-
-(define artifact
-  (make-record-type "artifact"
-		    fields
-		    print)
-)
-
-(define make-artifact
-  (record-constructor artifact
-		      fields
-		      )
-)
-
 (define (make-artifact-for name download-url source)
   (make-artifact name download-url "latest.zip" '() source "")
 )
@@ -95,36 +88,20 @@
   (make-artifact name download-url "latest.zip" '() '() path-to-executable)
 )
 
-(define artifact-name
-  (record-accessor artifact 'name)
+(define (artifact-name self)
+  (name self)
 )
 
-(define set-repository
-  (record-modifier artifact 'repository)
+(define (set-repository self repository)
+  (set-repository! self repository)
 )
 
 (define (directory-name self)
   (symbol->string (artifact-name self))
 )
 
-(define download-url
-  (record-accessor artifact 'download-url)
-)
-
-(define source
-  (record-accessor artifact 'source)
-)
-
-(define filename
-  (record-accessor artifact 'filename)
-)
-
-(define repository
-  (record-accessor artifact 'repository)
-)
-
-(define path-to-executable
-  (record-accessor artifact 'path-to-executable)
+(define (path-to-executable self)
+  (executable self)
 )
 
 (define (base-path self)
