@@ -10,8 +10,6 @@
 		:renamer (symbol-prefix-proc 'artifact:))
   #:use-module ((core repository)
 		:renamer (symbol-prefix-proc 'repository:))
-  #:use-module ((core source)
-		:renamer (symbol-prefix-proc 'source:))
   #:use-module ((core project)
 		:select (
 			 build
@@ -203,13 +201,10 @@
     )
   )
 
-(define (source name filename directory)
-  "a source file at DIRECTORY"
-  (let* ((new-source (source:make-source
-		  name 
-		  filename
-		  directory 
-		  )))
+(define (source name download-url)
+  "a source file"
+  (let* ((new-source (artifact:make-source name download-url)))
+    (repository:add-artifact (repo) new-source) 
     (add-source pharo-builder new-source)
     )
   )

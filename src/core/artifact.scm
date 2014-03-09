@@ -14,14 +14,13 @@
   #:use-module (core oscommand)
   #:use-module ((core repository)
 		:renamer (symbol-prefix-proc 'repository:))
-  #:use-module ((core source)
-		:renamer (symbol-prefix-proc 'source:))
-  #:export (
+   #:export (
 	    download
 	    unzip
 	    unzip-vm
 	    make-artifact-for
 	    make-vm-for
+	    make-source
 	    artifact-name
 	    set-repository
 	    path-to-executable
@@ -57,12 +56,21 @@
 	 (cmd  (list "unzip -q -j" (full-path self) "*.image *.changes -d" to-directory))
 	 )
          (call-command-list cmd)
-	 (source:link-at (source self) to-directory)
+	 (unzip-source (source self) to-directory)
      )
 )
 
 (define (unzip-vm self to-directory)
   "unzip vm filename to directory."
+  (let* (
+	 (cmd  (list "unzip -q -o" (full-path self) "-d" to-directory))
+	 )
+         (call-command-list cmd)
+     )
+)
+
+(define (unzip-source self to-directory)
+  "unzip source filename to directory."
   (let* (
 	 (cmd  (list "unzip -q -o" (full-path self) "-d" to-directory))
 	 )
@@ -86,6 +94,10 @@
 
 (define (make-vm-for name download-url path-to-executable)
   (make-artifact name download-url "latest.zip" '() '() path-to-executable)
+)
+
+(define (make-source name download-url)
+  (make-artifact name download-url "latest.zip" '() '() "")
 )
 
 (define (artifact-name self)

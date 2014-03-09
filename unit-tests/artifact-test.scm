@@ -8,8 +8,7 @@
 
 (test-begin "artifact-test")
 
-(define test-source
-  (source 'pharov10 "PharoV10.sources" "/home/vonbecmann/bin/sources"))
+(define test-source (source 'pharov10 "http:/download/url"))
 (define name 'artifact-name)
 (define url "download-url")
 (define fmt "artifact ~S download from ~% ~S ~% to directory ~S ~%")

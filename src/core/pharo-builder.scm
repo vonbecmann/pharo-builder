@@ -12,8 +12,6 @@
   #:use-module (core oscommand)
   #:use-module ((core artifact)
 		:renamer (symbol-prefix-proc 'artifact:))
-  #:use-module ((core source)
-		:renamer (symbol-prefix-proc 'source:))
   #:export (
 	    make-pharo-builder
 	    home-directory
@@ -138,7 +136,7 @@
   )
 
 (define (add-source self source)
-  (hashq-set! (st-sources self) (source:source-name source) source)
+  (hashq-set! (st-sources self) (artifact:artifact-name source) source)
   )
 
 (define (get-source self source-name)

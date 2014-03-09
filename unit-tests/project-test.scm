@@ -16,7 +16,7 @@
 (define directory-name "/test-project")
 (define artifact-name 'pharo-core)
 (define vm-name 'test-vm)
-(define test-source (source 'pharov10 "PharoV10.sources" "/home/vonbecmann/bin/sources"))
+(define test-source (source 'pharov10 "http:/download/url"))
 (define test-artifact (artifact artifact-name "http:/download/url" 'pharov10))
 (define test-vm (vm vm-name "http:/download/url" "/path/to/vm"))
 (define test-project (project:make-project directory-name test-vm test-artifact "./package-cache"))

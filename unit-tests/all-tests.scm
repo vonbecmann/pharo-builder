@@ -5,7 +5,6 @@
 (use-modules (oscommand-test))
 (use-modules (artifact-test))
 (use-modules (repository-test)) 
-(use-modules (source-test))
 
 (exit (= (test-runner-fail-count (test-runner-current)) 0))
 

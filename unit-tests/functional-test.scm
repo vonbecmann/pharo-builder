@@ -22,7 +22,7 @@
     (rm-directory directory-name)
     (mk-directory directory-name)
     (pb:repository ".test-pharo-artifacts")
-    (pb:source 'pharov20 "PharoV20.sources" "/home/vonbecmann/bin/sources")
+    (pb:source 'pharov20 "http://files.pharo.org/sources/PharoV20.sources.zip")
     (pb:artifact 
      'my-core
      "http://files.pharo.org/image/20/latest.zip"

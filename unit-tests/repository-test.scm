@@ -23,8 +23,7 @@
 	      )
 )
 
-(define test-source
-	  (source 'pharov10 "PharoV10.sources" "/home/vonbecmann/bin/sources"))
+(define test-source (source 'pharov10 "http:/download/url"))
 (define test-artifact (artifact 'pharo-core "http:/download/url" 'pharov10))
 
 
