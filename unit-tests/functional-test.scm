@@ -37,9 +37,7 @@
     (pb:repo)
 
     (pb:artifact-named 'my-core)
-    (pb:vms)
 
-    (pb:sources)
     (pb:create-project directory-name 'my-cog-vm 'my-core)
     (pb:load-pom-at directory-name)
     (pb:current-pom)

@@ -20,8 +20,6 @@
   package-directory
   current-project
   '()
-  (make-hash-table)
-  (make-hash-table)	     
   ))
 
 (test-equal "pharo-builder as string" 

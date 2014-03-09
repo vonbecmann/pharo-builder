@@ -37,10 +37,7 @@
 	    artifact
 	    artifact-named
 	    vm
-	    vms
-	    vm-named
 	    source
-	    sources
 	    )
   )
 
@@ -52,8 +49,6 @@
     (mc-package-cache-at uwd)
     '()
     (repository:new-repository-for (path-join uwd ".pharo-artifacts"))
-    (make-hash-table)
-    (make-hash-table)
     )
   )
 
@@ -63,16 +58,6 @@
   "set home directory to DIRECTORY-NAME."
   (home-directory pharo-builder directory-name)
   )
-
-(define (vms)
-  "all virtual machines."
-  (hash-map->list cons (virtual-machines pharo-builder))
-)
-
-(define (sources)
-  "all sources."
-  (hash-map->list cons (st-sources pharo-builder))
-)
 
 (define (repo)
   "current repository"
@@ -98,12 +83,6 @@
   "get artifact named ARTIFACT-NAME"
   (repository:artifact-ref (repo) artifact-name)
 )
-
-(define (vm-named vm-name)
-  "get vm named VM-NAME"
-  (get-vm pharo-builder vm-name)
-)
-
 
 ;; Loading
 ;;
@@ -155,9 +134,8 @@
 	 (new-project
 	      (project:make-project
 	          directory-name
-		  (get-vm pharo-builder vm)
-		  (repository:artifact-ref (repo)
-					   artifact)
+		  (artifact-named vm)
+		  (artifact-named artifact)
 		  (package-cache-directory pharo-builder))
 	     )
 	 )
@@ -172,8 +150,8 @@
 	 (new-project
 	  (project:make-project
 	   (current-directory pharo-builder)
-	   (get-vm pharo-builder vm)
-	   (repository:artifact-ref (repo) artifact)
+	   (artifact-named vm)
+	   (artifact-named artifact)
 	   (package-cache-directory pharo-builder)))
 	 )
     (set-current-project pharo-builder new-project)
@@ -185,7 +163,7 @@
   "an artifact named NAME and download from DOWNLOAD-URL, based on SOURCE-NAME"
   (let* (
 	 (new-artifact (artifact:make-artifact-for name download-url 
-				     (get-source pharo-builder source-name)))
+				     (artifact-named source-name)))
 	 )
     (repository:add-artifact (repo) new-artifact) 
     new-artifact
@@ -196,7 +174,6 @@
   "a vm with PATH-TO-EXECUTABLE."
   (let* ((new-vm (artifact:make-vm-for name download-url path-to-executable)))
     (repository:add-artifact (repo) new-vm) 
-    (add-vm pharo-builder new-vm)
     new-vm
     )
   )
@@ -205,7 +182,6 @@
   "a source file"
   (let* ((new-source (artifact:make-source name download-url)))
     (repository:add-artifact (repo) new-source) 
-    (add-source pharo-builder new-source)
     )
   )
 
