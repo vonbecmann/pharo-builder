@@ -21,6 +21,7 @@
 	    directory-name
 	    set-directory-name
 	    artifact-ref
+	    artifacts-list
 	    )
 )
 
@@ -37,11 +38,15 @@
   (display (format #f
 		   fmt
 		   (directory-name self)
-		   (hash-to-pair-list (artifacts self))) port)
+		   (artifacts-list self)) port)
 )
 
 (define (hash-to-pair-list table)
   (hash-map->list cons table)
+)
+
+(define (artifacts-list self)
+  (hash-to-pair-list (artifacts self))
 )
 
 (define (directory-name self)

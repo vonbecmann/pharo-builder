@@ -38,6 +38,7 @@
 	    artifact-named
 	    vm
 	    source
+	    artifacts
 	    )
   )
 
@@ -62,6 +63,11 @@
 (define (repo)
   "current repository"
   (current-repository pharo-builder)
+)
+
+(define (artifacts)
+  "artifacts"
+  (repository:artifacts-list (repo))
 )
 
 (define (current-pom)
