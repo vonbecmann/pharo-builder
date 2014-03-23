@@ -2,7 +2,7 @@
 (use-modules (srfi srfi-64))
 (use-modules (core oscommand))
 (use-modules ((core repository)
-		:select (print artifact-ref new-repository-for add-artifact)
+		:select (artifact-ref new-repository-for add-artifact)
 		:renamer (symbol-prefix-proc 'repository:)
 		))
 (use-modules (api))
@@ -18,7 +18,7 @@
 (test-equal "repository-print-to-string"
 	    (format #f fmt directory-name '())
 	    (let* ((string-port (open-output-string)))
-	      (repository:print test-repository string-port)
+	      (display test-repository string-port)
 	      (get-output-string string-port)
 	      )
 )

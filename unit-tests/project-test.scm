@@ -2,7 +2,6 @@
 (use-modules (srfi srfi-64))
 (use-modules ((core project)
 		:select (
-			 print
 			 set-up-script-at
 			 project-definition
 			 make-project
@@ -24,7 +23,7 @@
 (test-equal "project as string" 
 	    (format #f "project at ~A based on ~A" directory-name artifact-name)
 	    (let* ((string-port (open-output-string)))
-	      (project:print test-project string-port) 
+	      (display test-project string-port) 
 	      (get-output-string string-port)
 	      )
 )

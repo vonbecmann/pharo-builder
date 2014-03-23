@@ -1,9 +1,5 @@
 (define-module (artifact-test))
 (use-modules (srfi srfi-64))
-(use-modules ((core artifact)
-	      :select ( print )
-	      :renamer (symbol-prefix-proc 'artifact:)
-	      ))
 (use-modules (api))
 
 (test-begin "artifact-test")
@@ -18,7 +14,7 @@
 (test-equal "artifact-print-to-string"
 	    (format #f fmt name url (symbol->string name))
 	    (let* ((string-port (open-output-string)))    
-	      (artifact:print test-artifact string-port)
+	      (display test-artifact string-port)
 	      (get-output-string string-port)
 	      )
 	    )

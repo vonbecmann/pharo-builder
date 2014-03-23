@@ -10,6 +10,7 @@
 (define-module (core project)
   #:use-module (ice-9 format)
   #:use-module (srfi srfi-9)
+  #:use-module (srfi srfi-9 gnu)
   #:use-module (core oscommand)
   #:use-module ((core artifact)
 		:renamer (symbol-prefix-proc 'artifact:))
@@ -40,13 +41,13 @@
   (project-new directory vm artifact package-cache-directory)
 )
 
-(define (print self port)
-  (define fmt
-    "project at ~A based on ~A")
-  (display (format #f
-		   fmt
+(set-record-type-printer! project 
+   (lambda (self port)
+     (display (format #f
+		   "project at ~A based on ~A"
 		   (directory self)
 		   (artifact:artifact-name (artifact self))) port)
+     )
 )
 
 (define (set-directory-name self directory)

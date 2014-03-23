@@ -10,6 +10,7 @@
 (define-module (core repository)
   #:use-module (ice-9 format)
   #:use-module (srfi srfi-9)
+  #:use-module (srfi srfi-9 gnu)
   #:use-module (core oscommand)
   #:use-module (core artifact)
   #:export (
@@ -32,13 +33,13 @@
   (directory directory set-directory!)
 )
 
-(define (print self port)
-  (define fmt
-    "Repository at directory ~S ~% with artifacts: ~% ~S ~% ")
-  (display (format #f
-		   fmt
+(set-record-type-printer! repository
+   (lambda (self port)
+     (display (format #f
+		   "Repository at directory ~S ~% with artifacts: ~% ~S ~% "
 		   (directory-name self)
 		   (artifacts-list self)) port)
+     )
 )
 
 (define (hash-to-pair-list table)

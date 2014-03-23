@@ -11,6 +11,7 @@
 (define-module (core artifact)
   #:use-module (ice-9 format)
   #:use-module (srfi srfi-9)
+  #:use-module (srfi srfi-9 gnu)
   #:use-module (core oscommand)
   #:use-module ((core repository)
 		:renamer (symbol-prefix-proc 'repository:))
@@ -78,14 +79,14 @@
      )
 )
 
-(define (print self port)
-  (define fmt
-    "artifact ~S download from ~% ~S ~% to directory ~S ~%")
-  (display (format #f
-		   fmt
-		   (artifact-name self)
-		   (download-url self)
-		   (directory-name self)) port)
+(set-record-type-printer! artifact
+   (lambda (self port)
+     (display (format #f
+		      "artifact ~S download from ~% ~S ~% to directory ~S ~%"
+		      (artifact-name self)
+		      (download-url self)
+		      (directory-name self)) port)
+     )
 )
 
 (define (make-artifact-for name download-url source)
