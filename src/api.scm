@@ -6,6 +6,9 @@
 ;;; Code:
 
 (define-module (api)
+  #:use-module (ice-9 format)
+  #:use-module (srfi srfi-9)
+  #:use-module (srfi srfi-9 gnu)
   #:use-module ((core artifact)
 		:renamer (symbol-prefix-proc 'artifact:))
   #:use-module ((core repository)
@@ -19,7 +22,6 @@
 			 set-directory-name
 			 )
 		:renamer (symbol-prefix-proc 'project:))
-  #:use-module (core pharo-builder)
   #:use-module (core oscommand)
   #:export (
 	    set-home-directory-to
@@ -40,6 +42,60 @@
 	    source
 	    artifacts
 	    )
+  )
+
+;;;
+;;; configuration builder
+;;;
+(define-record-type <pharo-builder-record>
+  (make-pharo-builder directory-name user-directory current-directory
+		      package-cache-directory current-project current-repository)
+  pharo-builder?
+  (directory-name directory-name set-directory-name!)
+  (user-directory user-directory)
+  (current-directory current-directory)
+  (package-cache-directory package-cache-directory)
+  (current-project current-project set-current-project!)
+  (current-repository current-repository)
+)
+
+(set-record-type-printer! <pharo-builder-record>
+   (lambda (self port)
+     (display (format #f
+		      "configuration builder at ~S ~% user's directory: ~S ~% current directory: ~S \n package cache directory: ~S \n current ~S \n"
+		      (directory-name self)
+		      (user-directory self)
+		      (current-directory self)
+		      (package-cache-directory self)
+		      (current-project self)
+		      ) port)
+     )
+)
+
+(define (home-directory self directory)
+  (set-directory-name! self directory)
+  (mk-mc-package-cache-directory self)
+  )
+
+(define (mk-mc-package-cache-directory self)
+  (mk-directory (package-cache-directory self))
+  )
+
+(define (rm-mc-package-cache self)
+  (rm-directory (package-cache-directory self))
+  )
+
+(define (path-to-default-conf self)
+  (path-join (user-directory self) "pharo-builder-conf.scm")
+  )
+
+;;; load default configuration.
+(define (load-default-conf self)
+  (if-file-exists-do (path-to-default-conf self)
+		     (lambda (filename)
+		       (load filename)
+		       )
+		     )
   )
 
 (define pharo-builder
@@ -160,7 +216,7 @@
 	   (artifact-named artifact)
 	   (package-cache-directory pharo-builder)))
 	 )
-    (set-current-project pharo-builder new-project)
+    (set-current-project! pharo-builder new-project)
     new-project
   )
 )
