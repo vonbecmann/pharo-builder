@@ -17,7 +17,9 @@
 	    build-repo
 	    remove
 	    download-all
-	    add-artifact
+	    add-new-artifact
+	    add-new-vm
+	    add-new-source
 	    new-repository-for
 	    directory-name
 	    set-directory-name
@@ -59,8 +61,20 @@
 )
 
 (define (add-artifact self artifact)
-  (set-repository artifact self)
   (hashq-set! (artifacts self) (artifact-name artifact) artifact)
+  artifact
+)
+
+(define (add-new-artifact self name download-url source)
+  (add-artifact self (make-artifact-for name download-url source self))
+)
+
+(define (add-new-vm self name download-url path-to-executable)
+  (add-artifact self (make-vm-for name download-url path-to-executable self))
+)
+
+(define (add-new-source self name download-url)
+  (add-artifact self (make-source name download-url self))
 )
 
 (define (hash-to-artifact-list table)

@@ -9,8 +9,6 @@
   #:use-module (ice-9 format)
   #:use-module (srfi srfi-9)
   #:use-module (srfi srfi-9 gnu)
-  #:use-module ((core artifact)
-		:renamer (symbol-prefix-proc 'artifact:))
   #:use-module ((core repository)
 		:renamer (symbol-prefix-proc 'repository:))
   #:use-module ((core project)
@@ -223,28 +221,17 @@
 
 (define (artifact name download-url source-name)
   "an artifact named NAME and download from DOWNLOAD-URL, based on SOURCE-NAME"
-  (let* (
-	 (new-artifact (artifact:make-artifact-for name download-url 
-				     (artifact-named source-name)))
-	 )
-    (repository:add-artifact (repo) new-artifact) 
-    new-artifact
-    )
+  (repository:add-new-artifact (repo) name download-url (artifact-named source-name))
 )
 
 (define (vm name download-url path-to-executable)
   "a vm with PATH-TO-EXECUTABLE."
-  (let* ((new-vm (artifact:make-vm-for name download-url path-to-executable)))
-    (repository:add-artifact (repo) new-vm) 
-    new-vm
-    )
+  (repository:add-new-vm (repo) name download-url path-to-executable)
   )
 
 (define (source name download-url)
   "a source file"
-  (let* ((new-source (artifact:make-source name download-url)))
-    (repository:add-artifact (repo) new-source) 
-    )
+  (repository:add-new-source (repo) name download-url)
   )
 
 (provide 'api)

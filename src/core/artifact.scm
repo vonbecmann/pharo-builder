@@ -23,7 +23,6 @@
 	    make-vm-for
 	    make-source
 	    artifact-name
-	    set-repository
 	    path-to-executable
 	    )
 )
@@ -34,7 +33,7 @@
   (name name) 
   (download-url download-url) 
   (filename filename) 
-  (repository repository set-repository!) 
+  (repository repository) 
   (source source) 
   (executable executable)
 )
@@ -89,24 +88,20 @@
      )
 )
 
-(define (make-artifact-for name download-url source)
-  (make-artifact name download-url "latest.zip" '() source "")
+(define (make-artifact-for name download-url source repository)
+  (make-artifact name download-url "latest.zip" repository source "")
 )
 
-(define (make-vm-for name download-url path-to-executable)
-  (make-artifact name download-url "latest.zip" '() '() path-to-executable)
+(define (make-vm-for name download-url path-to-executable repository)
+  (make-artifact name download-url "latest.zip" repository '() path-to-executable)
 )
 
-(define (make-source name download-url)
-  (make-artifact name download-url "latest.zip" '() '() "")
+(define (make-source name download-url repository)
+  (make-artifact name download-url "latest.zip" repository '() "")
 )
 
 (define (artifact-name self)
   (name self)
-)
-
-(define (set-repository self repository)
-  (set-repository! self repository)
 )
 
 (define (directory-name self)
