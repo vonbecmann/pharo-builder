@@ -28,14 +28,14 @@
 	    )
 )
 
-(define-record-type repository
+(define-record-type <repository>
   (make-repository artifacts directory)
   repository?
   (artifacts artifacts)
   (directory directory set-directory!)
 )
 
-(set-record-type-printer! repository
+(set-record-type-printer! <repository>
    (lambda (self port)
      (display (format #f
 		   "Repository at directory ~S ~% with artifacts: ~% ~S ~% "
