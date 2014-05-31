@@ -72,11 +72,6 @@
     )
   )
 
-(define (rm-target-directory self)
-  "remove target directory."
-  (rm-directory (target-directory self))
-  )
-
 (define (image-filename-at self)
   "image filename at target directory."
   (let* (
@@ -124,7 +119,7 @@
 
 (define (clean self)
   "clean target directory for the given project."
-  (rm-target-directory self)
+  (rm-directory (target-directory self))
   )
 
 (define (mk-home-directory self)
