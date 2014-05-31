@@ -122,11 +122,6 @@
   (rm-directory (target-directory self))
   )
 
-(define (mk-home-directory self)
-  "make home directory."
-  (mk-directory (directory self))
-  )
-
 (define (project-definition self)
   "project definition."
   (lambda ()
@@ -153,7 +148,7 @@
   )
 
 (define (create self)
-  (mk-home-directory self)
+  (mk-directory (directory self))
   (save-definition self)
   (build self)
 )
