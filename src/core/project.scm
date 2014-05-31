@@ -28,7 +28,7 @@
 	    )
   )
 
-(define-record-type project
+(define-record-type <project>
   (project-new directory vm artifact package-cache-directory)
   project?
   (directory directory set-directory!)
@@ -41,7 +41,7 @@
   (project-new directory vm artifact package-cache-directory)
 )
 
-(set-record-type-printer! project 
+(set-record-type-printer! <project> 
    (lambda (self port)
      (display (format #f
 		   "project at ~A based on ~A"
