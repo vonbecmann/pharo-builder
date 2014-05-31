@@ -27,7 +27,7 @@
 	    )
 )
 
-(define-record-type artifact
+(define-record-type <artifact>
   (make-artifact name download-url filename repository source executable)
   artifact?
   (name name) 
@@ -78,7 +78,7 @@
      )
 )
 
-(set-record-type-printer! artifact
+(set-record-type-printer! <artifact>
    (lambda (self port)
      (display (format #f
 		      "artifact ~S download from ~% ~S ~% to directory ~S ~%"
