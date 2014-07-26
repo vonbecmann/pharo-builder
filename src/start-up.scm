@@ -27,7 +27,7 @@
     (pb:set-home-directory-to home-directory-arg)
     (newline)
     (pb:load-default-configuration)
-    (pb:load-current-pom)
+    (pb:load-pom)
     (pb:display-configuration)
     )
   )

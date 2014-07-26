@@ -24,7 +24,7 @@
   #:export (
 	    set-home-directory-to
 	    load-default-configuration
-	    load-current-pom
+	    load-pom
 	    load-pom-at
 	    current-pom
 	    project
@@ -168,7 +168,7 @@
 		     )
   )
 
-(define (load-current-pom)
+(define (load-pom)
   "load pom at current directory."
   (load-pom-at (current-directory pharo-builder))
   )
