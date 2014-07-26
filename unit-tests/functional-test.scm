@@ -29,7 +29,7 @@
      'pharov20)
     (pb:vm 
      'my-cog-vm
-     "http://files.pharo.org/vm/pharo/linux/stable.bak.zip"
+     "http://files.pharo.org/vm/pharo/linux/stable.bak-1.zip"
      path-to-executable)
 
     (repository:remove (pb:repo))
