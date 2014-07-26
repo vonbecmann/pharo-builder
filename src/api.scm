@@ -26,7 +26,7 @@
 	    load-default-configuration
 	    load-pom
 	    load-pom-at
-	    current-pom
+	    pom
 	    project
 	    create-project
 	    open
@@ -124,19 +124,19 @@
   (repository:artifacts-list (repo))
 )
 
-(define (current-pom)
+(define (pom)
   "current project"
   (current-project pharo-builder)
   )
 
 (define (build)
   "build current project."
-  (project:build (current-pom))
+  (project:build (pom))
  )
 
 (define (open)
   "open current project."
-  (project:open (current-pom))
+  (project:open (pom))
 )
 
 (define (artifact-named artifact-name)

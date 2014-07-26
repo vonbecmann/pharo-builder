@@ -40,7 +40,7 @@
 
     (pb:create-project directory-name 'my-cog-vm 'my-core)
     (pb:load-pom-at directory-name)
-    (pb:current-pom)
+    (pb:pom)
     (pb:build)
     (pb:open)
 ))
