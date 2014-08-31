@@ -8,7 +8,7 @@
 	    0 
 	    (let* ((unzip-version '("unzip -v")))
 	      (call-command-list unzip-version))
-)
+	    )
 
 (test-equal "curl-is-installed" 
 	    0

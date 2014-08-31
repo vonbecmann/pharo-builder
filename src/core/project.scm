@@ -35,24 +35,24 @@
   (vm vm)
   (artifact artifact)
   (package-cache-directory package-cache-directory)
-)
+  )
 
 (define (make-project directory vm artifact package-cache-directory)
   (project-new directory vm artifact package-cache-directory)
-)
+  )
 
 (set-record-type-printer! <project> 
-   (lambda (self port)
-     (display (format #f
-		   "project at ~A based on ~A"
-		   (directory self)
-		   (artifact:artifact-name (artifact self))) port)
-     )
-)
+			  (lambda (self port)
+			    (display (format #f
+					     "project at ~A based on ~A"
+					     (directory self)
+					     (artifact:artifact-name (artifact self))) port)
+			    )
+			  )
 
 (define (set-directory-name self directory)
   (set-directory! self directory)
-)
+  )
 
 (define (target-directory self)
   "target directory."
@@ -131,7 +131,7 @@
 	    (artifact:artifact-name (artifact self))
 	    )
     )
-)
+  )
 
 (define (save-definition self)
   "save definition."
@@ -140,7 +140,7 @@
 	 )
     (with-output-to-file pom-filename (project-definition self))
     )
-)
+  )
 
 (define (set-up self)
   "set up the given project."
@@ -151,7 +151,7 @@
   (mk-directory (directory self))
   (save-definition self)
   (build self)
-)
+  )
 
 (define (execute self)
   "execute a image and don't wait for the response.
@@ -163,7 +163,7 @@
 	 (cmd (list vm-filename image-filename ">" output-filename "2>&1" "&"))
 	 )
     (call-command-list cmd))
-)
+  )
 
 (define (execute-headless self)
   "execute a image and wait for the response.
@@ -184,6 +184,6 @@
 	(display (string-append script-filename " does not exists.\n"))
 	)
     )
-)
+  )
 
 ;;; project.scm ends here

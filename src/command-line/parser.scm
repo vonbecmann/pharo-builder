@@ -13,22 +13,16 @@
   #:export (
 	    parse
 	    )
-)
+  )
 
 
 (define (parse args)
   "parse home argument from command line"
-  (let* (
-	 (option-spec
-	  '(
-	    (home (value #t) (required? #f))
-	    )
-	  )
-	 (options (getopt-long args option-spec))
-	 )
+  (let* ((option-spec '((home (value #t) (required? #f))))
+	 (options (getopt-long args option-spec)))
     (option-ref options 'home #f)
     )
-)
+  )
 
 
 ;;; parser.scm ends here

@@ -27,7 +27,7 @@
 	    ;;
 	    if-file-exists-do
 	    )
-)
+  )
 
 ;;; current working directory.
 (define cwd (getcwd))
@@ -38,18 +38,18 @@
 (define (path-join path subpath)
   "PATH / SUBPATH"
   (string-append path "/" subpath)
-)
+  )
 
 (define (call-command cmd)
   "call a operating system command.
    CMD is a string."
   (define exit-code (system cmd))
   (if (not (zero? exit-code))
-	(error
-	 (format #f "command ~a failed with exit code ~a"
-		 cmd exit-code)))
+      (error
+       (format #f "command ~a failed with exit code ~a"
+	       cmd exit-code)))
   exit-code
-)
+  )
 
 (define (call-input-command cmd)
   "call a operating system command and read input.
@@ -60,39 +60,39 @@
 	 )
     (close-pipe port)
     str)
-)
+  )
 
 (define (call-command-list cmd-list)
   "call a operating system command.
    CMD-LIST is a list of strings"
   (define cmd (string-join cmd-list (string #\space)))
   (call-command cmd)
-)
+  )
 
 (define (call-input-command-list cmd-list)
   "call a operating system command and read input.
    CMD-LIST is a list of strings"
   (define cmd (string-join cmd-list (string #\space)))
   (call-input-command cmd)
-)
+  )
 
 (define (directory-exists? directory-name)
   "answer true if a directory exists"
   (define read-write-execute (logior R_OK W_OK X_OK))
   (access? directory-name read-write-execute)
-)
+  )
 
 (define (mk-directory directory-name)
   "make a directory"
   (if (not (directory-exists? directory-name))
       (mkdir directory-name))
-)
+  )
 
 (define (rm-directory directory-name)
   "remove a directory"
   (if (directory-exists? directory-name)
       (call-command-list (list "rm" "-rf" directory-name)))
-)
+  )
 
 
 ;;;
@@ -100,11 +100,11 @@
 ;;;
 (define (mc-package-cache-at directory-name)
   (path-join directory-name "package-cache")
-)
+  )
 
 (define (link-package-cache-at package-cache-directory directory-name)
   (symlink package-cache-directory (mc-package-cache-at directory-name))
-)
+  )
 
 (define (if-file-exists-do filename thunk)
   "if file exists then do thunk otherwise display FILENAME not exists."

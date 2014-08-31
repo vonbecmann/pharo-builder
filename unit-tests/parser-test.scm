@@ -7,11 +7,11 @@
 (test-equal "parse command line when home exists"
 	    "/home/bcontreras/pharo-builder"   
 	    (parse '("guile" "--home=/home/bcontreras/pharo-builder"))
-)
+	    )
 
 (test-equal "parse command line when home doesn't exists"
 	    #f   
 	    (parse '("guile"))
-)
+	    )
 
 (test-end)

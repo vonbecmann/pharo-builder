@@ -1,13 +1,13 @@
 (define-module (project-test))
 (use-modules (srfi srfi-64))
 (use-modules ((core project)
-		:select (
-			 set-up-script-at
-			 project-definition
-			 make-project
-			 )
-		:renamer (symbol-prefix-proc 'project:)
-		))
+	      :select (
+		       set-up-script-at
+		       project-definition
+		       make-project
+		       )
+	      :renamer (symbol-prefix-proc 'project:)
+	      ))
 (use-modules (api))
 
 (test-begin "project-test")
@@ -26,17 +26,17 @@
 	      (display test-project string-port) 
 	      (get-output-string string-port)
 	      )
-)
+	    )
 
 (test-equal "project's setup script" 
 	    "/test-project/set-up.st" 
 	    (project:set-up-script-at test-project)
-)
+	    )
 
 (test-equal "project's definition"
 	    (format #f "(pb:project\n\t '~a\n\t '~a\n\t)\n" vm-name artifact-name)
 	    (with-output-to-string (project:project-definition test-project))
-)
+	    )
 
 (test-end)
 
