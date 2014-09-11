@@ -80,13 +80,11 @@
 
 (set-record-type-printer! <artifact>
 			  (lambda (self port)
-			    (display (format #f
-					     "artifact ~S download from ~% ~S ~% to directory ~S ~%"
-					     (artifact-name self)
-					     (download-url self)
-					     (directory-name self)) port)
-			    )
-			  )
+			    (format port
+				    "artifact ~S download from ~% ~S ~% to directory ~S ~%"
+				    (artifact-name self)
+				    (download-url self)
+				    (directory-name self))))
 
 (define (make-artifact-for name download-url source repository)
   (make-artifact name download-url "latest.zip" repository source "")
