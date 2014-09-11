@@ -41,14 +41,20 @@
   (project-new directory vm artifact package-cache-directory)
   )
 
+(define (project-definition self)
+  "project definition."
+  (lambda ()
+    (format #t
+	    "(pb:project '~a '~a)\n"
+	    (artifact:artifact-name (vm self))
+	    (artifact:artifact-name (artifact self)))))
+
 (set-record-type-printer! <project> 
 			  (lambda (self port)
-			    (display (format #f
-					     "project at ~A based on ~A"
-					     (directory self)
-					     (artifact:artifact-name (artifact self))) port)
-			    )
-			  )
+			    (format port
+				    "(pb:project '~a '~a)\n"
+				    (artifact:artifact-name (vm self))
+				    (artifact:artifact-name (artifact self)))))
 
 (define (set-directory-name self directory)
   (set-directory! self directory)
@@ -120,17 +126,6 @@
 (define (clean self)
   "clean target directory for the given project."
   (rm-directory (target-directory self))
-  )
-
-(define (project-definition self)
-  "project definition."
-  (lambda ()
-    (format #t
-	    "(pb:project\n\t '~a\n\t '~a\n\t)\n"
-	    (artifact:artifact-name (vm self))
-	    (artifact:artifact-name (artifact self))
-	    )
-    )
   )
 
 (define (save-definition self)
