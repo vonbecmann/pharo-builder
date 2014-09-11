@@ -23,9 +23,7 @@
 	    make-vm-for
 	    make-source
 	    artifact-name
-	    path-to-executable
-	    )
-  )
+	    path-to-executable))
 
 (define-record-type <artifact>
   (make-artifact name download-url filename repository source executable)
@@ -35,8 +33,7 @@
   (filename filename) 
   (repository repository) 
   (source source) 
-  (executable executable)
-  )
+  (executable executable))
 
 (define (download self)
   "download URL-filename to filename.
@@ -47,8 +44,7 @@
 		    (full-path self)
 		    (download-url self)))
 	 )
-    (call-command-list cmd))
-  )
+    (call-command-list cmd)))
 
 (define (unzip self to-directory)
   "unzip artifact filename to directory."
@@ -56,27 +52,21 @@
 	 (cmd  (list "unzip -q -j" (full-path self) "*.image *.changes -d" to-directory))
 	 )
     (call-command-list cmd)
-    (unzip-source (source self) to-directory)
-    )
-  )
+    (unzip-source (source self) to-directory)))
 
 (define (unzip-vm self to-directory)
   "unzip vm filename to directory."
   (let* (
 	 (cmd  (list "unzip -q -o" (full-path self) "-d" to-directory))
 	 )
-    (call-command-list cmd)
-    )
-  )
+    (call-command-list cmd)))
 
 (define (unzip-source self to-directory)
   "unzip source filename to directory."
   (let* (
 	 (cmd  (list "unzip -q -o" (full-path self) "-d" to-directory))
 	 )
-    (call-command-list cmd)
-    )
-  )
+    (call-command-list cmd)))
 
 (set-record-type-printer! <artifact>
 			  (lambda (self port)
@@ -87,36 +77,27 @@
 				    (directory-name self))))
 
 (define (make-artifact-for name download-url source repository)
-  (make-artifact name download-url "latest.zip" repository source "")
-  )
+  (make-artifact name download-url "latest.zip" repository source ""))
 
 (define (make-vm-for name download-url path-to-executable repository)
-  (make-artifact name download-url "latest.zip" repository '() path-to-executable)
-  )
+  (make-artifact name download-url "latest.zip" repository '() path-to-executable))
 
 (define (make-source name download-url repository)
-  (make-artifact name download-url "latest.zip" repository '() "")
-  )
+  (make-artifact name download-url "latest.zip" repository '() ""))
 
 (define (artifact-name self)
-  (name self)
-  )
+  (name self))
 
 (define (directory-name self)
-  (symbol->string (artifact-name self))
-  )
+  (symbol->string (artifact-name self)))
 
 (define (path-to-executable self)
-  (executable self)
-  )
+  (executable self))
 
 (define (base-path self)
-  (path-join (repository:directory-name (repository self))
-	     (directory-name self))
-  )
+  (path-join (repository:directory-name (repository self)) (directory-name self)))
 
 (define (full-path self)
-  (path-join (base-path self) (filename self))
-  )
+  (path-join (base-path self) (filename self)))
 
 ;;; artifact.scm ends here
