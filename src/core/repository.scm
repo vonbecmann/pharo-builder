@@ -37,12 +37,10 @@
 
 (set-record-type-printer! <repository>
 			  (lambda (self port)
-			    (display (format #f
-					     "Repository at directory ~S ~% with artifacts: ~% ~S ~% "
-					     (directory-name self)
-					     (artifacts-list self)) port)
-			    )
-			  )
+			    (format port
+				    "Repository at directory ~S ~% with artifacts: ~% ~S ~% "
+				    (directory-name self)
+				    (artifacts-list self))))
 
 (define (hash-to-pair-list table)
   (hash-map->list cons table)
