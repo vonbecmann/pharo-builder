@@ -21,15 +21,11 @@
 
 (define (main args)
   (let*
-      (
-       (home-directory-arg (parser:parse args))
-       )
+      ((home-directory-arg (parser:parse args)))
     (pb:set-home-directory-to home-directory-arg)
     (newline)
     (pb:load-default-configuration)
     (pb:load-pom)
-    (pb:display-configuration)
-    )
-  )
+    (pb:display-configuration)))
 
 ;;; start-up.scm ends here
