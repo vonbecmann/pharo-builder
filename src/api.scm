@@ -59,16 +59,13 @@
 
 (set-record-type-printer! <pharo-builder-record>
 			  (lambda (self port)
-			    (display (format #f
-					     "configuration builder at ~S ~% user's directory: ~S ~% current directory: ~S \n package cache directory: ~S \n current ~S \n"
-					     (directory-name self)
-					     (user-directory self)
-					     (current-directory self)
-					     (package-cache-directory self)
-					     (current-project self)
-					     ) port)
-			    )
-			  )
+			    (format port
+				    "configuration builder at ~S ~% user's directory: ~S ~% current directory: ~S \n package cache directory: ~S \n current ~S \n"
+				    (directory-name self)
+				    (user-directory self)
+				    (current-directory self)
+				    (package-cache-directory self)
+				    (current-project self))))
 
 (define (home-directory self directory)
   (set-directory-name! self directory)
