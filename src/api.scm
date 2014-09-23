@@ -38,9 +38,7 @@
 	    artifact-named
 	    vm
 	    source
-	    artifacts
-	    )
-  )
+	    artifacts))
 
 ;;;
 ;;; configuration builder
@@ -54,8 +52,7 @@
   (current-directory current-directory)
   (package-cache-directory package-cache-directory)
   (current-project current-project set-current-project!)
-  (current-repository current-repository)
-  )
+  (current-repository current-repository))
 
 (set-record-type-printer! <pharo-builder-record>
 			  (lambda (self port)
@@ -69,29 +66,22 @@
 
 (define (home-directory self directory)
   (set-directory-name! self directory)
-  (mk-mc-package-cache-directory self)
-  )
+  (mk-mc-package-cache-directory self))
 
 (define (mk-mc-package-cache-directory self)
-  (mk-directory (package-cache-directory self))
-  )
+  (mk-directory (package-cache-directory self)))
 
 (define (rm-mc-package-cache self)
-  (rm-directory (package-cache-directory self))
-  )
+  (rm-directory (package-cache-directory self)))
 
 (define (path-to-default-conf self)
-  (path-join (user-directory self) "pharo-builder-conf.scm")
-  )
+  (path-join (user-directory self) "pharo-builder-conf.scm"))
 
 ;;; load default configuration.
 (define (load-default-conf self)
   (if-file-exists-do (path-to-default-conf self)
 		     (lambda (filename)
-		       (load filename)
-		       )
-		     )
-  )
+		       (load filename))))
 
 (define pharo-builder
   (make-pharo-builder
@@ -100,58 +90,47 @@
    cwd
    (mc-package-cache-at uwd)
    '()
-   (repository:new-repository-for (path-join uwd ".pharo-artifacts"))
-   )
-  )
+   (repository:new-repository-for (path-join uwd ".pharo-artifacts"))))
 
 ;; Accessing
 ;;
 (define (set-home-directory-to directory-name)
   "set home directory to DIRECTORY-NAME."
-  (home-directory pharo-builder directory-name)
-  )
+  (home-directory pharo-builder directory-name))
 
 (define (repo)
   "current repository"
-  (current-repository pharo-builder)
-  )
+  (current-repository pharo-builder))
 
 (define (artifacts)
   "artifacts"
-  (repository:artifacts-list (repo))
-  )
+  (repository:artifacts-list (repo)))
 
 (define (pom)
   "current project"
-  (current-project pharo-builder)
-  )
+  (current-project pharo-builder))
 
 (define (build)
   "build current project."
-  (project:build (pom))
-  )
+  (project:build (pom)))
 
 (define (open)
   "open current project."
-  (project:open (pom))
-  )
+  (project:open (pom)))
 
 (define (artifact-named artifact-name)
   "get artifact named ARTIFACT-NAME"
-  (repository:artifact-ref (repo) artifact-name)
-  )
+  (repository:artifact-ref (repo) artifact-name))
 
 ;; Loading
 ;;
 (define (load-default-configuration)
   "load default configuration."
-  (load-default-conf pharo-builder)
-  )
+  (load-default-conf pharo-builder))
 
 (define (pom-at directory-name)
   "pom at DIRECTORY-NAME"
-  (path-join directory-name "pom.scm")
-  )
+  (path-join directory-name "pom.scm"))
 
 (define (load-pom-at directory-name)
   "load pom at DIRECTORY-NAME."
@@ -160,76 +139,58 @@
 		       (load filename)
 		       (project:set-directory-name
 			(current-project pharo-builder)
-			directory-name)
-		       )
-		     )
-  )
+			directory-name))))
 
 (define (load-pom)
   "load pom at current directory."
-  (load-pom-at (current-directory pharo-builder))
-  )
+  (load-pom-at (current-directory pharo-builder)))
 
 ;; Printing
 (define (display-configuration)
   "display actual configuration"
-  (display pharo-builder)
-  )
+  (display pharo-builder))
 
 ;; Instance Creation
 (define (repository directory)
   "a repository at a DIRECTORY"
-  (repository:set-directory-name
-   (repo)
+  (repository:set-directory-name 
+   (repo) 
    (path-join (user-directory pharo-builder) directory))
-  (repo)
-  )
+  (repo))
 
 (define (create-project directory-name vm artifact)
   "create a new project based on ARTIFACT running on VM at DIRECTORY-NAME."
-  (let* (
-	 (new-project
-	  (project:make-project
-	   directory-name
-	   (artifact-named vm)
-	   (artifact-named artifact)
-	   (package-cache-directory pharo-builder))
-	  )
-	 )
+  (let* ((new-project
+	  (project:make-project 
+	   directory-name 
+	   (artifact-named vm) 
+	   (artifact-named artifact) 
+	   (package-cache-directory pharo-builder))))
     (project:create new-project)
-    new-project
-    )
-  )
+    new-project))
 
 (define (project vm artifact)
   "a project based on ARTIFACT running on VM."
-  (let* (
-	 (new-project
+  (let* ((new-project
 	  (project:make-project
 	   (current-directory pharo-builder)
 	   (artifact-named vm)
 	   (artifact-named artifact)
-	   (package-cache-directory pharo-builder)))
-	 )
+	   (package-cache-directory pharo-builder))))
     (set-current-project! pharo-builder new-project)
-    new-project
-    )
-  )
+    new-project))
 
 (define (artifact name download-url source-name)
   "an artifact named NAME and download from DOWNLOAD-URL, based on SOURCE-NAME"
-  (repository:add-new-artifact (repo) name download-url (artifact-named source-name))
-  )
+  (repository:add-new-artifact (repo) name download-url (artifact-named source-name)))
 
 (define (vm name download-url path-to-executable)
   "a vm with PATH-TO-EXECUTABLE."
-  (repository:add-new-vm (repo) name download-url path-to-executable)
-  )
+  (repository:add-new-vm (repo) name download-url path-to-executable))
 
 (define (source name download-url)
   "a source file"
-  (repository:add-new-source (repo) name download-url)
-  )
+  (repository:add-new-source (repo) name download-url))
 
 (provide 'api)
 
