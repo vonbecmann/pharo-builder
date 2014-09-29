@@ -21,7 +21,6 @@
 	    build
 	    open
 	    set-up-script-at
-	    project-definition
 	    save-definition
 	    create
 	    set-directory-name
@@ -37,14 +36,6 @@
 
 (define (make-project directory vm artifact package-cache-directory)
   (project-new directory vm artifact package-cache-directory))
-
-(define (project-definition self)
-  "project definition."
-  (lambda ()
-    (format #t
-	    "(pb:project '~a '~a)\n"
-	    (artifact:artifact-name (vm self))
-	    (artifact:artifact-name (artifact self)))))
 
 (set-record-type-printer! <project> 
 			  (lambda (self port)
@@ -117,7 +108,7 @@
   (let* (
 	 (pom-filename (pom-at self))
 	 )
-    (with-output-to-file pom-filename (project-definition self))))
+    (with-output-to-file pom-filename (lambda () (display self)))))
 
 (define (set-up self)
   "set up the given project."

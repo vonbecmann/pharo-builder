@@ -3,7 +3,6 @@
 (use-modules ((core project)
 	      :select (
 		       set-up-script-at
-		       project-definition
 		       make-project
 		       )
 	      :renamer (symbol-prefix-proc 'project:)
@@ -28,10 +27,6 @@
 (test-equal "project's setup script" 
 	    "/test-project/set-up.st" 
 	    (project:set-up-script-at test-project))
-
-(test-equal "project's definition"
-	    (format #f "(pb:project '~a '~a)\n" vm-name artifact-name)
-	    (with-output-to-string (project:project-definition test-project)))
 
 (test-end)
 
