@@ -29,7 +29,7 @@
      'pharov20)
     (pb:vm 
      'my-cog-vm
-     "http://files.pharo.org/vm/pharo/linux/stable.bak-1.zip"
+     "https://swing.fit.cvut.cz/jenkins/view/Projects/job/pharo-vm-stable-swing/lastSuccessfulBuild/artifact/pharo-vm-stable-swing.zip"
      path-to-executable)
 
     (repository:remove (pb:repo))
