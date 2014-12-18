@@ -40,39 +40,35 @@
 (define (call-command cmd)
   "call a operating system command.
    CMD is a string."
-  (define exit-code (system cmd))
-  (if (not (zero? exit-code))
-      (error
-       (format #f "command ~a failed with exit code ~a"
-	       cmd exit-code)))
-  exit-code)
+  (let* ((exit-code (system cmd)))
+    (if (not (zero? exit-code))
+	(error (format #f "command ~a failed with exit code ~a" cmd exit-code)))
+    exit-code))
 
 (define (call-input-command cmd)
   "call a operating system command and read input.
    CMD is a string."
-  (let* (
-	 (port (open-input-pipe cmd))
-	 (str  (read-line port))
-	 )
+  (let* ((port (open-input-pipe cmd))
+	 (str  (read-line port)))
     (close-pipe port)
     str))
 
 (define (call-command-list cmd-list)
   "call a operating system command.
    CMD-LIST is a list of strings"
-  (define cmd (string-join cmd-list (string #\space)))
-  (call-command cmd))
+  (let* ((cmd (string-join cmd-list (string #\space))))
+    (call-command cmd)))
 
 (define (call-input-command-list cmd-list)
   "call a operating system command and read input.
    CMD-LIST is a list of strings"
-  (define cmd (string-join cmd-list (string #\space)))
-  (call-input-command cmd))
+  (let* ((cmd (string-join cmd-list (string #\space))))
+    (call-input-command cmd)))
 
 (define (directory-exists? directory-name)
   "answer true if a directory exists"
-  (define read-write-execute (logior R_OK W_OK X_OK))
-  (access? directory-name read-write-execute))
+  (let* ((read-write-execute (logior R_OK W_OK X_OK)))
+    (access? directory-name read-write-execute)))
 
 (define (mk-directory directory-name)
   "make a directory"
