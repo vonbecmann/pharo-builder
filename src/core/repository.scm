@@ -24,7 +24,8 @@
 	    directory-name
 	    set-directory-name
 	    artifact-ref
-	    artifacts-list))
+	    artifacts-list
+	    ))
 
 (define-record-type <repository>
   (make-repository artifacts directory)

@@ -25,7 +25,8 @@
 	    link-package-cache-at
 	    mc-package-cache-at
 	    ;;
-	    if-file-exists-do))
+	    if-file-exists-do
+	    ))
 
 ;;; current working directory.
 (define cwd (getcwd))
