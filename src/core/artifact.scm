@@ -20,6 +20,7 @@
 	    unzip
 	    unzip-vm
 	    make-artifact-for
+	    make-single-artifact-for
 	    make-vm-for
 	    make-source
 	    artifact-name
@@ -49,10 +50,11 @@
 (define (unzip self to-directory)
   "unzip artifact filename to directory."
   (let* (
-	 (cmd  (list "unzip -q -j" (full-path self) "*.image *.changes -d" to-directory))
+	 (cmd  (list "unzip -q -j" (full-path self) "-d" to-directory))
 	 )
     (call-command-list cmd)
-    (unzip-source (source self) to-directory)))
+    (if (not (null? (source self)))
+	(unzip-source (source self) to-directory))))
 
 (define (unzip-vm self to-directory)
   "unzip vm filename to directory."
@@ -78,6 +80,9 @@
 
 (define (make-artifact-for name download-url source repository)
   (make-artifact name download-url "latest.zip" repository source ""))
+
+(define (make-single-artifact-for name download-url repository)
+  (make-artifact name download-url "latest.zip" repository '() ""))
 
 (define (make-vm-for name download-url path-to-executable repository)
   (make-artifact name download-url "latest.zip" repository '() path-to-executable))

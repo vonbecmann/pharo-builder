@@ -35,6 +35,7 @@
 	    repository
 	    repo
 	    artifact
+	    single-artifact
 	    artifact-named
 	    vm
 	    source
@@ -184,6 +185,10 @@
 (define (artifact name download-url source-name)
   "an artifact named NAME and download from DOWNLOAD-URL, based on SOURCE-NAME"
   (repository:add-new-artifact (repo) name download-url (artifact-named source-name)))
+
+(define (single-artifact name download-url)
+  "a single artifact named NAME and download from DOWNLOAD-URL"
+  (repository:add-single-artifact (repo) name download-url))
 
 (define (vm name download-url path-to-executable)
   "a vm with PATH-TO-EXECUTABLE."

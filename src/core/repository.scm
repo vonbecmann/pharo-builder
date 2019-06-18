@@ -18,6 +18,7 @@
 	    remove
 	    download-all
 	    add-new-artifact
+	    add-single-artifact
 	    add-new-vm
 	    add-new-source
 	    new-repository-for
@@ -58,6 +59,9 @@
 
 (define (add-new-artifact self name download-url source)
   (add-artifact self (make-artifact-for name download-url source self)))
+
+(define (add-single-artifact self name download-url)
+  (add-artifact self (make-single-artifact-for name download-url self)))
 
 (define (add-new-vm self name download-url path-to-executable)
   (add-artifact self (make-vm-for name download-url path-to-executable self)))
