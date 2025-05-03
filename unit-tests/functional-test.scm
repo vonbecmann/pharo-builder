@@ -29,8 +29,9 @@
      'pharov20)
     (pb:vm 
      'my-cog-vm
-     "https://swing.fit.cvut.cz/jenkins/view/Projects/job/pharo-vm-stable-swing/lastSuccessfulBuild/artifact/pharo-vm-stable-swing.zip"
-     path-to-executable)
+     "http://files.pharo.org/vm/pharo/20/linux/Pharo-VM-linux-stable.zip"
+;;     "https://swing.fit.cvut.cz/jenkins/view/Projects/job/pharo-vm-stable-swing/lastSuccessfulBuild/artifact/pharo-vm-stable-swing.zip"
+     "pharo")
 
     (repository:remove (pb:repo))
     (repository:build-repo (pb:repo))
