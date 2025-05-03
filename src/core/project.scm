@@ -141,7 +141,7 @@
 	       (vm-filename (vm-filename-at self))
 	       (image-filename (image-filename-at self))
 	       (output-filename (output-filename-at self))
-	       (cmd (list vm-filename "-vm-display-null" "-vm-sound-null" 
+	       (cmd (list vm-filename "-vm-display-null" 
 			  image-filename script-filename ">" output-filename "2>&1"))
 	       )
 	  (call-command-list cmd)
