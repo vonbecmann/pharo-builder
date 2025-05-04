@@ -22,15 +22,10 @@
     (rm-directory directory-name)
     (mk-directory directory-name)
     (pb:repository ".test-pharo-artifacts")
-    (pb:source 'pharov20 "http://files.pharo.org/sources/PharoV20.sources.zip")
-    (pb:artifact 
-     'my-core
-     "http://files.pharo.org/image/20/latest.zip"
-     'pharov20)
-    (pb:vm 
+    (pb:single-artifact 'my-core "http://files.pharo.org/image/120/latest-64.zip")
+    (pb:vm
      'my-cog-vm
-     "http://files.pharo.org/vm/pharo/20/linux/Pharo-VM-linux-stable.zip"
-;;     "https://swing.fit.cvut.cz/jenkins/view/Projects/job/pharo-vm-stable-swing/lastSuccessfulBuild/artifact/pharo-vm-stable-swing.zip"
+     "https://files.pharo.org/get-files/120/pharo-vm-Linux-x86_64-stable.zip"
      "pharo")
 
     (repository:remove (pb:repo))

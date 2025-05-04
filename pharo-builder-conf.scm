@@ -5,17 +5,13 @@
 ;; Pharo Artifacts Repository
 ;;
 
-(pb:repository ".pharo-artifacts")
+(pb:repository ".test-pharo-artifacts")
 
-(pb:source 'pharov20 "PharoV20.sources" "/home/vonbecmann/bin/sources")
 
-(pb:artifact 
- 'pharo-20
- "http://files.pharo.org/image/20/latest.zip"
- 'pharov20)
+(pb:single-artifact 'my-core "http://files.pharo.org/image/120/latest-64.zip")
 
-(pb:vm 
- 'pharo-vm 
- "http://files.pharo.org/vm/pharo/linux/stable.zip"
+(pb:vm
+ 'my-cog-vm
+ "https://files.pharo.org/get-files/120/pharo-vm-Linux-x86_64-stable.zip"
  "pharo")
 

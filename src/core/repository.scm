@@ -17,6 +17,7 @@
 	    build-repo
 	    remove
 	    download-all
+	    add-artifact
 	    add-new-artifact
 	    add-single-artifact
 	    add-new-vm
