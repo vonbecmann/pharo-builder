@@ -2,7 +2,7 @@
 HOME_DIRECTORY=$(dirname $(readlink -nf $0))
 echo ${HOME_DIRECTORY}
 
-guile -L ${HOME_DIRECTORY}/src/\
+guile --fresh-auto-compile --listen -L ${HOME_DIRECTORY}/src/\
       -l ${HOME_DIRECTORY}/unit-tests/start-up.scm \
       -e main -- --home=${HOME_DIRECTORY} 
 
