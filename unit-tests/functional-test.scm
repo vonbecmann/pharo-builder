@@ -1,3 +1,11 @@
+;;; functional-test.scm --- functional test
+
+;;; Commentary:
+;; use common functionality
+
+
+;;; Code:
+
 (use-modules (core oscommand))
 (use-modules (core artifact))
 (use-modules ((core repository)
@@ -10,7 +18,7 @@
 (use-modules (ice-9 readline))
 (activate-readline)
 
-(define (main args) 
+(define (main args)
   (let*
       ((home-directory-arg (parser:parse args))
        (directory-name (path-join uwd "a-test"))
@@ -40,3 +48,7 @@
     (pb:build)
     (pb:open)
     ))
+
+(provide 'functional-test)
+
+;;; functional-test.scm ends here
