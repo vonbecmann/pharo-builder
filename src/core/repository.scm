@@ -62,9 +62,6 @@
 (define (add-new-vm self name download-url path-to-executable)
   (add-artifact self (make-vm-for name download-url path-to-executable self)))
 
-(define (add-new-source self name download-url)
-  (add-artifact self (make-source name download-url self)))
-
 (define (hash-to-artifact-list table)
   (hash-map->list (lambda (key value) value) table))
 

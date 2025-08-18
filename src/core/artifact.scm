@@ -19,10 +19,8 @@
 	    download
 	    unzip
 	    unzip-vm
-	    make-artifact-for
 	    make-single-artifact-for
 	    make-vm-for
-	    make-source
 	    artifact-name
 	    path-to-executable))
 
@@ -78,17 +76,11 @@
 				    (download-url self)
 				    (directory-name self))))
 
-(define (make-artifact-for name download-url source repository)
-  (make-artifact name download-url "latest.zip" repository source ""))
-
 (define (make-single-artifact-for name download-url repository)
   (make-artifact name download-url "latest.zip" repository '() ""))
 
 (define (make-vm-for name download-url path-to-executable repository)
   (make-artifact name download-url "latest.zip" repository '() path-to-executable))
-
-(define (make-source name download-url repository)
-  (make-artifact name download-url "latest.zip" repository '() ""))
 
 (define (artifact-name self)
   (name self))
