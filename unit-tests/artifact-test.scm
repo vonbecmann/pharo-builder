@@ -4,12 +4,10 @@
 
 (test-begin "artifact-test")
 
-(define test-source (source 'pharov10 "http:/download/url"))
 (define name 'artifact-name)
 (define url "download-url")
 (define fmt "artifact ~S download from ~% ~S ~% to directory ~S ~%")
-(define test-artifact
-  (artifact name url 'pharov10))
+(define test-artifact (single-artifact name url))
 
 (test-equal "artifact-print-to-string"
 	    (format #f fmt name url (symbol->string name))

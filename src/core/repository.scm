@@ -18,10 +18,8 @@
 	    remove
 	    download-all
 	    add-artifact
-	    add-new-artifact
 	    add-single-artifact
 	    add-new-vm
-	    add-new-source
 	    new-repository-for
 	    directory-name
 	    set-directory-name
@@ -57,9 +55,6 @@
 (define (add-artifact self artifact)
   (hashq-set! (artifacts self) (artifact-name artifact) artifact)
   artifact)
-
-(define (add-new-artifact self name download-url source)
-  (add-artifact self (make-artifact-for name download-url source self)))
 
 (define (add-single-artifact self name download-url)
   (add-artifact self (make-single-artifact-for name download-url self)))

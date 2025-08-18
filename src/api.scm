@@ -34,11 +34,9 @@
 	    display-configuration
 	    repository
 	    repo
-	    artifact
 	    single-artifact
 	    artifact-named
 	    vm
-	    source
 	    artifacts
 	    ))
 
@@ -182,10 +180,6 @@
     (set-current-project! *pharo-builder* new-project)
     new-project))
 
-(define (artifact name download-url source-name)
-  "an artifact named NAME and download from DOWNLOAD-URL, based on SOURCE-NAME"
-  (repository:add-new-artifact (repo) name download-url (artifact-named source-name)))
-
 (define (single-artifact name download-url)
   "a single artifact named NAME and download from DOWNLOAD-URL"
   (repository:add-single-artifact (repo) name download-url))
@@ -194,9 +188,6 @@
   "a vm with PATH-TO-EXECUTABLE."
   (repository:add-new-vm (repo) name download-url path-to-executable))
 
-(define (source name download-url)
-  "a source file"
-  (repository:add-new-source (repo) name download-url))
 
 (provide 'api)
 

@@ -23,8 +23,7 @@
 	      )
 	    )
 
-(define test-source (source 'pharov10 "http:/download/url"))
-(define test-artifact (artifact 'pharo-core "http:/download/url" 'pharov10))
+(define test-artifact (single-artifact 'pharo-core "http:/download/url"))
 
 
 (test-equal "artifact-ref"
