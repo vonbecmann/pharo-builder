@@ -3,5 +3,5 @@ HOME_DIRECTORY=$(dirname $(readlink -nf $0))
 GUILE_LOAD_PATH="${HOME_DIRECTORY}/src:${HOME_DIRECTORY}/unit-tests:${HOME_DIRECTORY}"
 export GUILE_LOAD_PATH
 
-guile -l ${HOME_DIRECTORY}/unit-tests/all-tests.scm --use-srfi=64 --no-auto-compile
+guile -l ${HOME_DIRECTORY}/unit-tests/all-tests.scm  --no-auto-compile
 
