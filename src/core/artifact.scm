@@ -25,13 +25,12 @@
 	    path-to-executable))
 
 (define-record-type <artifact>
-  (make-artifact name download-url filename repository source executable)
+  (make-artifact name download-url filename repository executable)
   artifact?
   (name name) 
   (download-url download-url) 
   (filename filename) 
   (repository repository) 
-  (source source) 
   (executable executable))
 
 (define (download self)
@@ -50,19 +49,10 @@
   (let* (
 	 (cmd  (list "unzip -q -j" (full-path self) "-d" to-directory))
 	 )
-    (call-command-list cmd)
-    (if (not (null? (source self)))
-	(unzip-source (source self) to-directory))))
+    (call-command-list cmd)))
 
 (define (unzip-vm self to-directory)
   "unzip vm filename to directory."
-  (let* (
-	 (cmd  (list "unzip -q -o" (full-path self) "-d" to-directory))
-	 )
-    (call-command-list cmd)))
-
-(define (unzip-source self to-directory)
-  "unzip source filename to directory."
   (let* (
 	 (cmd  (list "unzip -q -o" (full-path self) "-d" to-directory))
 	 )
@@ -77,10 +67,10 @@
 				    (directory-name self))))
 
 (define (make-single-artifact-for name download-url repository)
-  (make-artifact name download-url "latest.zip" repository '() ""))
+  (make-artifact name download-url "latest.zip" repository ""))
 
 (define (make-vm-for name download-url path-to-executable repository)
-  (make-artifact name download-url "latest.zip" repository '() path-to-executable))
+  (make-artifact name download-url "latest.zip" repository path-to-executable))
 
 (define (artifact-name self)
   (name self))
