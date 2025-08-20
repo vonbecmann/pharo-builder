@@ -45,34 +45,25 @@
 ;;;
 (define-record-type <pharo-builder-record>
   (make-pharo-builder directory-name user-directory current-directory
-		      package-cache-directory current-project current-repository)
+		      current-project current-repository)
   pharo-builder?
   (directory-name directory-name set-directory-name!)
   (user-directory user-directory)
   (current-directory current-directory)
-  (package-cache-directory package-cache-directory)
   (current-project current-project set-current-project!)
   (current-repository current-repository))
 
 (set-record-type-printer! <pharo-builder-record>
 			  (lambda (self port)
 			    (format port
-				    "configuration builder at ~S ~% user's directory: ~S ~% current directory: ~S \n package cache directory: ~S \n current ~S \n"
+				    "configuration builder at ~S ~% user's directory: ~S ~% current directory: ~S \n current ~S \n"
 				    (directory-name self)
 				    (user-directory self)
 				    (current-directory self)
-				    (package-cache-directory self)
 				    (current-project self))))
 
 (define (home-directory self directory)
-  (set-directory-name! self directory)
-  (mk-mc-package-cache-directory self))
-
-(define (mk-mc-package-cache-directory self)
-  (mk-directory (package-cache-directory self)))
-
-(define (rm-mc-package-cache self)
-  (rm-directory (package-cache-directory self)))
+  (set-directory-name! self directory))
 
 (define (path-to-default-conf self)
   (path-join (user-directory self) "pharo-builder-conf.scm"))
@@ -88,7 +79,6 @@
    ""
    uwd
    cwd
-   (mc-package-cache-at uwd)
    '()
    (repository:new-repository-for (path-join uwd ".pharo-artifacts"))))
 
@@ -164,8 +154,7 @@
 	  (project:make-project 
 	   directory-name 
 	   (artifact-named vm) 
-	   (artifact-named artifact) 
-	   (package-cache-directory *pharo-builder*))))
+	   (artifact-named artifact))))
     (project:create new-project)
     new-project))
 
@@ -175,8 +164,7 @@
 	  (project:make-project
 	   (current-directory *pharo-builder*)
 	   (artifact-named vm)
-	   (artifact-named artifact)
-	   (package-cache-directory *pharo-builder*))))
+	   (artifact-named artifact))))
     (set-current-project! *pharo-builder* new-project)
     new-project))
 

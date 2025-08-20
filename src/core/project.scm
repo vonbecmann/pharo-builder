@@ -27,15 +27,14 @@
 	    ))
 
 (define-record-type <project>
-  (project-new directory vm artifact package-cache-directory)
+  (project-new directory vm artifact)
   project?
   (directory directory set-directory!)
   (vm vm)
-  (artifact artifact)
-  (package-cache-directory package-cache-directory))
+  (artifact artifact))
 
-(define (make-project directory vm artifact package-cache-directory)
-  (project-new directory vm artifact package-cache-directory))
+(define (make-project directory vm artifact)
+  (project-new directory vm artifact))
 
 (set-record-type-printer! <project> 
 			  (lambda (self port)
@@ -55,10 +54,8 @@
   "make target directory."
   (let* (
 	 (target (target-directory self))
-	 (package-cache-directory (package-cache-directory self))
 	 )
     (mk-directory target)
-    (link-package-cache-at package-cache-directory target)
     (artifact:unzip-vm (vm self) target)
     (artifact:unzip (artifact self) target)))
 

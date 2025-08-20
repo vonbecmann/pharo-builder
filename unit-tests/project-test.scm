@@ -15,7 +15,7 @@
 (define vm-name 'test-vm)
 (define test-artifact (single-artifact artifact-name "http:/download/url"))
 (define test-vm (vm vm-name "http:/download/url" "/path/to/vm"))
-(define test-project (project:make-project "/test-project" test-vm test-artifact "./package-cache"))
+(define test-project (project:make-project "/test-project" test-vm test-artifact))
 
 (test-equal "project as string" 
 	    (format #f "(pb:project '~a '~a)\n" vm-name artifact-name)

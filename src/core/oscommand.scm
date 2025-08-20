@@ -21,9 +21,6 @@
 	    ;; basic commands
 	    mk-directory
 	    rm-directory
-	    ;; Monticello package cache
-	    link-package-cache-at
-	    mc-package-cache-at
 	    ;;
 	    if-file-exists-do
 	    ))
@@ -81,15 +78,6 @@
   (if (directory-exists? directory-name)
       (call-command-list (list "rm" "-rf" directory-name))))
 
-
-;;;
-;;; monticello package cache directory
-;;;
-(define (mc-package-cache-at directory-name)
-  (path-join directory-name "package-cache"))
-
-(define (link-package-cache-at package-cache-directory directory-name)
-  (symlink package-cache-directory (mc-package-cache-at directory-name)))
 
 (define (if-file-exists-do filename thunk)
   "if file exists then do thunk otherwise display FILENAME not exists."
