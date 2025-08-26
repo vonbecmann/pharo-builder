@@ -29,8 +29,7 @@
        (directory-name (path-join cwd "target/a-test")))
     (pb:set-home-directory-to home-directory-arg)
     (newline)
-    (rm-directory directory-name)
-    (mk-directory directory-name)
+
     (pb:repository ".test-pharo-artifacts")
     (pb:single-artifact 'my-core "http://files.pharo.org/image/120/latest-64.zip")
     (pb:vm
