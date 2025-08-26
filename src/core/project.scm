@@ -125,6 +125,7 @@
 	 (output-filename (output-filename-at self))
 	 (cmd (list vm-filename image-filename ">" output-filename "2>&1" "&"))
 	 )
+    (display cmd)
     (call-command-list cmd)))
 
 (define (execute-headless self)
@@ -138,9 +139,9 @@
 	       (vm-filename (vm-filename-at self))
 	       (image-filename (image-filename-at self))
 	       (output-filename (output-filename-at self))
-	       (cmd (list vm-filename "-vm-display-null" 
-			  image-filename script-filename ">" output-filename "2>&1"))
+	       (cmd (list vm-filename "--headless" image-filename "st --save --quit" script-filename ">" output-filename "2>&1"))
 	       )
+	  (display cmd)
 	  (call-command-list cmd)
 	  )
 	(display (string-append script-filename " does not exists.\n")))))
