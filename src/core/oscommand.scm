@@ -69,7 +69,7 @@
     (access? directory-name read-write-execute)))
 
 (define (mk-directory directory-name)
-  "make a directory"
+  "make a directory if a directory not exists"
   (if (not (directory-exists? directory-name))
       (mkdir directory-name)))
 
